@@ -22,7 +22,7 @@ struct ArtistTypeFetchService {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
+            if error != nil {
                 completion(.failure(.transportError("Can't connect to the server. Please check your internet connection.")))
                 return
             }

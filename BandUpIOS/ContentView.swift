@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("BandUP IOS")
+        // using navigation stack for navigation toolbar text
+        NavigationStack {
+            AuthRouter()
+        }.tint(.purple)
     }
 }
 

@@ -22,7 +22,7 @@ struct GenreFetchService {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
+            if error != nil {
                 completion(.failure(.transportError("Cant connect to the server. Please check your internet connection")))
                 return
             }
