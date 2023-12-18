@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "flowstacks",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnpatrickmorgan/FlowStacks.git",
+      "state" : {
+        "revision" : "44ee1a60d8657bfe83d7433087427d5df9c6768a",
+        "version" : "0.3.7"
+      }
+    },
+    {
+      "identity" : "ios-places-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googlemaps/ios-places-sdk",
+      "state" : {
+        "revision" : "db961cdf29b116c497baf87c1ef8188082089fb7",
+        "version" : "8.3.0"
+      }
+    },
+    {
+      "identity" : "swiftuiflow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ciaranrobrien/SwiftUIFlow.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b300d3c0110116f3520066dfb8dcf3006cf593c3"
+      }
+    }
+  ],
+  "version" : 2
+}

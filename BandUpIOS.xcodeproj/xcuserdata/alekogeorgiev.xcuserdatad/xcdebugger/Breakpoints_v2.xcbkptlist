@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "A32E02A5-A4F1-4D17-9EA0-4AE80AA94F37"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4E94BE92-B0EE-4685-8A93-8F9899A90116"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BandUpIOS/Features/Authentication/Login/Services/LoginService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "login(completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4E94BE92-B0EE-4685-8A93-8F9899A90116 - 42ec1bd5d3be5b4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in BandUpIOS.LoginService.login(completion: (Swift.Result&lt;Swift.String, BandUpIOS.APIError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "BandUpIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alekogeorgiev/Desktop/swift-dev/bandup-ios/BandUpIOS/BandUpIOS/Features/Authentication/Login/Services/LoginService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "644">
+               </Location>
+               <Location
+                  uuid = "4E94BE92-B0EE-4685-8A93-8F9899A90116 - 42ec1bd5d3be5b4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in BandUpIOS.LoginService.login(completion: (Swift.Result&lt;Swift.String, BandUpIOS.APIError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "BandUpIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alekogeorgiev/Desktop/swift-dev/bandup-ios/BandUpIOS/BandUpIOS/Features/Authentication/Login/Services/LoginService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "668">
+               </Location>
+               <Location
+                  uuid = "4E94BE92-B0EE-4685-8A93-8F9899A90116 - 42ec1bd5d3be5b4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in BandUpIOS.LoginService.login(completion: (Swift.Result&lt;Swift.String, BandUpIOS.APIError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "BandUpIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alekogeorgiev/Desktop/swift-dev/bandup-ios/BandUpIOS/BandUpIOS/Features/Authentication/Login/Services/LoginService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "676">
+               </Location>
+               <Location
+                  uuid = "4E94BE92-B0EE-4685-8A93-8F9899A90116 - 6d093900f09c226a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in BandUpIOS.LoginService.login(completion: (Swift.Result&lt;Swift.String, BandUpIOS.APIError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "BandUpIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alekogeorgiev/Desktop/swift-dev/BandUpIOS/BandUpIOS/Features/Authentication/Login/Services/LoginService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "676">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
