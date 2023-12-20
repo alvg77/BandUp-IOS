@@ -16,6 +16,7 @@ struct CredentialsView: View {
     var body: some View {
         ScrollView {
             VStack {
+                if !viewModel.errorMessage.isEmpty { ErrorMessage(errorMessage: viewModel.errorMessage) }
                 usernameField
                 emailField
                 passwordField
@@ -30,7 +31,12 @@ struct CredentialsView: View {
     
     @ViewBuilder var continueButton: some View {
         Button {
-            next?()
+            viewModel.checkEmailAvailability()
+            viewModel.checkUsernameAvailability()
+            
+            if viewModel.credentialsAvailable {
+                next?()
+            }
         } label: {
             Text("Continue")
                 .frame(maxWidth: .infinity)
@@ -56,6 +62,10 @@ struct CredentialsView: View {
         if case .invalid(let errorMessage) = viewModel.usernameState {
             showError(errorMessage: errorMessage)
         }
+        
+        if !viewModel.usernameAvailable {
+            showError(errorMessage: "Username already exists.")
+        }
     }
     
     @ViewBuilder var emailField: some View {
@@ -66,6 +76,10 @@ struct CredentialsView: View {
         
         if case .invalid(let errorMessage) = viewModel.emailState {
             showError(errorMessage: errorMessage)
+        }
+        
+        if !viewModel.emailAvailable {
+            showError(errorMessage: "Email already exitsts.")
         }
     }
     
@@ -81,5 +95,5 @@ struct CredentialsView: View {
 }
 
 #Preview {
-    CredentialsView(next: {}, viewModel: CredentialsViewModel())
+    CredentialsView(next: {}, viewModel: CredentialsViewModel(registerService: RegisterService()))
 }

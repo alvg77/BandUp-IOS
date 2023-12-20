@@ -42,12 +42,7 @@ struct ArtistTypeFetchService {
                         completion(.failure(.decodingError(error)))
                     }
                 } else {
-                    do {
-                        let apiError = try decoder.decode(APIErrorMessage.self, from: data)
-                        completion(.failure(.serverError(statusCode: httpResponse.statusCode, reason: apiError.reason)))
-                    } catch let error {
-                        completion(.failure(.decodingError(error)))
-                    }
+                    completion(.failure(APIError.serverError(statusCode: httpResponse.statusCode)))
                 }
             }
         }

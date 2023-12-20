@@ -23,11 +23,20 @@ class RegisterViewModel: ObservableObject {
     @Published var step = RegisterStep.credentials
     @Published var steps: [RegisterStep] = [.credentials]
 
-    @Published var credentials = CredentialsViewModel()
-    @Published var profileInfo = ProfileInfoViewModel()
-    @Published var genreSelect = GenreSelectViewModel()
-    @Published var locationSelect = LocationSelectViewModel()
-        
+    @Published var credentials: CredentialsViewModel
+    @Published var profileInfo: ProfileInfoViewModel
+    @Published var genreSelect: GenreSelectViewModel
+    @Published var locationSelect: LocationSelectViewModel
+    
+    private var registerService = RegisterService()
+
+    init() {
+        credentials = CredentialsViewModel(registerService: RegisterService())
+        profileInfo = ProfileInfoViewModel()
+        genreSelect = GenreSelectViewModel()
+        locationSelect = LocationSelectViewModel()
+    }
+
     func goToPrev() {
         step = step.previous()
         if steps.last != .credentials {
@@ -40,5 +49,9 @@ class RegisterViewModel: ObservableObject {
         if steps.last != step {
             steps.append(step)
         }
+    }
+    
+    func register() {
+        
     }
 }

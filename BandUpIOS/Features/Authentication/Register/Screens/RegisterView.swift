@@ -14,27 +14,23 @@ struct RegisterView: View {
         VStack {
             multistepIndicator
 
-            ScrollView {
-                getStepView
-            }
-            .navigationTitle("Create Account")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(viewModel.step != .credentials)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    if viewModel.step != .credentials {
-                        back
+            getStepView
+                .navigationTitle("Create Account")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(viewModel.step != .credentials)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        if viewModel.step != .credentials {
+                            back
+                        }
                     }
                 }
-            }
         }
     }
     
     @ViewBuilder var back: some View {
         Button {
-            withAnimation {
-                viewModel.goToPrev()
-            }
+            viewModel.goToPrev()
         } label: {
             Image(systemName: "chevron.left")
                 .bold()
@@ -56,7 +52,7 @@ struct RegisterView: View {
         case .genres:
             GenreSelectView(next: viewModel.goToNext, viewModel: viewModel.genreSelect)
         case .location:
-            LocationSelectView(register: {}, viewModel: viewModel.locationSelect)
+            LocationSelectView(register: viewModel.register, viewModel: viewModel.locationSelect)
         }
     }
 }

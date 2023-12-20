@@ -39,7 +39,7 @@ enum APIError: LocalizedError {
         case .decodingError:
             return "The server returned data in an unexpected format. Try updating the app."
         case .serverError(let statusCode, let reason):
-            return "Server error with code \(statusCode), reason: \(reason ?? "no reason given")"
+            return "\(statusCode) \(reason ?? "Oops! Something went wrong.")"
         }
     }
 }

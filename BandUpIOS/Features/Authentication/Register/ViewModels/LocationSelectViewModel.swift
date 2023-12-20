@@ -14,7 +14,9 @@ class LocationSelectViewModel: ObservableObject, RegisterStepViewModel {
     @Published var city = ""
     @Published var zipcode = ""
     
-    @Published var validateStep = false
+    var validateStep: Bool {
+        true
+    }
     
     lazy var geocoder = CLGeocoder()
     
@@ -26,9 +28,5 @@ class LocationSelectViewModel: ObservableObject, RegisterStepViewModel {
                     
                 }
             }
-    }
-    
-    func validateLocation() {
-        
     }
 }
