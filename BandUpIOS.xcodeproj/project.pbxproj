@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4B002DC32B28B14D00793A92 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC22B28B14D00793A92 /* AuthRouter.swift */; };
 		4B002DC62B28B16400793A92 /* AuthRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */; };
+		4B3818F62B373C6200A4624C /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3818F52B373C6200A4624C /* PostsView.swift */; };
+		4B3818F82B373C6F00A4624C /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3818F72B373C6F00A4624C /* PostsViewModel.swift */; };
 		4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */; };
 		4B4279112B30BB45000A5631 /* GenreSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790D2B30BB44000A5631 /* GenreSelectView.swift */; };
 		4B4279122B30BB45000A5631 /* LocationSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790F2B30BB45000A5631 /* LocationSelectView.swift */; };
@@ -76,6 +78,8 @@
 /* Begin PBXFileReference section */
 		4B002DC22B28B14D00793A92 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouterViewModel.swift; sourceTree = "<group>"; };
+		4B3818F52B373C6200A4624C /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
+		4B3818F72B373C6F00A4624C /* PostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewModel.swift; sourceTree = "<group>"; };
 		4B42790D2B30BB44000A5631 /* GenreSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectView.swift; sourceTree = "<group>"; };
 		4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		4B42790F2B30BB45000A5631 /* LocationSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectView.swift; sourceTree = "<group>"; };
@@ -151,6 +155,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B3818F22B373BFB00A4624C /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				4B3818F42B373C2600A4624C /* ViewModels */,
+				4B3818F32B373C1E00A4624C /* Views */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
+		4B3818F32B373C1E00A4624C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B3818F52B373C6200A4624C /* PostsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4B3818F42B373C2600A4624C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4B3818F72B373C6F00A4624C /* PostsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		4B42791D2B30BBA6000A5631 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,17 +241,17 @@
 				4B8E3DF52B26763C0090A60C /* Services */,
 				4B8E3DF02B2661AD0090A60C /* Models */,
 				4B78538D2B2486D400D671B9 /* ViewModels */,
-				4B78538C2B2486D000D671B9 /* Views */,
+				4B78538C2B2486D000D671B9 /* Screens */,
 			);
 			path = Login;
 			sourceTree = "<group>";
 		};
-		4B78538C2B2486D000D671B9 /* Views */ = {
+		4B78538C2B2486D000D671B9 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				4B7853922B24872700D671B9 /* LoginView.swift */,
 			);
-			path = Views;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		4B78538D2B2486D400D671B9 /* ViewModels */ = {
@@ -400,6 +429,7 @@
 		4B7B5D6A2B23FF2E008943A8 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				4B3818F22B373BFB00A4624C /* Posts */,
 				4B7853872B24867B00D671B9 /* Authentication */,
 			);
 			path = Features;
@@ -653,7 +683,9 @@
 				4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */,
 				4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */,
 				4B7B5D3B2B23FE3B008943A8 /* BandUpIOSApp.swift in Sources */,
+				4B3818F82B373C6F00A4624C /* PostsViewModel.swift in Sources */,
 				4B78539B2B24884A00D671B9 /* AppRouterViewModel.swift in Sources */,
+				4B3818F62B373C6200A4624C /* PostsView.swift in Sources */,
 				4BE1FE8C2B3083150094F52B /* CredentialsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
