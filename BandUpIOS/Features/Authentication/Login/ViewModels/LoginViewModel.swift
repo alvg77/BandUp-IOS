@@ -30,7 +30,7 @@ final class LoginViewModel: ObservableObject {
     func login() {
         let defaults = UserDefaults.standard
         
-        LoginService().login(payload: LoginRequest(email: email, password: password))
+        LoginService().login(loginRequest: LoginRequest(email: email, password: password))
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
                 switch completion {

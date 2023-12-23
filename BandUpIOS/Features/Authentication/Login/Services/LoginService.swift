@@ -11,7 +11,7 @@ import Combine
 struct LoginService {
     let components = URLComponents(string: "http://localhost:9090/api/v1/auth/login")
     
-    func login(payload: LoginRequest) -> AnyPublisher<LoginResponse, APIError> {
+    func login(loginRequest: LoginRequest) -> AnyPublisher<LoginResponse, APIError> {
         
         guard let url = components?.url else {
             return Fail(error: APIError.invalidRequestError("Cannot build url for requested resource")).eraseToAnyPublisher()
@@ -24,9 +24,9 @@ struct LoginService {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
                 
         do {
-            request.httpBody = try JSONEncoder().encode(payload)
-        } catch {
-            print("Error: \(error.localizedDescription)")
+            request.httpBody = try JSONEncoder().encode(loginRequest)
+        } catch let error {
+            return Fail(error: APIError.decodingError(error)).eraseToAnyPublisher()
         }
 
         return URLSession.shared.dataTaskPublisher(for: request)

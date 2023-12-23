@@ -19,7 +19,6 @@
 		4B42791F2B30BBB0000A5631 /* RegisterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42791E2B30BBB0000A5631 /* RegisterService.swift */; };
 		4B4279242B30BBCD000A5631 /* RegisterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279212B30BBCC000A5631 /* RegisterResponse.swift */; };
 		4B4279252B30BBCD000A5631 /* RegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279222B30BBCC000A5631 /* RegisterRequest.swift */; };
-		4B4279262B30BBCD000A5631 /* UsernameAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279232B30BBCD000A5631 /* UsernameAvailable.swift */; };
 		4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279272B30BC19000A5631 /* CredentialsViewModel.swift */; };
 		4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279292B30BF28000A5631 /* RegisterView.swift */; };
 		4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42792B2B30BF3B000A5631 /* RegisterViewModel.swift */; };
@@ -86,7 +85,6 @@
 		4B42791E2B30BBB0000A5631 /* RegisterService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterService.swift; sourceTree = "<group>"; };
 		4B4279212B30BBCC000A5631 /* RegisterResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterResponse.swift; sourceTree = "<group>"; };
 		4B4279222B30BBCC000A5631 /* RegisterRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterRequest.swift; sourceTree = "<group>"; };
-		4B4279232B30BBCD000A5631 /* UsernameAvailable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameAvailable.swift; sourceTree = "<group>"; };
 		4B4279272B30BC19000A5631 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
 		4B4279292B30BF28000A5631 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		4B42792B2B30BF3B000A5631 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -164,7 +162,6 @@
 			children = (
 				4B4279222B30BBCC000A5631 /* RegisterRequest.swift */,
 				4B4279212B30BBCC000A5631 /* RegisterResponse.swift */,
-				4B4279232B30BBCD000A5631 /* UsernameAvailable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -647,7 +644,6 @@
 				4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */,
 				4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */,
 				4B7853952B24873900D671B9 /* LoginViewModel.swift in Sources */,
-				4B4279262B30BBCD000A5631 /* UsernameAvailable.swift in Sources */,
 				4B7853982B24883300D671B9 /* AppRouter.swift in Sources */,
 				4B4279242B30BBCD000A5631 /* RegisterResponse.swift in Sources */,
 				4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */,

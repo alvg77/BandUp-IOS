@@ -34,7 +34,8 @@ class RegisterViewModel: ObservableObject {
     @Published var locationSelect = LocationSelectViewModel()
     
     private var registerService = RegisterService()
-
+    private var cancellables = Set<AnyCancellable>()
+    
     init() {
         credentials.next = goToNext
         profileInfo.next = goToNext
@@ -61,24 +62,26 @@ class RegisterViewModel: ObservableObject {
             username: self.credentials.username,
             email: self.credentials.email,
             password: self.credentials.password,
-            artistType: self.profileInfo.artistType!,
-            genres: self.genreSelect.genres, 
+            artistTypeId: self.profileInfo.artistType!.id,
+            genreIds: self.genreSelect.genres.map { $0.id },
             bio: self.profileInfo.bio
         )
         
         let defaults = UserDefaults.standard
         
-        registerService.register(registerRequest: registerRequest) { [weak self] completion in
-            DispatchQueue.main.async {
-                switch completion {
-                case .success(let response):
-                    self?.registerCompleted?()
-                    defaults.setValue(response.token, forKey: "jwt")
+        registerService.register(registerRequest: registerRequest)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] completion in
+                switch completion{
+                case .finished:
+                    print("registered")
+                    // go to home
                 case .failure(let error):
                     self?.registerError = error
-                    self?.registerErrorOccured = true
                 }
+            } receiveValue: { response in
+                defaults.setValue(response.token, forKey: "jwt")
             }
-        }
+            .store(in: &cancellables)
     }
 }

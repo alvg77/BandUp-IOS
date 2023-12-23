@@ -17,8 +17,8 @@ struct RegisterRequest: Encodable {
     var username: String
     var email: String
     var password: String
-    var artistType: ArtistType
-    var genres: [Genre]
+    var artistTypeId: Int
+    var genreIds: [Int]
     var bio: String
     var location = Location()
 }
