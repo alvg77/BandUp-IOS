@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ArtistType: Decodable, Identifiable, CustomStringConvertible, Hashable {
+struct ArtistType: Encodable, Decodable, Identifiable, CustomStringConvertible, Hashable {
     var id: Int
     var name: String
     

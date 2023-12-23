@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct Location: Codable {
+struct Location: Encodable {
     var country = ""
     var city = ""
     var postalCode = ""
 }
 
-struct RegisterRequest: Codable {
-    var username: String = ""
-    var email: String = ""
-    var password: String = ""
-    var artistType: String = ""
-    var genres: [String] = []
-    var bio: String = ""
+struct RegisterRequest: Encodable {
+    var username: String
+    var email: String
+    var password: String
+    var artistType: ArtistType
+    var genres: [Genre]
+    var bio: String
     var location = Location()
 }

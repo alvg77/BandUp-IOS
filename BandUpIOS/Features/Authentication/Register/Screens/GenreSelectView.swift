@@ -8,21 +8,19 @@
 import SwiftUI
 
 struct GenreSelectView: View {
-    var next: (() -> Void)?
     @ObservedObject var viewModel: GenreSelectViewModel
     
     var body: some View {
         ScrollView {
-            if viewModel.errorMessage != "" {
-                ErrorMessage(errorMessage: viewModel.errorMessage)
+            if let error = viewModel.error {
+                ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available genres.")
             }
             
             FlowSelector(data: viewModel.genres, selected: $viewModel.selected)
                 .padding(.all)
-                .opacity(viewModel.genres.isEmpty && viewModel.errorMessage.isEmpty ? 0.5 : 1)
             
             Button {
-                next?()
+                viewModel.next?()
             } label: {
                 Text("Continue")
                     .frame(maxWidth: .infinity)
@@ -42,5 +40,5 @@ struct GenreSelectView: View {
 }
 
 #Preview {
-    GenreSelectView(next: {}, viewModel: GenreSelectViewModel())
+    GenreSelectView(viewModel: GenreSelectViewModel())
 }

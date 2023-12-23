@@ -16,7 +16,10 @@ struct LoginView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical)
             
-            if !viewModel.errorMessage.isEmpty { error.padding(.bottom) }
+            if let error = viewModel.error {
+                ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to process your login request.")
+                    .padding(.bottom)
+            }
             
             emailField
                 .padding(.bottom, 8)
@@ -41,11 +44,6 @@ struct LoginView: View {
 }
 
 private extension LoginView {
-    @ViewBuilder var error: some View {
-        ErrorMessage(errorMessage: viewModel.errorMessage)
-            .frame(maxWidth: .infinity, alignment: .center)
-    }
-    
     @ViewBuilder var emailField: some View {
         TextField("Email", text: $viewModel.email)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "at"))

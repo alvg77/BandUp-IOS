@@ -10,28 +10,37 @@ import Combine
 import SwiftUI
 
 class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
+    var next: (() -> Void)?
+    
     @Published var artistType: ArtistType?
     @Published var bio = ""
     @Published var artistTypes: [ArtistType] = []
-    @Published var errorMessage = ""
+    @Published var error: APIError?
+    
+    var cancellables = Set<AnyCancellable>()
+    let artistTypeService = ArtistTypeFetchService()
         
     var validateStep: Bool {
         !bio.isEmpty && artistType != nil
     }
     
+    init() {
+        getArtistTypes()
+    }
+    
     func getArtistTypes() {
-        ArtistTypeFetchService()
-            .getArtistTypes { [weak self] completion in
-                DispatchQueue.main.async {
-                    switch completion {
-                    case .success(let artistTypes):
-                        self?.artistTypes = artistTypes
-                    case .failure(let error):
-                        withAnimation {
-                            self?.errorMessage = error.errorDescription
-                        }
-                    }
+        artistTypeService.getArtistTypes()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.error = nil
+                case .failure(let error):
+                    self?.error = error
                 }
+            } receiveValue: { [weak self] artistTypes in
+                self?.artistTypes = artistTypes
             }
+            .store(in: &cancellables)
     }
 }

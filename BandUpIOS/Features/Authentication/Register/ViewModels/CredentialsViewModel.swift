@@ -8,11 +8,19 @@ enum TextFieldState: Equatable {
     case invalid(errorMessage: String)
 }
 
+enum CredentialAvailability: Equatable {
+    case neutral
+    case available
+    case taken
+}
+
 class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
     private let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d^\W_]{8,}$/
     
-    @Published var errorMessage = ""
+    var next: (() -> Void)?
+    
+    @Published var error: APIError?
     
     @Published var username = ""
     @Published var email = ""
@@ -22,11 +30,9 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     @Published var emailState: TextFieldState = .neutral
     @Published var passwordState: TextFieldState = .neutral
         
-    @Published var emailAvailable = true
-    @Published var usernameAvailable = true
-    
-    private var registerService: RegisterService
-    
+    @Published var emailAvailable: CredentialAvailability = .neutral
+    @Published var usernameAvailable: CredentialAvailability = .neutral
+        
     var validateStep: Bool {
         usernameState == .valid &&
         emailState == .valid &&
@@ -34,15 +40,16 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     var credentialsAvailable: Bool {
-        emailAvailable &&
-        usernameAvailable &&
-        errorMessage.isEmpty
+        emailAvailable == .available &&
+        usernameAvailable == .available &&
+        error == nil
     }
     
     var cancellables = Set<AnyCancellable>()
     
-    init(registerService: RegisterService) {
-        self.registerService = registerService
+    let registerService = RegisterService()
+    
+    init() {
         validateUsername.store(in: &cancellables)
         validateEmail.store(in: &cancellables)
         validatePassword.store(in: &cancellables)
@@ -102,33 +109,26 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
             }
     }
     
-    func checkEmailAvailability() {
-        registerService.checkEmailAvailability(email: email) { [weak self] completion in
-            DispatchQueue.main.sync {
+    func checkCredentialsAvailability() {
+        Publishers.CombineLatest(
+            registerService.checkEmailAvailability(email: email),
+            registerService.checkUsernameAvailability(username: username)
+        )
+        .receive(on: RunLoop.main)
+        .sink { [weak self] completion in
+            switch completion {
+            case .finished:
+                self?.error = nil
+                self?.next?()
+            case .failure(let error):
                 withAnimation {
-                    switch completion {
-                    case .success(let available):
-                        self?.emailAvailable = available
-                    case .failure(let error):
-                        self?.errorMessage = error.errorDescription
-                    }
+                    self?.error = error
                 }
             }
+        } receiveValue: { [weak self] (emailAvailability, usernameAvailability) in
+            self?.emailAvailable = emailAvailability
+            self?.usernameAvailable = usernameAvailability
         }
-    }
-    
-    func checkUsernameAvailability() {
-        registerService.checkUsernameAvailabilty(username: username) { [weak self] completion in
-            DispatchQueue.main.sync {
-                withAnimation {
-                    switch completion {
-                    case .success(let available):
-                        self?.usernameAvailable = available
-                    case .failure(let error):
-                        self?.errorMessage = error.errorDescription
-                    }
-                }
-            }
-        }
+        .store(in: &cancellables)
     }
 }

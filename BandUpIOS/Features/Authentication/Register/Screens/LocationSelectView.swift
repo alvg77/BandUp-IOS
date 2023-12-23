@@ -9,7 +9,6 @@ import SwiftUI
 import MapKit
 
 struct LocationSelectView: View {
-    var register: (() -> Void)?
     @ObservedObject var viewModel: LocationSelectViewModel
     
     var body: some View {
@@ -25,7 +24,7 @@ struct LocationSelectView: View {
             .padding(.bottom, 8)
 
             Button {
-                register?()
+                viewModel.register?()
             } label: {
                 Text("Register")
                     .frame(maxWidth: .infinity)
@@ -38,5 +37,5 @@ struct LocationSelectView: View {
 }
 
 #Preview {
-    LocationSelectView(register: {}, viewModel: LocationSelectViewModel())
+    LocationSelectView(viewModel: LocationSelectViewModel())
 }

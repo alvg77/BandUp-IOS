@@ -10,6 +10,8 @@ import Combine
 import CoreLocation
 
 class LocationSelectViewModel: ObservableObject, RegisterStepViewModel {
+    var register: (() -> Void)?
+    
     @Published var country = ""
     @Published var city = ""
     @Published var zipcode = ""
@@ -18,15 +20,4 @@ class LocationSelectViewModel: ObservableObject, RegisterStepViewModel {
         true
     }
     
-    lazy var geocoder = CLGeocoder()
-    
-    var validateLocationData: AnyCancellable {
-        Publishers.CombineLatest3($country.eraseToAnyPublisher(), $city.eraseToAnyPublisher(), $zipcode.eraseToAnyPublisher())
-            .debounce(for: 0.4, scheduler: DispatchQueue.main)
-            .sink { (country, city, zipcode) in
-                if !country.isEmpty && !city.isEmpty && !zipcode.isEmpty {
-                    
-                }
-            }
-    }
 }

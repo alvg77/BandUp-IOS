@@ -444,8 +444,8 @@
 		4BE1FE852B30819D0094F52B /* Register */ = {
 			isa = PBXGroup;
 			children = (
-				4B4279202B30BBC0000A5631 /* Models */,
 				4B42791D2B30BBA6000A5631 /* Services */,
+				4B4279202B30BBC0000A5631 /* Models */,
 				4BE1FE8E2B30863D0094F52B /* ViewModels */,
 				4BE1FE8A2B3083040094F52B /* Screens */,
 			);

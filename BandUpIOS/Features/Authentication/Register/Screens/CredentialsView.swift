@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CredentialsView: View {
-    var next: (() -> Void)?
     @ObservedObject var viewModel: CredentialsViewModel
     
     private let fieldBottomPadding: CGFloat = 8
@@ -16,7 +15,9 @@ struct CredentialsView: View {
     var body: some View {
         ScrollView {
             VStack {
-                if !viewModel.errorMessage.isEmpty { ErrorMessage(errorMessage: viewModel.errorMessage) }
+                if let error = viewModel.error {
+                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to verify your username and email availability.")
+                }
                 usernameField
                 emailField
                 passwordField
@@ -31,12 +32,7 @@ struct CredentialsView: View {
     
     @ViewBuilder var continueButton: some View {
         Button {
-            viewModel.checkEmailAvailability()
-            viewModel.checkUsernameAvailability()
-            
-            if viewModel.credentialsAvailable {
-                next?()
-            }
+            viewModel.checkCredentialsAvailability()
         } label: {
             Text("Continue")
                 .frame(maxWidth: .infinity)
@@ -63,7 +59,7 @@ struct CredentialsView: View {
             showError(errorMessage: errorMessage)
         }
         
-        if !viewModel.usernameAvailable {
+        if viewModel.usernameAvailable == .taken {
             showError(errorMessage: "Username already exists.")
         }
     }
@@ -78,7 +74,7 @@ struct CredentialsView: View {
             showError(errorMessage: errorMessage)
         }
         
-        if !viewModel.emailAvailable {
+        if viewModel.emailAvailable == .taken {
             showError(errorMessage: "Email already exitsts.")
         }
     }
@@ -95,5 +91,5 @@ struct CredentialsView: View {
 }
 
 #Preview {
-    CredentialsView(next: {}, viewModel: CredentialsViewModel(registerService: RegisterService()))
+    CredentialsView(viewModel: CredentialsViewModel())
 }

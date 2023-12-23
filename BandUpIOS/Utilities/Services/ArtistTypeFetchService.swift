@@ -6,14 +6,14 @@
 //
 
 import Foundation
+import Combine
 
 struct ArtistTypeFetchService {
-    func getArtistTypes(completion: @escaping (Result<[ArtistType], APIError>) -> Void) {
-        let components = URLComponents(string: "http://localhost:9090/api/v1/artist-types")
-
+    let components = URLComponents(string: "http://localhost:9090/api/v1/artist-types")
+    
+    func getArtistTypes() -> AnyPublisher<[ArtistType], APIError> {
         guard let url = components?.url else {
-            completion(.failure(.invalidRequestError("Cannot build url for resource.")))
-            return
+            return Fail(error: .invalidRequestError("Cannot build URL for resource.")).eraseToAnyPublisher()
         }
 
         var request = URLRequest(url: url)
@@ -21,31 +21,31 @@ struct ArtistTypeFetchService {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if error != nil {
-                completion(.failure(.transportError("Can't connect to the server. Please check your internet connection.")))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(.invalidResponse))
-                return
-            }
-            
-            let decoder = JSONDecoder()
-            if let data = data {
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw APIError.invalidResponse
+                }
+
                 if (200..<300) ~= httpResponse.statusCode {
+                    let decoder = JSONDecoder()
                     do {
                         let artistTypes = try decoder.decode([ArtistType].self, from: data)
-                        completion(.success(artistTypes))
-                    } catch let error {
-                        completion(.failure(.decodingError(error)))
+                        return artistTypes
+                    } catch {
+                        throw APIError.decodingError(error)
                     }
                 } else {
-                    completion(.failure(APIError.serverError(statusCode: httpResponse.statusCode)))
+                    throw APIError.serverError(statusCode: httpResponse.statusCode)
                 }
             }
-        }
-        task.resume()
+            .mapError { error in
+                if let apiError = error as? APIError {
+                    return apiError
+                } else {
+                    return APIError.transportError("Can't connect to the server. Please check your internet connection.")
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }

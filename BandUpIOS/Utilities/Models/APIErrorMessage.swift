@@ -8,6 +8,9 @@
 import Foundation
 
 struct APIErrorMessage: Decodable {
-  var error: Bool
-  var reason: String
+    var type: String
+    var title: String
+    var status: Int
+    var detail: String
+    var instance: String
 }

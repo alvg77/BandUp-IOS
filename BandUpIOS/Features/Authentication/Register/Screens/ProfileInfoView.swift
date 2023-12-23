@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct ProfileInfoView: View {
-    var next: (() -> Void)?
     @ObservedObject var viewModel: ProfileInfoViewModel
     
     var body: some View {
         ScrollView {
             VStack {
-                if viewModel.errorMessage != "" {
-                    ErrorMessage(errorMessage: viewModel.errorMessage)
+                if let error = viewModel.error {
+                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available artist types.")
                         .padding(.bottom)
                 }
                 
@@ -37,7 +36,7 @@ struct ProfileInfoView: View {
                     .padding(.vertical)
                 
                 Button {
-                    next?()
+                    viewModel.next?()
                 } label: {
                     Text("Continue")
                         .frame(maxWidth: .infinity)
@@ -59,5 +58,5 @@ struct ProfileInfoView: View {
 }
 
 #Preview {
-    ProfileInfoView(next: {}, viewModel: ProfileInfoViewModel())
+    ProfileInfoView(viewModel: ProfileInfoViewModel())
 }

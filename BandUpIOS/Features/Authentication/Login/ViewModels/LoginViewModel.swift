@@ -12,9 +12,10 @@ import SwiftUI
 final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
-    @Published var errorMessage = ""
-    @Published var errorOccured = false
-    @Published var error: APIError? = nil
+    
+    @Published var error: APIError?
+    
+    var cancellables = Set<AnyCancellable>()
     
     var toRegisterTapped: (() -> Void)?
     
@@ -29,22 +30,23 @@ final class LoginViewModel: ObservableObject {
     func login() {
         let defaults = UserDefaults.standard
         
-        LoginService(payload: LoginRequest(email: email, password: password))
-            .login { [weak self] completion in
-                DispatchQueue.main.async {
-                    switch completion {
-                    case .success(let token):
-                        defaults.setValue(token, forKey: "jwt")
-                        // Route to main
-                    case .failure(let error):
-                        withAnimation {
-                            self?.errorMessage = error.errorDescription
-                            self?.errorOccured = true
-                            self?.error = error
-                        }
+        LoginService().login(payload: LoginRequest(email: email, password: password))
+            .receive(on: RunLoop.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .failure(let error):
+                    withAnimation {
+                        self?.error = error
                     }
+                case .finished:
+                    // route to default screen
+                    print("finished")
                 }
+            } receiveValue: { data in
+                defaults.setValue(data.token, forKey: "jwt")
             }
+            .store(in: &cancellables)
+
     }
 }
 

@@ -26,6 +26,12 @@ struct RegisterView: View {
                     }
                 }
         }
+        .alert("Registration Error", isPresented: $viewModel.registerErrorOccured) {
+            Button ("OK", role: .cancel) {}
+        } message: {
+            Text(viewModel.registerError?.errorDescription ?? "An error occured while trying to process your registration request.")
+        }
+
     }
     
     @ViewBuilder var back: some View {
@@ -46,13 +52,13 @@ struct RegisterView: View {
     @ViewBuilder var getStepView: some View {
         switch viewModel.step {
         case .credentials:
-            CredentialsView(next: viewModel.goToNext, viewModel: viewModel.credentials)
+            CredentialsView(viewModel: viewModel.credentials)
         case .profileInfo:
-            ProfileInfoView(next: viewModel.goToNext, viewModel: viewModel.profileInfo)
+            ProfileInfoView(viewModel: viewModel.profileInfo)
         case .genres:
-            GenreSelectView(next: viewModel.goToNext, viewModel: viewModel.genreSelect)
+            GenreSelectView(viewModel: viewModel.genreSelect)
         case .location:
-            LocationSelectView(register: viewModel.register, viewModel: viewModel.locationSelect)
+            LocationSelectView(viewModel: viewModel.locationSelect)
         }
     }
 }

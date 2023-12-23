@@ -6,18 +6,17 @@
 //
 
 import Foundation
+import Combine
 
 struct LoginService {
-    var payload: LoginRequest
+    let components = URLComponents(string: "http://localhost:9090/api/v1/auth/login")
     
-    func login(completion: @escaping (Result<String, APIError>) -> Void) {
-        let components = URLComponents(string: "http://localhost:9090/api/v1/auth/login")
-
+    func login(payload: LoginRequest) -> AnyPublisher<LoginResponse, APIError> {
+        
         guard let url = components?.url else {
-            completion(.failure(.invalidRequestError("Cannot construct url for the requested resource.")))
-            return
+            return Fail(error: APIError.invalidRequestError("Cannot build url for requested resource")).eraseToAnyPublisher()
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
@@ -30,39 +29,30 @@ struct LoginService {
             print("Error: \(error.localizedDescription)")
         }
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if error != nil {
-                completion(.failure(.transportError("Cannot connect to the server. Please check your internet connection.")))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(.invalidResponse))
-                return
-            }
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw APIError.invalidResponse
+                }
 
-            let decoder = JSONDecoder()
-            if let data = data {
-                switch httpResponse.statusCode {
-                case 200..<300:
-                    do {
-                        let response = try decoder.decode(LoginResponse.self, from: data)
-                        completion(.success(response.token))
-                    } catch let error {
-                        completion(.failure(.decodingError(error)))
-                    }
-                case 403:
-                    completion(.failure(APIError.validationError("Invalid email or password.")))
-                default:
-                    do {
-                        let apiError = try decoder.decode(APIErrorMessage.self, from: data)
-                        completion(.failure(.serverError(statusCode: httpResponse.statusCode, reason: apiError.reason)))
-                    } catch let error {
-                        completion(.failure(.decodingError(error)))
-                    }
+                if let error = httpResponse.statusCode.apiError {
+                    throw error
+                }
+
+                let decoder = JSONDecoder()
+                do {
+                    return try decoder.decode(LoginResponse.self, from: data)
+                } catch {
+                    throw APIError.decodingError(error)
                 }
             }
-        }
-        task.resume()
+            .mapError { error in
+                if let apiError = error as? APIError {
+                    return apiError
+                } else {
+                    return APIError.transportError("Cannot connect to the server. Please check your internet connection.")
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }

@@ -6,14 +6,14 @@
 //
 
 import Foundation
+import Combine
 
 struct GenreFetchService {
-    func getGenres(completion: @escaping (Result<[Genre], APIError>) -> Void) {
-        let components = URLComponents(string: "http://localhost:9090/api/v1/genres")
-
+    let components = URLComponents(string: "http://localhost:9090/api/v1/genres")
+    
+    func getGenres() -> AnyPublisher<[Genre], APIError> {
         guard let url = components?.url else {
-            completion(.failure(.invalidRequestError("Cannot construct url for the requested resource.")))
-            return
+            return Fail(error: .invalidRequestError("Cannot construct URL for the requested resource.")).eraseToAnyPublisher()
         }
 
         var request = URLRequest(url: url)
@@ -21,31 +21,31 @@ struct GenreFetchService {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if error != nil {
-                completion(.failure(.transportError("Cant connect to the server. Please check your internet connection")))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(.invalidResponse))
-                return
-            }
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw APIError.invalidResponse
+                }
 
-            let decoder = JSONDecoder()
-            if let data = data {
                 if (200..<300) ~= httpResponse.statusCode {
+                    let decoder = JSONDecoder()
                     do {
                         let genres = try decoder.decode([Genre].self, from: data)
-                        completion(.success(genres))
-                    } catch let error {
-                        completion(.failure(.decodingError(error)))
+                        return genres
+                    } catch {
+                        throw APIError.decodingError(error)
                     }
                 } else {
-                    completion(.failure(APIError.serverError(statusCode: httpResponse.statusCode)))
+                    throw APIError.serverError(statusCode: httpResponse.statusCode)
                 }
             }
-        }
-        task.resume()
+            .mapError { error in
+                if let apiError = error as? APIError {
+                    return apiError
+                } else {
+                    return APIError.transportError("Can't connect to the server. Please check your internet connection.")
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }

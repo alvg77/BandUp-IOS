@@ -9,25 +9,37 @@ import Foundation
 import Combine
 
 class GenreSelectViewModel: ObservableObject, RegisterStepViewModel {
+    var next: (() -> Void)?
+    
     @Published var genres: [Genre] = []
     @Published var selected: [Genre] = []
-    @Published var errorMessage = ""
+    @Published var error: APIError?
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    let genreService = GenreFetchService()
     
     var validateStep: Bool {
         !selected.isEmpty
     }
     
+    init() {
+        getGenres()
+    }
+    
     func getGenres() {
-        GenreFetchService()
-            .getGenres { [weak self] completion in
-                DispatchQueue.main.async {
-                    switch completion {
-                    case .success(let genres):
-                        self?.genres = genres
-                    case .failure(let error):
-                        self?.errorMessage = error.errorDescription
-                    }
+        genreService.getGenres()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.error = nil
+                case .failure(let error):
+                    self?.error = error
                 }
+            } receiveValue: { [weak self] genres in
+                self?.genres = genres
             }
+            .store(in: &cancellables)
     }
 }

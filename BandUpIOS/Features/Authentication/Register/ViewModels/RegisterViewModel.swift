@@ -20,21 +20,26 @@ protocol RegisterStepViewModel {
 }
 
 class RegisterViewModel: ObservableObject {
+    var registerCompleted: (() -> Void)?
+    
+    @Published var registerError: APIError?
+    @Published var registerErrorOccured = false
+    
     @Published var step = RegisterStep.credentials
     @Published var steps: [RegisterStep] = [.credentials]
 
-    @Published var credentials: CredentialsViewModel
-    @Published var profileInfo: ProfileInfoViewModel
-    @Published var genreSelect: GenreSelectViewModel
-    @Published var locationSelect: LocationSelectViewModel
+    @Published var credentials = CredentialsViewModel()
+    @Published var profileInfo = ProfileInfoViewModel()
+    @Published var genreSelect = GenreSelectViewModel()
+    @Published var locationSelect = LocationSelectViewModel()
     
     private var registerService = RegisterService()
 
     init() {
-        credentials = CredentialsViewModel(registerService: RegisterService())
-        profileInfo = ProfileInfoViewModel()
-        genreSelect = GenreSelectViewModel()
-        locationSelect = LocationSelectViewModel()
+        credentials.next = goToNext
+        profileInfo.next = goToNext
+        genreSelect.next = goToNext
+        locationSelect.register = register
     }
 
     func goToPrev() {
@@ -52,6 +57,28 @@ class RegisterViewModel: ObservableObject {
     }
     
     func register() {
+        let registerRequest = RegisterRequest(
+            username: self.credentials.username,
+            email: self.credentials.email,
+            password: self.credentials.password,
+            artistType: self.profileInfo.artistType!,
+            genres: self.genreSelect.genres, 
+            bio: self.profileInfo.bio
+        )
         
+        let defaults = UserDefaults.standard
+        
+        registerService.register(registerRequest: registerRequest) { [weak self] completion in
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let response):
+                    self?.registerCompleted?()
+                    defaults.setValue(response.token, forKey: "jwt")
+                case .failure(let error):
+                    self?.registerError = error
+                    self?.registerErrorOccured = true
+                }
+            }
+        }
     }
 }
