@@ -27,6 +27,7 @@ struct GenreSelectView: View {
             }
             
             genreSelector
+                .padding(.bottom)
             continueButton
         }
         .padding(.all)

@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		4B002DC32B28B14D00793A92 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC22B28B14D00793A92 /* AuthRouter.swift */; };
 		4B002DC62B28B16400793A92 /* AuthRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */; };
-		4B3818F62B373C6200A4624C /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3818F52B373C6200A4624C /* PostsView.swift */; };
-		4B3818F82B373C6F00A4624C /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3818F72B373C6F00A4624C /* PostsViewModel.swift */; };
 		4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */; };
 		4B4279112B30BB45000A5631 /* GenreSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790D2B30BB44000A5631 /* GenreSelectView.swift */; };
 		4B4279122B30BB45000A5631 /* LocationSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790F2B30BB45000A5631 /* LocationSelectView.swift */; };
@@ -42,8 +40,6 @@
 		4B7BDB782B291FF9006476D1 /* FlowStacks in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7BDB772B291FF9006476D1 /* FlowStacks */; };
 		4B840E352B2A523E00292508 /* ArtistTypeFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B840E342B2A523E00292508 /* ArtistTypeFetchService.swift */; };
 		4B840E372B2A525300292508 /* GenreFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B840E362B2A525300292508 /* GenreFetchService.swift */; };
-		4B8AF3802B31CADB00534FFB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8AF37F2B31CADB00534FFB /* Place.swift */; };
-		4B8AF3832B31CBF200534FFB /* MapsAutocomplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8AF3822B31CBF200534FFB /* MapsAutocomplete.swift */; };
 		4B8E3DDE2B2631840090A60C /* SwiftUIFlow in Frameworks */ = {isa = PBXBuildFile; productRef = 4B8E3DDD2B2631840090A60C /* SwiftUIFlow */; };
 		4B8E3DF22B2661BC0090A60C /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */; };
 		4B8E3DF42B26762A0090A60C /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF32B26762A0090A60C /* LoginResponse.swift */; };
@@ -78,8 +74,6 @@
 /* Begin PBXFileReference section */
 		4B002DC22B28B14D00793A92 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouterViewModel.swift; sourceTree = "<group>"; };
-		4B3818F52B373C6200A4624C /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
-		4B3818F72B373C6F00A4624C /* PostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewModel.swift; sourceTree = "<group>"; };
 		4B42790D2B30BB44000A5631 /* GenreSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectView.swift; sourceTree = "<group>"; };
 		4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		4B42790F2B30BB45000A5631 /* LocationSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectView.swift; sourceTree = "<group>"; };
@@ -112,8 +106,6 @@
 		4B7B5D572B23FE3D008943A8 /* BandUpIOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandUpIOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4B840E342B2A523E00292508 /* ArtistTypeFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistTypeFetchService.swift; sourceTree = "<group>"; };
 		4B840E362B2A525300292508 /* GenreFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreFetchService.swift; sourceTree = "<group>"; };
-		4B8AF37F2B31CADB00534FFB /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
-		4B8AF3822B31CBF200534FFB /* MapsAutocomplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapsAutocomplete.swift; path = BandUpIOS/Utilities/MapsAutocomplete.swift; sourceTree = SOURCE_ROOT; };
 		4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 		4B8E3DF32B26762A0090A60C /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		4B8E3DF62B2676810090A60C /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
@@ -155,31 +147,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4B3818F22B373BFB00A4624C /* Posts */ = {
-			isa = PBXGroup;
-			children = (
-				4B3818F42B373C2600A4624C /* ViewModels */,
-				4B3818F32B373C1E00A4624C /* Views */,
-			);
-			path = Posts;
-			sourceTree = "<group>";
-		};
-		4B3818F32B373C1E00A4624C /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				4B3818F52B373C6200A4624C /* PostsView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		4B3818F42B373C2600A4624C /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				4B3818F72B373C6F00A4624C /* PostsViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		4B42791D2B30BBA6000A5631 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,12 +315,10 @@
 		4B7853AC2B24AD1F00D671B9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4B8AF37F2B31CADB00534FFB /* Place.swift */,
 				4B4279132B30BB72000A5631 /* FlowSelector.swift */,
 				4B95B9CB2B27430D00F17432 /* PasswordField.swift */,
 				4BADA6592B27B8F40059E9EC /* ErrorMessage.swift */,
 				4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */,
-				4B8AF3822B31CBF200534FFB /* MapsAutocomplete.swift */,
 				4BC922802B37258C00D49E2F /* FieldError.swift */,
 			);
 			path = Views;
@@ -429,7 +394,6 @@
 		4B7B5D6A2B23FF2E008943A8 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				4B3818F22B373BFB00A4624C /* Posts */,
 				4B7853872B24867B00D671B9 /* Authentication */,
 			);
 			path = Features;
@@ -648,7 +612,6 @@
 			files = (
 				4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */,
 				4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */,
-				4B8AF3832B31CBF200534FFB /* MapsAutocomplete.swift in Sources */,
 				4BC922812B37258C00D49E2F /* FieldError.swift in Sources */,
 				4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */,
 				4B8E3DF22B2661BC0090A60C /* LoginRequest.swift in Sources */,
@@ -674,7 +637,6 @@
 				4BADA65A2B27B8F40059E9EC /* ErrorMessage.swift in Sources */,
 				4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */,
 				4B8E3DF72B2676810090A60C /* LoginService.swift in Sources */,
-				4B8AF3802B31CADB00534FFB /* Place.swift in Sources */,
 				4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */,
 				4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */,
 				4B7853952B24873900D671B9 /* LoginViewModel.swift in Sources */,
@@ -683,9 +645,7 @@
 				4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */,
 				4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */,
 				4B7B5D3B2B23FE3B008943A8 /* BandUpIOSApp.swift in Sources */,
-				4B3818F82B373C6F00A4624C /* PostsViewModel.swift in Sources */,
 				4B78539B2B24884A00D671B9 /* AppRouterViewModel.swift in Sources */,
-				4B3818F62B373C6200A4624C /* PostsView.swift in Sources */,
 				4BE1FE8C2B3083150094F52B /* CredentialsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

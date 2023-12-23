@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 struct RegisterService {
-    private let baseURL = URL(string: "http://localhost:9090/api/v1/auth/available/")!
+    private let baseURL = URL(string: "http://localhost:9090/api/v1/auth/")!
         
     func checkUsernameAvailability(username: String) -> AnyPublisher<CredentialAvailability, APIError> {
         return checkAvailability(for: username, isUsername: true)
@@ -20,7 +20,7 @@ struct RegisterService {
     }
     
     private func checkAvailability(for credential: String, isUsername: Bool) -> AnyPublisher<CredentialAvailability, APIError> {
-        let endpoint = isUsername ? baseURL.appendingPathComponent("username") : baseURL.appendingPathComponent("email")
+        let endpoint = isUsername ? baseURL.appendingPathComponent("available/username") : baseURL.appendingPathComponent("available/email")
         var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: true)!
         components.queryItems = [URLQueryItem(name: isUsername ? "username" : "email", value: credential)]
         
@@ -57,7 +57,8 @@ struct RegisterService {
     }
     
     func register(registerRequest: RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
-        let components = URLComponents(string: "http://localhost:9090/api/v1/auth/register")
+        let endpoint = baseURL.appendingPathComponent("register")
+        let components = URLComponents(url: endpoint, resolvingAgainstBaseURL: true)
 
         guard let url = components?.url else {
             return Fail(error: .invalidRequestError("Cannot build URL for the requested resource.")).eraseToAnyPublisher()
@@ -79,25 +80,16 @@ struct RegisterService {
                 guard let httpResponse = response as? HTTPURLResponse else {
                     throw APIError.invalidResponse
                 }
-
+                
+                if let error = httpResponse.statusCode.apiError {
+                    throw error
+                }
+                
                 let decoder = JSONDecoder()
-                switch httpResponse.statusCode {
-                case 200..<300:
-                    if let response = try? decoder.decode(RegisterResponse.self, from: data) {
-                        return response
-                    } else {
-                        throw APIError.decodingError(NSError(domain: "", code: 0, userInfo: nil))
-                    }
-                case 409:
-                    throw APIError.validationError("User with such username/email already exists.")
-                case 400..<500:
-                    if let apiError = try? decoder.decode(APIErrorMessage.self, from: data) {
-                        throw APIError.validationError(apiError.detail)
-                    } else {
-                        throw APIError.serverError(statusCode: httpResponse.statusCode)
-                    }
-                default:
-                    throw APIError.serverError(statusCode: httpResponse.statusCode)
+                do {
+                    return try decoder.decode(RegisterResponse.self, from: data)
+                } catch {
+                    throw APIError.decodingError(error)
                 }
             }
             .mapError { error in
