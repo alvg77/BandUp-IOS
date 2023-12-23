@@ -84,7 +84,7 @@ extension CredentialsView {
     }
     
     @ViewBuilder var passwordField: some View {
-        TextField("Password", text: $viewModel.password)
+        SecureField("Password", text: $viewModel.password)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "lock"))
             .padding(.top, fieldBottomPadding)
         
