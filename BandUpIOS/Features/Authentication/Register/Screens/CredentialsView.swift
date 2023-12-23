@@ -15,9 +15,20 @@ struct CredentialsView: View {
     var body: some View {
         ScrollView {
             VStack {
+                Text("Credentials")
+                    .bold()
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom)
+                
+                Text("You will need these to later log into your account.")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom)
+                
                 if let error = viewModel.error {
                     ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to verify your username and email availability.")
                 }
+                
                 usernameField
                 emailField
                 passwordField
@@ -29,7 +40,9 @@ struct CredentialsView: View {
         .padding(.all)
         .textInputAutocapitalization(.never)
     }
-    
+}
+
+extension CredentialsView {
     @ViewBuilder var continueButton: some View {
         Button {
             viewModel.checkCredentialsAvailability()
@@ -41,26 +54,17 @@ struct CredentialsView: View {
         .disabled(!viewModel.validateStep)
     }
     
-    func showError(errorMessage: String) -> some View {
-        Text(errorMessage)
-            .font(.caption)
-            .foregroundStyle(.red)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .transition(.push(from: .top))
-            .padding(.leading)
-    }
-    
     @ViewBuilder var usernameField: some View {
         TextField("Username", text: $viewModel.username)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "person"))
             .padding(.top, fieldBottomPadding)
         
         if case .invalid(let errorMessage) = viewModel.usernameState {
-            showError(errorMessage: errorMessage)
+            FieldError(errorMessage: errorMessage)
         }
         
         if viewModel.usernameAvailable == .taken {
-            showError(errorMessage: "Username already exists.")
+            FieldError(errorMessage: "Username already exists.")
         }
     }
     
@@ -71,11 +75,11 @@ struct CredentialsView: View {
             .keyboardType(.emailAddress)
         
         if case .invalid(let errorMessage) = viewModel.emailState {
-            showError(errorMessage: errorMessage)
+            FieldError(errorMessage: errorMessage)
         }
         
         if viewModel.emailAvailable == .taken {
-            showError(errorMessage: "Email already exitsts.")
+            FieldError(errorMessage: "Email already exitsts.")
         }
     }
     
@@ -85,7 +89,7 @@ struct CredentialsView: View {
             .padding(.top, fieldBottomPadding)
         
         if case .invalid(let errorMessage) = viewModel.passwordState {
-            showError(errorMessage: errorMessage)
+            FieldError(errorMessage: errorMessage)
         }
     }
 }

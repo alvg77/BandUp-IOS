@@ -12,48 +12,67 @@ struct ProfileInfoView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
-                if let error = viewModel.error {
-                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available artist types.")
-                        .padding(.bottom)
-                }
-                
-                Picker("Artist Type", selection: $viewModel.artistType) {
-                    Text("None").tag(Optional<ArtistType>(nil))
-                    ForEach(viewModel.artistTypes) {
-                        Text($0.description).tag(Optional($0))
-                    }
-                }
-                .padding(.vertical, 12)
-                .padding(.horizontal)
-                .background(RoundedRectangle(cornerRadius: 15).foregroundStyle(Color(.systemGray6)))
-                .pickerStyle(.navigationLink)
-                
-                
-                TextField("Bio", text: $viewModel.bio, axis: .vertical)
-                    .lineLimit(8, reservesSpace: true)
-                    .textFieldStyle(RoundBorderTextFieldStyle())
-                    .padding(.vertical)
-                
-                Button {
-                    viewModel.next?()
-                } label: {
-                    Text("Continue")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(ShrinkingButton())
-                .disabled(!viewModel.validateStep)
+            Text("Profile Info")
+                .bold()
+                .font(.largeTitle)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom)
+            
+            Text("Tell us a little about yourself.")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom)
+            
+            if let error = viewModel.error {
+                ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available artist types.")
+                    .padding(.bottom)
             }
-            .padding(.all)
-            .onAppear {
-                if viewModel.artistTypes.isEmpty {
-                    viewModel.getArtistTypes()
-                }
+                        
+            artistTypePicker
+            bio
+            continueButton
+        }
+        .padding(.all)
+        .onAppear {
+            if viewModel.artistTypes.isEmpty {
+                viewModel.getArtistTypes()
             }
         }
         .refreshable {
             viewModel.getArtistTypes()
         }
+    }
+}
+
+extension ProfileInfoView {
+    @ViewBuilder var artistTypePicker: some View {
+        Picker("Artist Type", selection: $viewModel.artistType) {
+            Text("None").tag(Optional<ArtistType>(nil))
+            ForEach(viewModel.artistTypes) {
+                Text($0.description).tag(Optional($0))
+            }
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal)
+        .background(RoundedRectangle(cornerRadius: 15).foregroundStyle(Color(.systemGray6)))
+        .pickerStyle(.navigationLink)
+    }
+    
+    @ViewBuilder var bio: some View {
+        TextField("Bio", text: $viewModel.bio, axis: .vertical)
+            .lineLimit(8, reservesSpace: true)
+            .textFieldStyle(RoundBorderTextFieldStyle())
+            .padding(.vertical)
+    }
+    
+    @ViewBuilder var continueButton: some View {
+        Button {
+            viewModel.next?()
+        } label: {
+            Text("Continue")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(ShrinkingButton())
+        .disabled(!viewModel.validateStep)
     }
 }
 

@@ -50,6 +50,7 @@
 		4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C92B273ED400F17432 /* Genre.swift */; };
 		4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9CB2B27430D00F17432 /* PasswordField.swift */; };
 		4BADA65A2B27B8F40059E9EC /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BADA6592B27B8F40059E9EC /* ErrorMessage.swift */; };
+		4BC922812B37258C00D49E2F /* FieldError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC922802B37258C00D49E2F /* FieldError.swift */; };
 		4BD8AAFC2B2FABAA00288C03 /* APIErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD8AAFB2B2FABAA00288C03 /* APIErrorMessage.swift */; };
 		4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDD0EBC2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift */; };
 		4BE1FE8C2B3083150094F52B /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FE8B2B3083150094F52B /* CredentialsView.swift */; };
@@ -116,6 +117,7 @@
 		4B95B9C92B273ED400F17432 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		4B95B9CB2B27430D00F17432 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 		4BADA6592B27B8F40059E9EC /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
+		4BC922802B37258C00D49E2F /* FieldError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldError.swift; sourceTree = "<group>"; };
 		4BD8AAFB2B2FABAA00288C03 /* APIErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorMessage.swift; sourceTree = "<group>"; };
 		4BDD0EBC2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBorderTextFieldStyle.swift; sourceTree = "<group>"; };
 		4BE1FE8B2B3083150094F52B /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 				4BADA6592B27B8F40059E9EC /* ErrorMessage.swift */,
 				4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */,
 				4B8AF3822B31CBF200534FFB /* MapsAutocomplete.swift */,
+				4BC922802B37258C00D49E2F /* FieldError.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */,
 				4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */,
 				4B8AF3832B31CBF200534FFB /* MapsAutocomplete.swift in Sources */,
+				4BC922812B37258C00D49E2F /* FieldError.swift in Sources */,
 				4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */,
 				4B8E3DF22B2661BC0090A60C /* LoginRequest.swift in Sources */,
 				4B4279252B30BBCD000A5631 /* RegisterRequest.swift in Sources */,

@@ -28,10 +28,10 @@ class RegisterViewModel: ObservableObject {
     @Published var step = RegisterStep.credentials
     @Published var steps: [RegisterStep] = [.credentials]
 
-    @Published var credentials = CredentialsViewModel()
-    @Published var profileInfo = ProfileInfoViewModel()
-    @Published var genreSelect = GenreSelectViewModel()
-    @Published var locationSelect = LocationSelectViewModel()
+    var credentials = CredentialsViewModel()
+    var profileInfo = ProfileInfoViewModel()
+    var genreSelect = GenreSelectViewModel()
+    var locationSelect = LocationSelectViewModel()
     
     private var registerService = RegisterService()
     private var cancellables = Set<AnyCancellable>()

@@ -12,7 +12,18 @@ struct LocationSelectView: View {
     @ObservedObject var viewModel: LocationSelectViewModel
     
     var body: some View {
-        VStack {
+        ScrollView {
+            Text("Location")
+                .bold()
+                .font(.largeTitle)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom)
+            
+            Text("In what city are you based?")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom)
+            
+            // later to be changed
             Group {
                 TextField("Country", text: $viewModel.country)
                     .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "mappin.and.ellipse"))

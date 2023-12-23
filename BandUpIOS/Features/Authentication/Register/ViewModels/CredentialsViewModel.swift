@@ -118,8 +118,10 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
         .sink { [weak self] completion in
             switch completion {
             case .finished:
-                self?.error = nil
-                self?.next?()
+                if self?.emailAvailable == .available && self?.usernameAvailable == .available {
+                    self?.error = nil
+                    self?.next?()
+                }
             case .failure(let error):
                 withAnimation {
                     self?.error = error
