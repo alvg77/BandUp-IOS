@@ -26,6 +26,7 @@
 		4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */; };
 		4B6515362B2CD976004166D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6515352B2CD976004166D4 /* APIError.swift */; };
 		4B65218D2B24F915001D429E /* ShrinkingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* ShrinkingButton.swift */; };
+		4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 4B6E78072B386FA300721D49 /* KeychainAccess */; };
 		4B7853932B24872700D671B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7853922B24872700D671B9 /* LoginView.swift */; };
 		4B7853952B24873900D671B9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7853942B24873900D671B9 /* LoginViewModel.swift */; };
 		4B7853982B24883300D671B9 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7853972B24883300D671B9 /* AppRouter.swift */; };
@@ -124,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
 				4B42792F2B310200000A5631 /* GooglePlaces in Frameworks */,
 				4B8E3DDE2B2631840090A60C /* SwiftUIFlow in Frameworks */,
 				4B7BDB782B291FF9006476D1 /* FlowStacks in Frameworks */,
@@ -490,6 +492,7 @@
 				4B8E3DDD2B2631840090A60C /* SwiftUIFlow */,
 				4B7BDB772B291FF9006476D1 /* FlowStacks */,
 				4B42792E2B310200000A5631 /* GooglePlaces */,
+				4B6E78072B386FA300721D49 /* KeychainAccess */,
 			);
 			productName = BandUpIOS;
 			productReference = 4B7B5D372B23FE3B008943A8 /* BandUpIOS.app */;
@@ -567,6 +570,7 @@
 				4B8E3DDC2B2631840090A60C /* XCRemoteSwiftPackageReference "SwiftUIFlow" */,
 				4B7BDB762B291FF9006476D1 /* XCRemoteSwiftPackageReference "FlowStacks" */,
 				4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
+				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
 			projectDirPath = "";
@@ -986,6 +990,14 @@
 				minimumVersion = 8.3.0;
 			};
 		};
+		4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		4B7BDB762B291FF9006476D1 /* XCRemoteSwiftPackageReference "FlowStacks" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/johnpatrickmorgan/FlowStacks.git";
@@ -1009,6 +1021,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
 			productName = GooglePlaces;
+		};
+		4B6E78072B386FA300721D49 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 		4B7BDB772B291FF9006476D1 /* FlowStacks */ = {
 			isa = XCSwiftPackageProductDependency;

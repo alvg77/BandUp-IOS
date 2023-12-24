@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import KeychainAccess
 
 enum RegisterStep: String, CaseIterable {
     case credentials = "Credentials"
@@ -34,6 +35,7 @@ class RegisterViewModel: ObservableObject {
     var locationSelect = LocationSelectViewModel()
     
     private var registerService = RegisterService()
+    private var keychain = Keychain(service: Bundle.main.bundleIdentifier!)
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -66,9 +68,7 @@ class RegisterViewModel: ObservableObject {
             genreIds: self.genreSelect.genres.map { $0.id },
             bio: self.profileInfo.bio
         )
-        
-        let defaults = UserDefaults.standard
-        
+                
         registerService.register(registerRequest: registerRequest)
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
@@ -77,10 +77,11 @@ class RegisterViewModel: ObservableObject {
                     print("registered")
                     // go to home
                 case .failure(let error):
+                    self?.registerErrorOccured = true
                     self?.registerError = error
                 }
-            } receiveValue: { response in
-                defaults.setValue(response.token, forKey: "jwt")
+            } receiveValue: { [weak self] response in
+                self?.keychain["jwt"] = response.token
             }
             .store(in: &cancellables)
     }

@@ -81,7 +81,7 @@ struct RegisterService {
                     throw APIError.invalidResponse
                 }
                 
-                if let error = httpResponse.statusCode.apiError {
+                if let error = httpResponse.statusCode.apiError(data: data) {
                     throw error
                 }
                 

@@ -8,12 +8,15 @@
 import Foundation
 import Combine
 import SwiftUI
+import KeychainAccess
  
 final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     
     @Published var error: APIError?
+    
+    private let keychain = Keychain(service: Bundle.main.bundleIdentifier!)
     
     var cancellables = Set<AnyCancellable>()
     
@@ -28,7 +31,6 @@ final class LoginViewModel: ObservableObject {
     }
     
     func login() {
-        let defaults = UserDefaults.standard
         
         LoginService().login(loginRequest: LoginRequest(email: email, password: password))
             .receive(on: RunLoop.main)
@@ -42,8 +44,8 @@ final class LoginViewModel: ObservableObject {
                     // route to default screen
                     print("finished")
                 }
-            } receiveValue: { data in
-                defaults.setValue(data.token, forKey: "jwt")
+            } receiveValue: { [weak self] response in
+                self?.keychain["jwt"] = response.token
             }
             .store(in: &cancellables)
 

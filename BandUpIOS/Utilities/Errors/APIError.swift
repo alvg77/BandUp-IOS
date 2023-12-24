@@ -17,14 +17,12 @@ enum APIError: LocalizedError {
     /// Received an invalid response, e.g. non-HTTP result
     case invalidResponse
       
-    /// Server-side validation error
-    case validationError(String)
-      
     /// The server sent data in an unexpected format
     case decodingError(Error)
     
     /// General server-side error. If `retryAfter` is set, the client can send the same request after the given time.
     case serverError(statusCode: Int, reason: String? = nil)
+    
     case unknownError
         
     var errorDescription: String? {
@@ -35,8 +33,6 @@ enum APIError: LocalizedError {
             return message
         case .invalidResponse:
             return "Invalid response"
-        case .validationError(let reason):
-            return reason
         case .decodingError:
             return "The server returned data in an unexpected format. Try updating the app."
         case .serverError(let statusCode, let reason):
@@ -48,14 +44,17 @@ enum APIError: LocalizedError {
 }
 
 extension Int {
-    var apiError: APIError? {
+    func apiError(data: Data?) -> APIError? {
         switch self {
         case 200..<300:
             return nil
-        case 403:
-            return .validationError("Invalid email or password.")
         default:
-            return .serverError(statusCode: self, reason: "")
+            if let data = data {
+                let errorMessage = try? JSONDecoder().decode(APIErrorMessage.self, from: data)
+                return .serverError(statusCode: self, reason: errorMessage?.detail)
+            } else {
+                return .serverError(statusCode: self)
+            }
         }
     }
 }

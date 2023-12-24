@@ -14,10 +14,11 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     
     @Published var artistType: ArtistType?
     @Published var bio = ""
-    @Published var artistTypes: [ArtistType] = []
     @Published var error: APIError?
-    
+
+    var artistTypes: [ArtistType] = []
     var cancellables = Set<AnyCancellable>()
+ 
     let artistTypeService = ArtistTypeFetchService()
         
     var validateStep: Bool {
