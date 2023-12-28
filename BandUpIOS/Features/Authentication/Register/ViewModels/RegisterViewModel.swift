@@ -34,7 +34,6 @@ class RegisterViewModel: ObservableObject {
     var genreSelect = GenreSelectViewModel()
     var locationSelect = LocationSelectViewModel()
     
-    private var registerService = RegisterService()
     private var keychain = Keychain(service: Bundle.main.bundleIdentifier!)
     private var cancellables = Set<AnyCancellable>()
     
@@ -69,7 +68,7 @@ class RegisterViewModel: ObservableObject {
             bio: self.profileInfo.bio
         )
                 
-        registerService.register(registerRequest: registerRequest)
+        RegisterService.shared.register(registerRequest: registerRequest)
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
                 switch completion{

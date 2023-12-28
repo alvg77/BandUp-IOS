@@ -7,22 +7,31 @@
 
 import Foundation
 import Combine
+import Alamofire
 
-struct LoginService {
-    let components = URLComponents(string: "http://localhost:9090/api/v1/auth/login")
+protocol LoginServiceProtocol {
+    func login(loginRequest: LoginRequest) -> AnyPublisher<LoginResponse, APIError>
+}
+
+class LoginService {
+    static let shared: LoginServiceProtocol = LoginService()
     
+    private init() { }
+}
+
+extension LoginService: LoginServiceProtocol {
     func login(loginRequest: LoginRequest) -> AnyPublisher<LoginResponse, APIError> {
+        let url = URL(string: "http://localhost:9090/api/v1/auth/login")
         
-        guard let url = components?.url else {
-            return Fail(error: APIError.invalidRequestError("Cannot build url for requested resource")).eraseToAnyPublisher()
+        guard let url = url else {
+            return Fail(error: APIError.invalidRequestError("Cannot build url for the requested resource.")).eraseToAnyPublisher()
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-                
+        
         do {
             request.httpBody = try JSONEncoder().encode(loginRequest)
         } catch let error {
@@ -50,7 +59,7 @@ struct LoginService {
                 if let apiError = error as? APIError {
                     return apiError
                 } else {
-                    return APIError.transportError("Cannot connect to the server. Please check your internet connection.")
+                    return APIError.transportError
                 }
             }
             .eraseToAnyPublisher()

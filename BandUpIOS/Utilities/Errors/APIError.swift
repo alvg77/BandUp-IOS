@@ -12,7 +12,7 @@ enum APIError: LocalizedError {
     case invalidRequestError(String)
       
     /// Indicates an error on the transport layer, e.g. not being able to connect to the server
-    case transportError(String)
+    case transportError
       
     /// Received an invalid response, e.g. non-HTTP result
     case invalidResponse
@@ -29,8 +29,8 @@ enum APIError: LocalizedError {
         switch self {
         case .invalidRequestError(let message):
             return "Invalid request: \(message)"
-        case .transportError(let message):
-            return message
+        case .transportError:
+            return "An error occured. Please check your connection or try again later."
         case .invalidResponse:
             return "Invalid response"
         case .decodingError:

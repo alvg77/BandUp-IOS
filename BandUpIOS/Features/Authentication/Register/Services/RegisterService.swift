@@ -7,10 +7,23 @@
 
 import Foundation
 import Combine
+import Alamofire
 
-struct RegisterService {
-    private let baseURL = URL(string: "http://localhost:9090/api/v1/auth/")!
-        
+protocol RegisterServiceProtocol {
+    func checkUsernameAvailability(username: String) -> AnyPublisher<CredentialAvailability, APIError>
+    func checkEmailAvailability(email: String) -> AnyPublisher<CredentialAvailability, APIError>
+    func checkAvailability(for credential: String, isUsername: Bool) -> AnyPublisher<CredentialAvailability, APIError>
+    func register(registerRequest: RegisterRequest) -> AnyPublisher<RegisterResponse, APIError>
+}
+
+class RegisterService {
+    static let shared: RegisterServiceProtocol = RegisterService()
+    private static let baseURL = URL(string: "http://localhost:9090/api/v1/auth/")!
+
+    private init() { }
+}
+
+extension RegisterService: RegisterServiceProtocol {
     func checkUsernameAvailability(username: String) -> AnyPublisher<CredentialAvailability, APIError> {
         return checkAvailability(for: username, isUsername: true)
     }
@@ -19,8 +32,8 @@ struct RegisterService {
         return checkAvailability(for: email, isUsername: false)
     }
     
-    private func checkAvailability(for credential: String, isUsername: Bool) -> AnyPublisher<CredentialAvailability, APIError> {
-        let endpoint = isUsername ? baseURL.appendingPathComponent("available/username") : baseURL.appendingPathComponent("available/email")
+    internal func checkAvailability(for credential: String, isUsername: Bool) -> AnyPublisher<CredentialAvailability, APIError> {
+        let endpoint = isUsername ? RegisterService.baseURL.appendingPathComponent("available/username") : RegisterService.baseURL.appendingPathComponent("available/email")
         var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: true)!
         components.queryItems = [URLQueryItem(name: isUsername ? "username" : "email", value: credential)]
         
@@ -50,14 +63,14 @@ struct RegisterService {
                 if let apiError = error as? APIError {
                     return apiError
                 } else {
-                    return APIError.transportError("Cannot connect to the server. Please check your internet connection.")
+                    return APIError.transportError
                 }
             }
             .eraseToAnyPublisher()
     }
     
     func register(registerRequest: RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
-        let endpoint = baseURL.appendingPathComponent("register")
+        let endpoint = RegisterService.baseURL.appendingPathComponent("register")
         let components = URLComponents(url: endpoint, resolvingAgainstBaseURL: true)
 
         guard let url = components?.url else {
@@ -74,7 +87,7 @@ struct RegisterService {
         } catch {
             return Fail(error: .invalidRequestError("Failed to encode registerRequest.")).eraseToAnyPublisher()
         }
-
+        
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { data, response in
                 guard let httpResponse = response as? HTTPURLResponse else {

@@ -16,9 +16,7 @@ class GenreSelectViewModel: ObservableObject, RegisterStepViewModel {
     @Published var error: APIError?
     
     var cancellables = Set<AnyCancellable>()
-    
-    let genreService = GenreFetchService()
-    
+        
     var validateStep: Bool {
         !selected.isEmpty
     }
@@ -28,7 +26,7 @@ class GenreSelectViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     func getGenres() {
-        genreService.getGenres()
+        GenreFetchService.shared.getGenres()
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
                 switch completion {

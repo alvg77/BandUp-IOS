@@ -18,8 +18,6 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
 
     var artistTypes: [ArtistType] = []
     var cancellables = Set<AnyCancellable>()
- 
-    let artistTypeService = ArtistTypeFetchService()
         
     var validateStep: Bool {
         !bio.isEmpty && artistType != nil
@@ -30,7 +28,7 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     func getArtistTypes() {
-        artistTypeService.getArtistTypes()
+        ArtistTypeFetchService.shared.getArtistTypes()
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
                 switch completion {

@@ -8,14 +8,23 @@
 import Foundation
 import Combine
 
-struct ArtistTypeFetchService {
-    let components = URLComponents(string: "http://localhost:9090/api/v1/artist-types")
-    
+protocol ArtistTypeFetchServiceProtocol {
+    func getArtistTypes() -> AnyPublisher<[ArtistType], APIError>
+}
+
+class ArtistTypeFetchService {
+    static let shared: ArtistTypeFetchServiceProtocol = ArtistTypeFetchService()
+    private init() { }
+}
+
+extension ArtistTypeFetchService: ArtistTypeFetchServiceProtocol {
     func getArtistTypes() -> AnyPublisher<[ArtistType], APIError> {
-        guard let url = components?.url else {
+        let url = URL(string: "http://localhost:9090/api/v1/artist-types")
+
+        guard let url = url else {
             return Fail(error: .invalidRequestError("Cannot build URL for resource.")).eraseToAnyPublisher()
         }
-
+                      
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -43,7 +52,7 @@ struct ArtistTypeFetchService {
                 if let apiError = error as? APIError {
                     return apiError
                 } else {
-                    return APIError.transportError("Can't connect to the server. Please check your internet connection.")
+                    return APIError.transportError
                 }
             }
             .eraseToAnyPublisher()

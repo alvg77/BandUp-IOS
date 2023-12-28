@@ -8,11 +8,20 @@
 import Foundation
 import Combine
 
-struct GenreFetchService {
-    let components = URLComponents(string: "http://localhost:9090/api/v1/genres")
-    
+protocol GenreFetchServiceProtocol {
+    func getGenres() -> AnyPublisher<[Genre], APIError>
+}
+
+class GenreFetchService {
+    static let shared: GenreFetchServiceProtocol = GenreFetchService()
+    private init() { }
+}
+
+extension GenreFetchService: GenreFetchServiceProtocol {
     func getGenres() -> AnyPublisher<[Genre], APIError> {
-        guard let url = components?.url else {
+        let url = URL(string: "http://localhost:9090/api/v1/genres")
+        
+        guard let url = url else {
             return Fail(error: .invalidRequestError("Cannot construct URL for the requested resource.")).eraseToAnyPublisher()
         }
 
@@ -43,7 +52,7 @@ struct GenreFetchService {
                 if let apiError = error as? APIError {
                     return apiError
                 } else {
-                    return APIError.transportError("Can't connect to the server. Please check your internet connection.")
+                    return APIError.transportError
                 }
             }
             .eraseToAnyPublisher()

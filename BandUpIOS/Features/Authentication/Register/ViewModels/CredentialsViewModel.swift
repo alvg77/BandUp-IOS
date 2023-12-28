@@ -46,9 +46,7 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     var cancellables = Set<AnyCancellable>()
-    
-    let registerService = RegisterService()
-    
+        
     init() {
         validateUsername.store(in: &cancellables)
         validateEmail.store(in: &cancellables)
@@ -111,8 +109,8 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     
     func checkCredentialsAvailability() {
         Publishers.CombineLatest(
-            registerService.checkEmailAvailability(email: email),
-            registerService.checkUsernameAvailability(username: username)
+            RegisterService.shared.checkEmailAvailability(email: email),
+            RegisterService.shared.checkUsernameAvailability(username: username)
         )
         .receive(on: RunLoop.main)
         .sink { [weak self] completion in
