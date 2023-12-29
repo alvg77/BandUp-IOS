@@ -65,6 +65,6 @@ struct RegisterView: View {
 
 #Preview {
     RegisterView(
-        viewModel: RegisterViewModel()
+        viewModel: RegisterViewModel(authenticate: {})
     )
 }

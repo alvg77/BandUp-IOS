@@ -9,10 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        // using navigation stack for navigation toolbar text
-        NavigationStack {
-            AuthRouter()
-        }.tint(.purple)
+        AppRouter()
     }
 }
 

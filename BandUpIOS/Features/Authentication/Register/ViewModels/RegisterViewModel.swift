@@ -21,8 +21,8 @@ protocol RegisterStepViewModel {
 }
 
 class RegisterViewModel: ObservableObject {
-    var registerCompleted: (() -> Void)?
-    
+    let authenticate: (() -> Void)?
+
     @Published var registerError: APIError?
     @Published var registerErrorOccured = false
     
@@ -37,7 +37,9 @@ class RegisterViewModel: ObservableObject {
     private var keychain = Keychain(service: Bundle.main.bundleIdentifier!)
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(authenticate: (() -> Void)?) {
+        self.authenticate = authenticate
+
         credentials.next = goToNext
         profileInfo.next = goToNext
         genreSelect.next = goToNext
@@ -72,15 +74,15 @@ class RegisterViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
                 switch completion{
-                case .finished:
-                    print("registered")
-                    // go to home
                 case .failure(let error):
                     self?.registerErrorOccured = true
                     self?.registerError = error
+                case .finished:
+                    break
                 }
             } receiveValue: { [weak self] response in
-                self?.keychain["jwt"] = response.token
+                JWTService.shared.saveToken(token: response.token)
+                self?.authenticate?()
             }
             .store(in: &cancellables)
     }

@@ -18,25 +18,23 @@ class AuthRouterViewModel: ObservableObject {
     
     @Published var routes: Routes<AuthScreen> = []
     
-    init() {
+    let authenticate: (() -> Void)?
+    
+    init(authenticate: (() -> Void)?) {
+        self.authenticate = authenticate
         self.routes = [
             .root(
                 .login(
-                    .init(toRegister: toRegister)
+                    .init(authenticate: authenticate, toRegister: toRegister)
                 )
             )
         ]
     }
     
-    func toLogin() {
-        let vm = LoginViewModel(
-            toRegister: toRegister
-        )
-        routes.push(.login(vm))
-    }
-    
     func toRegister() {
-        let vm = RegisterViewModel()
+        let vm = RegisterViewModel(
+            authenticate: authenticate
+        )
         routes.push(.register(vm))
     }
 }

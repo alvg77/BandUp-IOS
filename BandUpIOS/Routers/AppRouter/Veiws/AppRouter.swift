@@ -6,10 +6,24 @@
 //
 
 import SwiftUI
+import FlowStacks
 
 struct AppRouter: View {
+    @StateObject var viewModel = AppRouterViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Router($viewModel.routes) { screen,_  in
+            switch screen {
+            case .auth(let viewModel):
+                // navigation stack is used for titles and toolbars
+                NavigationStack {
+                    AuthRouter(viewModel: viewModel)
+                }
+                .tint(.purple)
+            case .main(let viewModel):
+                MainRouter(viewModel: viewModel)
+            }
+        }
     }
 }
 

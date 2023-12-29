@@ -9,7 +9,7 @@ import SwiftUI
 import FlowStacks
 
 struct AuthRouter: View {
-    @StateObject var viewModel = AuthRouterViewModel()
+    @ObservedObject var viewModel: AuthRouterViewModel
     
     var body: some View {
         Router($viewModel.routes) { screen,_  in
@@ -24,5 +24,5 @@ struct AuthRouter: View {
 }
 
 #Preview {
-    AuthRouter()
+    AuthRouter(viewModel: AuthRouterViewModel(authenticate: { }))
 }

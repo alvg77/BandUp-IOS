@@ -20,13 +20,15 @@ final class LoginViewModel: ObservableObject {
     
     var cancellables = Set<AnyCancellable>()
     
-    var toRegisterTapped: (() -> Void)?
+    let authenticate: (() -> Void)?
+    let toRegisterTapped: (() -> Void)?
     
-    var veriftInput: Bool {
+    var verifyInput: Bool {
         !email.isEmpty && !password.isEmpty
     }
     
-    init(toRegister: (() -> Void)?) {
+    init(authenticate: (() -> Void)?, toRegister: (() -> Void)?) {
+        self.authenticate = authenticate
         self.toRegisterTapped = toRegister
     }
     
@@ -41,14 +43,13 @@ final class LoginViewModel: ObservableObject {
                         self?.error = error
                     }
                 case .finished:
-                    // route to default screen
-                    print("finished")
+                    break
                 }
             } receiveValue: { [weak self] response in
-                self?.keychain["jwt"] = response.token
+                JWTService.shared.saveToken(token: response.token)
+                self?.authenticate?()
             }
             .store(in: &cancellables)
-
     }
 }
 

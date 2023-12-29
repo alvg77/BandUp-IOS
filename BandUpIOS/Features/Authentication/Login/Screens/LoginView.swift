@@ -66,7 +66,7 @@ private extension LoginView {
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
         }
-        .disabled(!viewModel.veriftInput)
+        .disabled(!viewModel.verifyInput)
         .buttonStyle(ShrinkingButton())
     }
     
@@ -80,5 +80,5 @@ private extension LoginView {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(toRegister: {}))
+    LoginView(viewModel: LoginViewModel(authenticate: {}, toRegister: {}))
 }
