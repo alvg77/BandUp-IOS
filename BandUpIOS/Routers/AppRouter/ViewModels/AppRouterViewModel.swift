@@ -20,7 +20,7 @@ class AppRouterViewModel: ObservableObject {
     @Published var routes: Routes<AppScreen> = []
     
     init() {
-        if let jwt = JWTService.shared.getToken() {
+        if (JWTService.shared.getToken()) != nil {
             routes.push(.main(.init()))
         } else {
             routes.push(.auth(.init(authenticate: authenticate)))
@@ -28,7 +28,7 @@ class AppRouterViewModel: ObservableObject {
     }
     
     func authenticate() {
-        routes.popToRoot()
+        routes.pop()
         routes.push(.main(.init()))
     }
 }

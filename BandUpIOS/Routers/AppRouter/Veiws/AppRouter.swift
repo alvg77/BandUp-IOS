@@ -19,7 +19,7 @@ struct AppRouter: View {
                 NavigationStack {
                     AuthRouter(viewModel: viewModel)
                 }
-                .tint(.purple)
+                .tint(.primary)
             case .main(let viewModel):
                 MainRouter(viewModel: viewModel)
             }
