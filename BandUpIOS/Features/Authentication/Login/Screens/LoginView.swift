@@ -80,5 +80,5 @@ private extension LoginView {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(authenticate: {}, toRegister: {}))
+    LoginView(viewModel: LoginViewModel(authenticate: { }, toRegister: {}))
 }

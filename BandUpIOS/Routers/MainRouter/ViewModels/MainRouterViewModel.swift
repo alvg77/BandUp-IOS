@@ -10,6 +10,8 @@ import Foundation
 enum MainScreen {
     case posts
     case advertisements
+    case create
+    case users
     case profile
 }
 

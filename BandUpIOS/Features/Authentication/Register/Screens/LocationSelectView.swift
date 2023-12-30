@@ -43,7 +43,8 @@ struct LocationSelectView: View {
             .buttonStyle(ShrinkingButton())
             .disabled(!viewModel.validateStep)
         }
-        .padding(.all)
+        .padding(.vertical)
+        .padding(.horizontal, 8)
     }
 }
 

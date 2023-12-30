@@ -1,36 +1,35 @@
 //
-//  LoginAction.swift
+//  ArtistTypeFetchService.swift
 //  BandUpIOS
 //
-//  Created by Aleko Georgiev on 11.12.23.
+//  Created by Aleko Georgiev on 13.12.23.
 //
 
 import Foundation
 import Combine
 import Alamofire
 
-protocol LoginServiceProtocol {
-    func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void)
+protocol ArtistTypeServiceProtocol {
+    func getArtistTypes(completion: @escaping (Result<[ArtistType], APIError>) -> Void)
 }
 
-class LoginService {
-    static let shared: LoginServiceProtocol = LoginService()
-    
+class ArtistTypeService {
+    static let shared: ArtistTypeServiceProtocol = ArtistTypeService()
     private init() { }
 }
 
-extension LoginService: LoginServiceProtocol {
-    func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void) {
-        let url = URL(string: "http://localhost:9090/api/v1/auth/login")
+extension ArtistTypeService: ArtistTypeServiceProtocol {
+    func getArtistTypes(completion: @escaping (Result<[ArtistType], APIError>) -> Void) {
+        let url = URL(string: "http://localhost:9090/api/v1/artist-types")
         
         guard let url = url else {
             completion(.failure(.invalidURLError))
             return
         }
         
-        AF.request(url, method: .post, parameters: loginRequest, encoder: JSONParameterEncoder.default)
+        AF.request(url, method: .get)
             .validate()
-            .responseDecodable(of: LoginResponse.self) { response in
+            .responseDecodable(of: [ArtistType].self) { response in
                 switch response.result {
                 case .success(let response):
                     completion(.success(response))

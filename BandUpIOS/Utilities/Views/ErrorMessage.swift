@@ -14,11 +14,11 @@ struct ErrorMessage: View {
         HStack {
             Image(systemName: "exclamationmark.triangle")
             Text(errorMessage)
-                .font(.subheadline)
-                .multilineTextAlignment(.center)
+                .font(.callout)
         }
         .foregroundStyle(.red)
-        .padding(.all)
+        .padding(.vertical)
+        .padding(.horizontal, 8)
         .background(Color(.systemGray6))
         .cornerRadius(10)
         .shadow(radius: 5, x: 0, y: 2)

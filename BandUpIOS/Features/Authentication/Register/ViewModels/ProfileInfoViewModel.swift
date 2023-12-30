@@ -28,18 +28,13 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     func getArtistTypes() {
-        ArtistTypeFetchService.shared.getArtistTypes()
-            .receive(on: RunLoop.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
-                    self?.error = nil
-                case .failure(let error):
-                    self?.error = error
-                }
-            } receiveValue: { [weak self] artistTypes in
+        ArtistTypeService.shared.getArtistTypes { [weak self] completion in
+            switch completion {
+            case .success(let artistTypes):
                 self?.artistTypes = artistTypes
+            case .failure(let error):
+                self?.error = error
             }
-            .store(in: &cancellables)
+        }
     }
 }

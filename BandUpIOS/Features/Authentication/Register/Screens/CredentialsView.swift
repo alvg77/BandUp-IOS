@@ -37,7 +37,8 @@ struct CredentialsView: View {
         
             continueButton
         }
-        .padding(.all)
+        .padding(.vertical)
+        .padding(.horizontal, 8)
         .textInputAutocapitalization(.never)
     }
 }

@@ -70,20 +70,15 @@ class RegisterViewModel: ObservableObject {
             bio: self.profileInfo.bio
         )
                 
-        RegisterService.shared.register(registerRequest: registerRequest)
-            .receive(on: RunLoop.main)
-            .sink { [weak self] completion in
-                switch completion{
-                case .failure(let error):
-                    self?.registerErrorOccured = true
-                    self?.registerError = error
-                case .finished:
-                    break
-                }
-            } receiveValue: { [weak self] response in
+        RegisterService.shared.register(registerRequest: registerRequest) { [weak self] completion in
+            switch completion {
+            case .success(let response):
                 JWTService.shared.saveToken(token: response.token)
                 self?.authenticate?()
+            case .failure(let error):
+                self?.registerError = error
+                self?.registerErrorOccured = true
             }
-            .store(in: &cancellables)
+        }
     }
 }

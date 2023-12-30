@@ -26,7 +26,7 @@
 		4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */; };
 		4B5D364A2B3CE4DB002E8FC1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4B5D36492B3CE4DB002E8FC1 /* Alamofire */; };
 		4B6515362B2CD976004166D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6515352B2CD976004166D4 /* APIError.swift */; };
-		4B651C622B3F869100738CF8 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C612B3F869100738CF8 /* Main.swift */; };
+		4B651C622B3F869100738CF8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C612B3F869100738CF8 /* MainRouter.swift */; };
 		4B651C642B3F86AF00738CF8 /* MainRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */; };
 		4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C652B3F873B00738CF8 /* JWTService.swift */; };
 		4B65218D2B24F915001D429E /* ShrinkingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* ShrinkingButton.swift */; };
@@ -43,7 +43,7 @@
 		4B7B5D562B23FE3D008943A8 /* BandUpIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B5D552B23FE3D008943A8 /* BandUpIOSUITests.swift */; };
 		4B7B5D582B23FE3D008943A8 /* BandUpIOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7B5D572B23FE3D008943A8 /* BandUpIOSUITestsLaunchTests.swift */; };
 		4B7BDB782B291FF9006476D1 /* FlowStacks in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7BDB772B291FF9006476D1 /* FlowStacks */; };
-		4B840E352B2A523E00292508 /* ArtistTypeFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B840E342B2A523E00292508 /* ArtistTypeFetchService.swift */; };
+		4B840E352B2A523E00292508 /* ArtistTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B840E342B2A523E00292508 /* ArtistTypeService.swift */; };
 		4B840E372B2A525300292508 /* GenreFetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B840E362B2A525300292508 /* GenreFetchService.swift */; };
 		4B8E3DDE2B2631840090A60C /* SwiftUIFlow in Frameworks */ = {isa = PBXBuildFile; productRef = 4B8E3DDD2B2631840090A60C /* SwiftUIFlow */; };
 		4B8E3DF22B2661BC0090A60C /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */; };
@@ -94,7 +94,7 @@
 		4B42792B2B30BF3B000A5631 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStepIndicatorView.swift; sourceTree = "<group>"; };
 		4B6515352B2CD976004166D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		4B651C612B3F869100738CF8 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		4B651C612B3F869100738CF8 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouterViewModel.swift; sourceTree = "<group>"; };
 		4B651C652B3F873B00738CF8 /* JWTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTService.swift; sourceTree = "<group>"; };
 		4B65218C2B24F915001D429E /* ShrinkingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShrinkingButton.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		4B7B5D512B23FE3D008943A8 /* BandUpIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BandUpIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B7B5D552B23FE3D008943A8 /* BandUpIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandUpIOSUITests.swift; sourceTree = "<group>"; };
 		4B7B5D572B23FE3D008943A8 /* BandUpIOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandUpIOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		4B840E342B2A523E00292508 /* ArtistTypeFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistTypeFetchService.swift; sourceTree = "<group>"; };
+		4B840E342B2A523E00292508 /* ArtistTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistTypeService.swift; sourceTree = "<group>"; };
 		4B840E362B2A525300292508 /* GenreFetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreFetchService.swift; sourceTree = "<group>"; };
 		4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 		4B8E3DF32B26762A0090A60C /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
@@ -202,7 +202,7 @@
 		4B651C5F2B3F866A00738CF8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4B651C612B3F869100738CF8 /* Main.swift */,
+				4B651C612B3F869100738CF8 /* MainRouter.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -424,8 +424,8 @@
 			isa = PBXGroup;
 			children = (
 				4B95B9C72B273E8F00F17432 /* ArtistType.swift */,
-				4B95B9C92B273ED400F17432 /* Genre.swift */,
 				4BD8AAFB2B2FABAA00288C03 /* APIErrorMessage.swift */,
+				4B95B9C92B273ED400F17432 /* Genre.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -433,7 +433,7 @@
 		4B840E332B2A521E00292508 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				4B840E342B2A523E00292508 /* ArtistTypeFetchService.swift */,
+				4B840E342B2A523E00292508 /* ArtistTypeService.swift */,
 				4B840E362B2A525300292508 /* GenreFetchService.swift */,
 			);
 			path = Services;
@@ -648,14 +648,14 @@
 				4B4279142B30BB72000A5631 /* FlowSelector.swift in Sources */,
 				4BD8AAFC2B2FABAA00288C03 /* APIErrorMessage.swift in Sources */,
 				4B42791C2B30BB9B000A5631 /* ProfileInfoViewModel.swift in Sources */,
-				4B651C622B3F869100738CF8 /* Main.swift in Sources */,
+				4B651C622B3F869100738CF8 /* MainRouter.swift in Sources */,
 				4B6515362B2CD976004166D4 /* APIError.swift in Sources */,
 				4B42791A2B30BB9B000A5631 /* LocationSelectViewModel.swift in Sources */,
 				4B8E3DF42B26762A0090A60C /* LoginResponse.swift in Sources */,
 				4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */,
 				4B65218D2B24F915001D429E /* ShrinkingButton.swift in Sources */,
 				4B4279122B30BB45000A5631 /* LocationSelectView.swift in Sources */,
-				4B840E352B2A523E00292508 /* ArtistTypeFetchService.swift in Sources */,
+				4B840E352B2A523E00292508 /* ArtistTypeService.swift in Sources */,
 				4B002DC62B28B16400793A92 /* AuthRouterViewModel.swift in Sources */,
 				4B42791B2B30BB9B000A5631 /* GenreSelectViewModel.swift in Sources */,
 				4B95B9C82B273E8F00F17432 /* ArtistType.swift in Sources */,

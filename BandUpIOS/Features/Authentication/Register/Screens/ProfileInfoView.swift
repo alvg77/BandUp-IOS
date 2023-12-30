@@ -31,7 +31,8 @@ struct ProfileInfoView: View {
             bio
             continueButton
         }
-        .padding(.all)
+        .padding(.vertical)
+        .padding(.horizontal, 8)
         .onAppear {
             if viewModel.artistTypes.isEmpty {
                 viewModel.getArtistTypes()

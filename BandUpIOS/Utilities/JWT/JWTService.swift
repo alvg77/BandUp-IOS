@@ -10,6 +10,7 @@ import KeychainAccess
 
 protocol JWTServiceProtocol {
     func saveToken(token: String)
+    func removeToken() throws
     func getToken() -> String?
     func checkTokenExpiration() -> Bool
 }
@@ -28,6 +29,11 @@ extension JWTService: JWTServiceProtocol {
     func saveToken(token: String) {
         keychain["jwt"] = token
         jwt = token
+    }
+    
+    func removeToken() throws {
+        try keychain.remove("jwt")
+        jwt = nil
     }
     
     func getToken() -> String? {
