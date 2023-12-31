@@ -30,6 +30,7 @@
 		4B651C642B3F86AF00738CF8 /* MainRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */; };
 		4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C652B3F873B00738CF8 /* JWTService.swift */; };
 		4B65218D2B24F915001D429E /* ShrinkingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* ShrinkingButton.swift */; };
+		4B6A5D4D2B40E5B4006AAB28 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4B6A5D4C2B40E5B4006AAB28 /* .gitignore */; };
 		4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 4B6E78072B386FA300721D49 /* KeychainAccess */; };
 		4B7853932B24872700D671B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7853922B24872700D671B9 /* LoginView.swift */; };
 		4B7853952B24873900D671B9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7853942B24873900D671B9 /* LoginViewModel.swift */; };
@@ -98,6 +99,7 @@
 		4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouterViewModel.swift; sourceTree = "<group>"; };
 		4B651C652B3F873B00738CF8 /* JWTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTService.swift; sourceTree = "<group>"; };
 		4B65218C2B24F915001D429E /* ShrinkingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShrinkingButton.swift; sourceTree = "<group>"; };
+		4B6A5D4C2B40E5B4006AAB28 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		4B7853922B24872700D671B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4B7853942B24873900D671B9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		4B7853972B24883300D671B9 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 		4B7B5D2E2B23FE3B008943A8 = {
 			isa = PBXGroup;
 			children = (
+				4B6A5D4C2B40E5B4006AAB28 /* .gitignore */,
 				4B7B5D392B23FE3B008943A8 /* BandUpIOS */,
 				4B7B5D4A2B23FE3D008943A8 /* BandUpIOSTests */,
 				4B7B5D542B23FE3D008943A8 /* BandUpIOSUITests */,
@@ -610,6 +613,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B7B5D422B23FE3D008943A8 /* Preview Assets.xcassets in Resources */,
+				4B6A5D4D2B40E5B4006AAB28 /* .gitignore in Resources */,
 				4B7B5D3F2B23FE3D008943A8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
