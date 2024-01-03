@@ -11,6 +11,7 @@ import KeychainAccess
 
 enum RegisterStep: String, CaseIterable {
     case credentials = "Credentials"
+    case contacts = "Contacts"
     case profileInfo = "Profile Info"
     case genres = "Genre Select"
     case location = "Location Select"
@@ -30,6 +31,7 @@ class RegisterViewModel: ObservableObject {
     @Published var steps: [RegisterStep] = [.credentials]
 
     var credentials = CredentialsViewModel()
+    var contacts = ContactsViewModel()
     var profileInfo = ProfileInfoViewModel()
     var genreSelect = GenreSelectViewModel()
     var locationSelect = LocationSelectViewModel()
@@ -41,6 +43,7 @@ class RegisterViewModel: ObservableObject {
         self.authenticate = authenticate
 
         credentials.next = goToNext
+        contacts.next = goToNext
         profileInfo.next = goToNext
         genreSelect.next = goToNext
         locationSelect.register = register
@@ -67,7 +70,10 @@ class RegisterViewModel: ObservableObject {
             password: self.credentials.password,
             artistTypeId: self.profileInfo.artistType!.id,
             genreIds: self.genreSelect.genres.map { $0.id },
-            bio: self.profileInfo.bio
+            bio: self.profileInfo.bio,
+            contacts: Contacts(
+                phoneNumer: self.contacts.phoneNumber, contactsEmail: self.contacts.contactEmail, website: self.contacts.website
+            )
         )
                 
         RegisterService.shared.register(registerRequest: registerRequest) { [weak self] completion in

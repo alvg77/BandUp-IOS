@@ -14,10 +14,7 @@ enum CredentialAvailability: Equatable {
     case taken
 }
 
-class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
-    private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
-    private let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d^\W_]{8,}$/
-    
+class CredentialsViewModel: ObservableObject, RegisterStepViewModel {    
     var next: (() -> Void)?
     
     @Published var error: APIError?
@@ -79,7 +76,7 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
                 guard (self?.emailState) != nil else {
                     return
                 }
-                if (try? self?.emailRegex.wholeMatch(in: email)) == nil {
+                if (try? RegexManager.emailRegex.wholeMatch(in: email)) == nil {
                     withAnimation {
                         self?.emailState = .invalid(errorMessage: "Please provide a valid email.")
                     }

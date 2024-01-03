@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Location: Encodable {
+struct Location: Codable {
     var country = ""
     var city = ""
     var postalCode = ""
@@ -21,4 +21,5 @@ struct RegisterRequest: Encodable {
     var genreIds: [Int]
     var bio: String
     var location = Location()
+    var contacts: Contacts
 }
