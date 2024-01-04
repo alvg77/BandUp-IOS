@@ -21,7 +21,7 @@ protocol RegisterStepViewModel {
     var validateStep: Bool { get }
 }
 
-class RegisterViewModel: ObservableObject {
+class RegisterViewModel: ObservableObject {    
     let authenticate: (() -> Void)?
 
     @Published var registerError: APIError?

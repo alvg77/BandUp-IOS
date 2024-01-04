@@ -10,6 +10,8 @@ import Combine
 import SwiftUI
 
 class ContactsViewModel: ObservableObject {
+    private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+
     var next: (() -> Void)?
     
     @Published var phoneNumber = ""
@@ -38,7 +40,7 @@ class ContactsViewModel: ObservableObject {
                 guard (self?.contactEmail) != nil else {
                     return
                 }
-                if (try? RegexManager.emailRegex.wholeMatch(in: email)) == nil {
+                if (try? self?.emailRegex.wholeMatch(in: email)) == nil {
                     withAnimation {
                         self?.contactEmailState = .invalid(errorMessage: "Please provide a valid email.")
                     }
