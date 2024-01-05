@@ -16,7 +16,6 @@ struct GenreSelectView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
             
             Text("In what genres do you perform?")
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -55,7 +54,7 @@ extension GenreSelectView {
             Text("Continue")
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(ShrinkingButton())
+        .buttonStyle(RoundButton())
         .disabled(!viewModel.validateStep)
     }
 }

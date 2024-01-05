@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B002DC32B28B14D00793A92 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC22B28B14D00793A92 /* AuthRouter.swift */; };
 		4B002DC62B28B16400793A92 /* AuthRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */; };
+		4B253F702B46EC3000962CC1 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B253F6F2B46EC3000962CC1 /* LoadingState.swift */; };
 		4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */; };
 		4B4279112B30BB45000A5631 /* GenreSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790D2B30BB44000A5631 /* GenreSelectView.swift */; };
 		4B4279122B30BB45000A5631 /* LocationSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790F2B30BB45000A5631 /* LocationSelectView.swift */; };
@@ -29,7 +30,7 @@
 		4B651C622B3F869100738CF8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C612B3F869100738CF8 /* MainRouter.swift */; };
 		4B651C642B3F86AF00738CF8 /* MainRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */; };
 		4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C652B3F873B00738CF8 /* JWTService.swift */; };
-		4B65218D2B24F915001D429E /* ShrinkingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* ShrinkingButton.swift */; };
+		4B65218D2B24F915001D429E /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* RoundButton.swift */; };
 		4B6A5D4D2B40E5B4006AAB28 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4B6A5D4C2B40E5B4006AAB28 /* .gitignore */; };
 		4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 4B6E78072B386FA300721D49 /* KeychainAccess */; };
 		4B7853932B24872700D671B9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7853922B24872700D671B9 /* LoginView.swift */; };
@@ -84,6 +85,7 @@
 /* Begin PBXFileReference section */
 		4B002DC22B28B14D00793A92 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouterViewModel.swift; sourceTree = "<group>"; };
+		4B253F6F2B46EC3000962CC1 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		4B42790D2B30BB44000A5631 /* GenreSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectView.swift; sourceTree = "<group>"; };
 		4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		4B42790F2B30BB45000A5631 /* LocationSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectView.swift; sourceTree = "<group>"; };
@@ -102,7 +104,7 @@
 		4B651C612B3F869100738CF8 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouterViewModel.swift; sourceTree = "<group>"; };
 		4B651C652B3F873B00738CF8 /* JWTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTService.swift; sourceTree = "<group>"; };
-		4B65218C2B24F915001D429E /* ShrinkingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShrinkingButton.swift; sourceTree = "<group>"; };
+		4B65218C2B24F915001D429E /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		4B6A5D4C2B40E5B4006AAB28 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		4B7853922B24872700D671B9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4B7853942B24873900D671B9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -185,6 +187,14 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
+		4B253F6E2B46EC1C00962CC1 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				4B253F6F2B46EC3000962CC1 /* LoadingState.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		4B42791D2B30BBA6000A5631 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,7 +256,7 @@
 		4B65218B2B24F8E7001D429E /* Styles */ = {
 			isa = PBXGroup;
 			children = (
-				4B65218C2B24F915001D429E /* ShrinkingButton.swift */,
+				4B65218C2B24F915001D429E /* RoundButton.swift */,
 				4BDD0EBC2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift */,
 			);
 			path = Styles;
@@ -255,6 +265,7 @@
 		4B7853862B24864800D671B9 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4B253F6E2B46EC1C00962CC1 /* Enums */,
 				4B6515342B2CD96A004166D4 /* Errors */,
 				4B65218B2B24F8E7001D429E /* Styles */,
 				4B7853AC2B24AD1F00D671B9 /* Views */,
@@ -646,7 +657,7 @@
 				4B42791A2B30BB9B000A5631 /* LocationSelectViewModel.swift in Sources */,
 				4B8E3DF42B26762A0090A60C /* LoginResponse.swift in Sources */,
 				4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */,
-				4B65218D2B24F915001D429E /* ShrinkingButton.swift in Sources */,
+				4B65218D2B24F915001D429E /* RoundButton.swift in Sources */,
 				4B4279122B30BB45000A5631 /* LocationSelectView.swift in Sources */,
 				4B840E352B2A523E00292508 /* ArtistTypeService.swift in Sources */,
 				4B002DC62B28B16400793A92 /* AuthRouterViewModel.swift in Sources */,
@@ -660,6 +671,7 @@
 				4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */,
 				4B8E3DF72B2676810090A60C /* LoginService.swift in Sources */,
 				4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */,
+				4B253F702B46EC3000962CC1 /* LoadingState.swift in Sources */,
 				4BEF5A3D2B45A95F00C32F71 /* ContactsViewModel.swift in Sources */,
 				4BD966BF2B4381270031A6FB /* ContactsView.swift in Sources */,
 				4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */,

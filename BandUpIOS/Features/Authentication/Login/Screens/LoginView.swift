@@ -14,7 +14,7 @@ struct LoginView: View {
         ScrollView {
             Text("Discover your next musical adventure!")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical)
+                .padding(.bottom)
             
             if let error = viewModel.error {
                 ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to process your login request.")
@@ -67,7 +67,7 @@ private extension LoginView {
             .padding(.horizontal)
         }
         .disabled(!viewModel.verifyInput)
-        .buttonStyle(ShrinkingButton())
+        .buttonStyle(RoundButton())
     }
     
     @ViewBuilder var createAccountButton: some View {

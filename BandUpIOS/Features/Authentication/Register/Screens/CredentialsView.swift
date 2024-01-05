@@ -19,7 +19,6 @@ struct CredentialsView: View {
                     .bold()
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom)
                 
                 Text("You will need these to later log into your account.")
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -51,7 +50,7 @@ extension CredentialsView {
             Text("Continue")
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(ShrinkingButton())
+        .buttonStyle(RoundButton())
         .disabled(!viewModel.validateStep)
     }
     

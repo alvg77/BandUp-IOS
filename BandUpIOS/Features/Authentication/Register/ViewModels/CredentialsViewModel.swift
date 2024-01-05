@@ -31,6 +31,8 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
         
     @Published var emailAvailable: CredentialAvailability = .neutral
     @Published var usernameAvailable: CredentialAvailability = .neutral
+    
+    
         
     var validateStep: Bool {
         usernameState == .valid &&
@@ -107,27 +109,39 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     func checkCredentialsAvailability() {
-        Publishers.CombineLatest(
-            RegisterService.shared.checkEmailAvailability(email: email),
-            RegisterService.shared.checkUsernameAvailability(username: username)
-        )
-        .receive(on: RunLoop.main)
-        .sink { [weak self] completion in
-            switch completion {
-            case .finished:
-                if self?.emailAvailable == .available && self?.usernameAvailable == .available {
-                    self?.error = nil
-                    self?.next?()
-                }
-            case .failure(let error):
-                withAnimation {
-                    self?.error = error
+        checkEmail()
+    }
+    
+    private func checkEmail() {
+        RegisterService.shared.checkEmailAvailability(email: email) { [weak self] completion in
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let availability):
+                    self?.emailAvailable = availability
+                    self?.checkUsername()
+                case .failure(let error):
+                    withAnimation {
+                        self?.error = error
+                    }
                 }
             }
-        } receiveValue: { [weak self] (emailAvailability, usernameAvailability) in
-            self?.emailAvailable = emailAvailability
-            self?.usernameAvailable = usernameAvailability
         }
-        .store(in: &cancellables)
+    }
+    
+    private func checkUsername() {
+        RegisterService.shared.checkUsernameAvailability(username: username) { [weak self] completion in
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let availability):
+                    self?.usernameAvailable = availability
+                    self?.error = nil
+                    self?.next?()
+                case .failure(let error):
+                    withAnimation {
+                        self?.error = error
+                    }
+                }
+            }
+        }
     }
 }

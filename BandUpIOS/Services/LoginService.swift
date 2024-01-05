@@ -44,7 +44,7 @@ extension LoginService: LoginServiceProtocol {
                         return
                     }
                     if error.isSessionTaskError {
-                        completion(.failure(.noConnectionError))
+                        completion(.failure(.noInternetError))
                         return
                     }
                     if error.isResponseSerializationError {

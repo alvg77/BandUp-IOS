@@ -29,7 +29,7 @@ class RegisterViewModel: ObservableObject {
     
     @Published var step = RegisterStep.credentials
     @Published var steps: [RegisterStep] = [.credentials]
-
+    
     var credentials = CredentialsViewModel()
     var contacts = ContactsViewModel()
     var profileInfo = ProfileInfoViewModel()

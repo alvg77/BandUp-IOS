@@ -17,7 +17,6 @@ struct LocationSelectView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
             
             Text("In what city are you based?")
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -40,7 +39,7 @@ struct LocationSelectView: View {
                 Text("Register")
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(ShrinkingButton())
+            .buttonStyle(RoundButton())
             .disabled(!viewModel.validateStep)
         }
         .padding(.vertical)

@@ -16,7 +16,6 @@ struct ProfileInfoView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
             
             Text("Tell us a little about yourself.")
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,7 +71,7 @@ extension ProfileInfoView {
             Text("Continue")
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(ShrinkingButton())
+        .buttonStyle(RoundButton())
         .disabled(!viewModel.validateStep)
     }
 }
