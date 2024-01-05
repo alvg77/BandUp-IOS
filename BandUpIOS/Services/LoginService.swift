@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import Alamofire
 
 protocol LoginServiceProtocol {
     func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void)
@@ -21,38 +20,71 @@ class LoginService {
 
 extension LoginService: LoginServiceProtocol {
     func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void) {
-        let url = URL(string: "http://localhost:9090/api/v1/auth/login")
+        let endpoint = URL(string: "http://localhost:9090/api/v1/auth/login")
         
-        guard let url = url else {
+        guard let endpoint = endpoint else {
             completion(.failure(.invalidURLError))
             return
         }
         
-        AF.request(url, method: .post, parameters: loginRequest, encoder: JSONParameterEncoder.default)
-            .validate()
-            .responseDecodable(of: LoginResponse.self) { response in
-                switch response.result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure(let error):
-                    if let errorMessage = response.data.flatMap({ try? JSONDecoder().decode(APIErrorMessage.self, from: $0) }) {
-                        completion(.failure(.serverError(statusCode: errorMessage.status, reason: errorMessage.detail)))
-                        return
-                    }
-                    if let code = error.responseCode {
-                        completion(.failure(.serverError(statusCode: code)))
-                        return
-                    }
-                    if error.isSessionTaskError {
-                        completion(.failure(.noInternetError))
-                        return
-                    }
-                    if error.isResponseSerializationError {
-                        completion(.failure(.decodingError))
-                        return
-                    }
+        var request = URLRequest(url: endpoint)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONEncoder().encode(loginRequest)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        
+        URLSession.shared.dataTask(with: endpoint) { data, response, error in
+            if let error = error as? URLError {
+                switch error.code {
+                case .notConnectedToInternet, .networkConnectionLost:
+                    completion(.failure(.noInternetError))
+                    return
+                case .cannotConnectToHost:
+                    completion(.failure(.cannotConnectToHost))
+                    return
+                case .timedOut:
+                    completion(.failure(.timedOut))
+                    return
+                default:
                     completion(.failure(.unknownError))
+                    return
                 }
+                
             }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(.invalidResponseError))
+                return
+            }
+
+            let statusCode = httpResponse.statusCode
+            
+            switch statusCode {
+            case 200..<300:
+                if let data = data {
+                    do {
+                        let response = try JSONDecoder().decode(LoginResponse.self, from: data)
+                        completion(.success(response))
+                    } catch {
+                        completion(.failure(.decodingError))
+                    }
+                } else {
+                    completion(.failure(.invalidResponseError))
+                }
+            case 400..<600:
+                if let data = data {
+                    do {
+                        let reason = try JSONDecoder().decode(APIErrorMessage.self, from: data)
+                        completion(.failure(.serverError(statusCode: statusCode, reason: reason.detail)))
+                    } catch {
+                        completion(.failure(.decodingError))
+                    }
+                } else {
+                    completion(.failure(.serverError(statusCode: statusCode)))
+                }
+            default:
+                completion(.failure(.unknownError))
+            }
+        }.resume()
     }
 }

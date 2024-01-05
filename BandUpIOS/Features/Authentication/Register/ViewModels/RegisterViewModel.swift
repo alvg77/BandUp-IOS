@@ -77,13 +77,15 @@ class RegisterViewModel: ObservableObject {
         )
                 
         RegisterService.shared.register(registerRequest: registerRequest) { [weak self] completion in
-            switch completion {
-            case .success(let response):
-                JWTService.shared.saveToken(token: response.token)
-                self?.authenticate?()
-            case .failure(let error):
-                self?.registerError = error
-                self?.registerErrorOccured = true
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let response):
+                    JWTService.shared.saveToken(token: response.token)
+                    self?.authenticate?()
+                case .failure(let error):
+                    self?.registerError = error
+                    self?.registerErrorOccured = true
+                }
             }
         }
     }

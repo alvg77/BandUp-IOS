@@ -19,6 +19,7 @@ class ContactsViewModel: ObservableObject {
     @Published var website = ""
     
     @Published var contactEmailState: TextFieldState = .neutral
+    @Published var contactsWebsiteState: TextFieldState = .neutral
     
     var validateStep: Bool {
         !phoneNumber.isEmpty ||
@@ -30,6 +31,7 @@ class ContactsViewModel: ObservableObject {
     
     init() {
         validateContactEmail.store(in: &cancellables)
+        validateContactWebsite.store(in: &cancellables)
     }
     
     var validateContactEmail: AnyCancellable {
@@ -37,9 +39,6 @@ class ContactsViewModel: ObservableObject {
             .dropFirst()
             .debounce(for: 0.8, scheduler: DispatchQueue.main)
             .sink { [weak self] email in
-                guard (self?.contactEmail) != nil else {
-                    return
-                }
                 if (try? self?.emailRegex.wholeMatch(in: email)) == nil {
                     withAnimation {
                         self?.contactEmailState = .invalid(errorMessage: "Please provide a valid email.")
@@ -47,6 +46,32 @@ class ContactsViewModel: ObservableObject {
                     return
                 }
                 self?.contactEmailState = .valid
+            }
+    }
+    
+    var validateContactWebsite: AnyCancellable {
+        $website
+            .dropFirst()
+            .debounce(for: 0.8, scheduler: DispatchQueue.main)
+            .sink { [weak self] website in
+                guard let url = URL(string: website) else {
+                    withAnimation {
+                        self?.contactsWebsiteState = .invalid(errorMessage: "Please provide a valid website URL.")
+                    }
+                    return
+                }
+                
+                url.isReachable { success in
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            if success {
+                                self?.contactsWebsiteState = .valid
+                            } else {
+                                self?.contactsWebsiteState = .invalid(errorMessage: "URL is unreachable")
+                            }
+                        }
+                    }
+                }
             }
     }
     

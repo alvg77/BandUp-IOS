@@ -16,7 +16,8 @@ struct ProfileInfoView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+                .padding(.all, 4)
+
             Text("Tell us a little about yourself.")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom)

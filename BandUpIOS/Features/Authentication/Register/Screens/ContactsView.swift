@@ -21,7 +21,8 @@ struct ContactsView: View {
                     .bold()
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom)
+                    .padding(.all, 4)
+
                 
                 Text("Provide your contact information, so other members on the platform can reach to you.")
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,8 +89,15 @@ extension ContactsView {
     }
     
     @ViewBuilder var websiteField: some View {
-        TextField("Websiste", text: $viewModel.website)
-            .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "globe"))
+        VStack {
+            TextField("Websiste", text: $viewModel.website)
+                .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "globe"))
+
+            if case .invalid(let errorMessage) = viewModel.contactsWebsiteState {
+                FieldError(errorMessage: errorMessage)
+            }
+        }
+        .padding(.bottom, 8)
     }
 }
 

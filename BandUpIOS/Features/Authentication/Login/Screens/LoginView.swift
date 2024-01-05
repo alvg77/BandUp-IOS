@@ -37,7 +37,7 @@ struct LoginView: View {
             .padding(.bottom)
         }
         .scrollIndicators(.never)
-        .padding(.horizontal)
+        .padding(.horizontal, 8)
         .textInputAutocapitalization(.never)
         .navigationTitle("Login")
     }

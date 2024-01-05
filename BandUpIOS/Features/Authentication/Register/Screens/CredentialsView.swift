@@ -19,6 +19,7 @@ struct CredentialsView: View {
                     .bold()
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 4)
                 
                 Text("You will need these to later log into your account.")
                     .frame(maxWidth: .infinity, alignment: .leading)

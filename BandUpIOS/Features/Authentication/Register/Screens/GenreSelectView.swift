@@ -16,7 +16,8 @@ struct GenreSelectView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+                .padding(.all, 4)
+
             Text("In what genres do you perform?")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom)

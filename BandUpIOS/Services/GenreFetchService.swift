@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import Alamofire
 
 protocol GenreFetchServiceProtocol {
     func getGenres(completion: @escaping (Result<[Genre], APIError>) -> Void)
@@ -20,39 +19,65 @@ class GenreFetchService {
 
 extension GenreFetchService: GenreFetchServiceProtocol {
     func getGenres(completion: @escaping (Result<[Genre], APIError>) -> Void) {
-        let url = URL(string: "http://localhost:9090/api/v1/genres")
+        let endpoint = URL(string: "http://localhost:9090/api/v1/genres")
         
-        guard let url = url else {
+        guard let endpoint = endpoint else {
             completion(.failure(.invalidURLError))
             return
         }
         
-        AF.request(url, method: .get)
-            .validate()
-            .responseDecodable(of: [Genre].self) { response in
-                switch response.result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure(let error):
-                    if let errorMessage = response.data.flatMap({ try? JSONDecoder().decode(APIErrorMessage.self, from: $0) }) {
-                        completion(.failure(.serverError(statusCode: errorMessage.status, reason: errorMessage.detail)))
-                        return
-                    }
-                    if let code = error.responseCode {
-                        completion(.failure(.serverError(statusCode: code)))
-                        return
-                    }
-                    if error.isSessionTaskError {
-                        completion(.failure(.noInternetError))
-                        return
-                    }
-                    if error.isResponseSerializationError {
-                        completion(.failure(.decodingError))
-                        return
-                    }
+        URLSession.shared.dataTask(with: endpoint) { data, response, error in
+            if let error = error as? URLError {
+                switch error.code {
+                case .notConnectedToInternet, .networkConnectionLost:
+                    completion(.failure(.noInternetError))
+                    return
+                case .cannotConnectToHost:
+                    completion(.failure(.cannotConnectToHost))
+                    return
+                case .timedOut:
+                    completion(.failure(.timedOut))
+                    return
+                default:
                     completion(.failure(.unknownError))
+                    return
                 }
+                
             }
-        
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(.invalidResponseError))
+                return
+            }
+
+            let statusCode = httpResponse.statusCode
+            
+            switch statusCode {
+            case 200..<300:
+                if let data = data {
+                    do {
+                        let response = try JSONDecoder().decode([Genre].self, from: data)
+                        completion(.success(response))
+                    } catch {
+                        completion(.failure(.decodingError))
+                    }
+                } else {
+                    completion(.failure(.invalidResponseError))
+                }
+            case 400..<600:
+                if let data = data {
+                    do {
+                        let reason = try JSONDecoder().decode(APIErrorMessage.self, from: data)
+                        completion(.failure(.serverError(statusCode: statusCode, reason: reason.detail)))
+                    } catch {
+                        completion(.failure(.decodingError))
+                    }
+                } else {
+                    completion(.failure(.serverError(statusCode: statusCode)))
+                }
+            default:
+                completion(.failure(.unknownError))
+            }
+        }.resume()
     }
 }

@@ -17,7 +17,8 @@ struct LocationSelectView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+                .padding(.all, 4)
+
             Text("In what city are you based?")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom)

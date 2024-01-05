@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B002DC32B28B14D00793A92 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC22B28B14D00793A92 /* AuthRouter.swift */; };
 		4B002DC62B28B16400793A92 /* AuthRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */; };
+		4B0945052B48383800EA5D44 /* IsReachableURLExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0945042B48383800EA5D44 /* IsReachableURLExtention.swift */; };
 		4B253F702B46EC3000962CC1 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B253F6F2B46EC3000962CC1 /* LoadingState.swift */; };
 		4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */; };
 		4B4279112B30BB45000A5631 /* GenreSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42790D2B30BB44000A5631 /* GenreSelectView.swift */; };
@@ -25,7 +26,6 @@
 		4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42792B2B30BF3B000A5631 /* RegisterViewModel.swift */; };
 		4B42792F2B310200000A5631 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 4B42792E2B310200000A5631 /* GooglePlaces */; };
 		4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */; };
-		4B5D364A2B3CE4DB002E8FC1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4B5D36492B3CE4DB002E8FC1 /* Alamofire */; };
 		4B6515362B2CD976004166D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6515352B2CD976004166D4 /* APIError.swift */; };
 		4B651C622B3F869100738CF8 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C612B3F869100738CF8 /* MainRouter.swift */; };
 		4B651C642B3F86AF00738CF8 /* MainRouterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C632B3F86AF00738CF8 /* MainRouterViewModel.swift */; };
@@ -85,6 +85,7 @@
 /* Begin PBXFileReference section */
 		4B002DC22B28B14D00793A92 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		4B002DC52B28B16400793A92 /* AuthRouterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouterViewModel.swift; sourceTree = "<group>"; };
+		4B0945042B48383800EA5D44 /* IsReachableURLExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsReachableURLExtention.swift; sourceTree = "<group>"; };
 		4B253F6F2B46EC3000962CC1 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		4B42790D2B30BB44000A5631 /* GenreSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectView.swift; sourceTree = "<group>"; };
 		4B42790E2B30BB44000A5631 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
@@ -143,7 +144,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B5D364A2B3CE4DB002E8FC1 /* Alamofire in Frameworks */,
 				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
 				4B42792F2B310200000A5631 /* GooglePlaces in Frameworks */,
 				4B8E3DDE2B2631840090A60C /* SwiftUIFlow in Frameworks */,
@@ -169,6 +169,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B0945032B48376D00EA5D44 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				4B0945042B48383800EA5D44 /* IsReachableURLExtention.swift */,
+			);
+			path = Extentions;
+			sourceTree = "<group>";
+		};
 		4B253F6C2B46EB2300962CC1 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +273,7 @@
 		4B7853862B24864800D671B9 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4B0945032B48376D00EA5D44 /* Extentions */,
 				4B253F6E2B46EC1C00962CC1 /* Enums */,
 				4B6515342B2CD96A004166D4 /* Errors */,
 				4B65218B2B24F8E7001D429E /* Styles */,
@@ -513,7 +522,6 @@
 				4B7BDB772B291FF9006476D1 /* FlowStacks */,
 				4B42792E2B310200000A5631 /* GooglePlaces */,
 				4B6E78072B386FA300721D49 /* KeychainAccess */,
-				4B5D36492B3CE4DB002E8FC1 /* Alamofire */,
 				4BD966C12B4390ED0031A6FB /* iPhoneNumberField */,
 			);
 			productName = BandUpIOS;
@@ -593,7 +601,6 @@
 				4B7BDB762B291FF9006476D1 /* XCRemoteSwiftPackageReference "FlowStacks" */,
 				4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				4B5D36482B3CE4DB002E8FC1 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
@@ -643,6 +650,7 @@
 				4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */,
 				4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */,
 				4BC922812B37258C00D49E2F /* FieldError.swift in Sources */,
+				4B0945052B48383800EA5D44 /* IsReachableURLExtention.swift in Sources */,
 				4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */,
 				4B8E3DF22B2661BC0090A60C /* LoginRequest.swift in Sources */,
 				4B4279252B30BBCD000A5631 /* RegisterRequest.swift in Sources */,
@@ -1022,14 +1030,6 @@
 				minimumVersion = 8.3.0;
 			};
 		};
-		4B5D36482B3CE4DB002E8FC1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.8.1;
-			};
-		};
 		4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -1069,11 +1069,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
 			productName = GooglePlaces;
-		};
-		4B5D36492B3CE4DB002E8FC1 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4B5D36482B3CE4DB002E8FC1 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 		4B6E78072B386FA300721D49 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
