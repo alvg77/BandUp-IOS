@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 protocol GenreFetchServiceProtocol {
     func getGenres(completion: @escaping (Result<[Genre], APIError>) -> Void)
