@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 protocol LoginServiceProtocol {
     func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void)
@@ -33,7 +32,7 @@ extension LoginService: LoginServiceProtocol {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         
-        URLSession.shared.dataTask(with: endpoint) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error as? URLError {
                 switch error.code {
                 case .notConnectedToInternet, .networkConnectionLost:
