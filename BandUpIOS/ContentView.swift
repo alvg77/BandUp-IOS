@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("BandUP IOS")
+        AppRouter()
+            .onAppear {
+                try? JWTService.shared.removeToken()
+            }
     }
 }
 
