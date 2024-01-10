@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 protocol RegisterServiceProtocol {
     func checkUsernameAvailability(username: String, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void)
