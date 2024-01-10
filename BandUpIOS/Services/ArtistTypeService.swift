@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 protocol ArtistTypeServiceProtocol {
     func getArtistTypes(completion: @escaping (Result<[ArtistType], APIError>) -> Void)
