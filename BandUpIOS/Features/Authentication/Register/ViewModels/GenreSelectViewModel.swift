@@ -26,12 +26,14 @@ class GenreSelectViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     func getGenres() {
-        GenreFetchService.shared.getGenres { [weak self] completion in
-            switch completion {
-            case .success(let genres):
-                self?.genres = genres
-            case .failure(let error):
-                self?.error = error
+        GenreService.shared.getGenres { [weak self] completion in
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let genres):
+                    self?.genres = genres
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }

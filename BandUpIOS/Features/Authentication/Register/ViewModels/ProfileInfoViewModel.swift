@@ -29,11 +29,13 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     
     func getArtistTypes() {
         ArtistTypeService.shared.getArtistTypes { [weak self] completion in
-            switch completion {
-            case .success(let artistTypes):
-                self?.artistTypes = artistTypes
-            case .failure(let error):
-                self?.error = error
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let artistTypes):
+                    self?.artistTypes = artistTypes
+                case .failure(let error):
+                    self?.error = error
+                }
             }
         }
     }

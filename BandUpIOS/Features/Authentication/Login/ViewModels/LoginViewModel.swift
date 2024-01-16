@@ -35,13 +35,15 @@ final class LoginViewModel: ObservableObject {
     func login() {
         
         LoginService.shared.login(loginRequest: LoginRequest(email: email, password: password)) { [weak self] completion in
-            switch completion {
-            case .success(let response):
-                JWTService.shared.saveToken(token: response.token)
-                self?.authenticate?()
-            case .failure(let error):
-                withAnimation {
-                    self?.error = error
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let response):
+                    JWTService.shared.saveToken(token: response.token)
+                    self?.authenticate?()
+                case .failure(let error):
+                    withAnimation {
+                        self?.error = error
+                    }
                 }
             }
         }

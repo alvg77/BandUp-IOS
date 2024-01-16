@@ -14,7 +14,7 @@ struct MainRouter: View {
     var body: some View {
         TabView (selection: $viewModel.selectedTab) {
             NavigationStack {
-//                PostsRouter()
+                PostRouter()
             }
             .tabItem {
                 Label("", systemImage: "house")

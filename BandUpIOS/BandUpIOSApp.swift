@@ -12,9 +12,6 @@ struct BandUpIOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onAppear {
-                    try? JWTService.shared.removeToken()
-                }
         }
     }
 }

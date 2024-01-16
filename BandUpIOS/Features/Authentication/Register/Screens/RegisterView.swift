@@ -53,6 +53,8 @@ struct RegisterView: View {
         switch viewModel.step {
         case .credentials:
             CredentialsView(viewModel: viewModel.credentials)
+        case .contacts:
+            ContactsView(viewModel: viewModel.contacts)
         case .profileInfo:
             ProfileInfoView(viewModel: viewModel.profileInfo)
         case .genres:

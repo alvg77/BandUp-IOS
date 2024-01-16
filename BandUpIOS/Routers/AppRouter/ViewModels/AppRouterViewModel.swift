@@ -7,7 +7,6 @@
 
 import Foundation
 import FlowStacks
-import KeychainAccess
 
 enum AppScreen {
     case auth(AuthRouterViewModel)
@@ -15,8 +14,6 @@ enum AppScreen {
 }
 
 class AppRouterViewModel: ObservableObject {
-    private let keychain = Keychain(service: Bundle.main.bundleIdentifier!)
-
     @Published var routes: Routes<AppScreen> = []
     
     init() {

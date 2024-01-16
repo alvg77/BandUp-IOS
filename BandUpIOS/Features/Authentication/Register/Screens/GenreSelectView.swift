@@ -16,8 +16,8 @@ struct GenreSelectView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
-            
+                .padding(.all, 4)
+
             Text("In what genres do you perform?")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom)
@@ -32,7 +32,7 @@ struct GenreSelectView: View {
         }
         .padding(.vertical)
         .padding(.horizontal, 8)
-        .onAppear {
+        .task {
             if viewModel.genres.isEmpty {
                 viewModel.getGenres()
             }
@@ -55,7 +55,7 @@ extension GenreSelectView {
             Text("Continue")
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(ShrinkingButton())
+        .buttonStyle(RoundButton())
         .disabled(!viewModel.validateStep)
     }
 }
