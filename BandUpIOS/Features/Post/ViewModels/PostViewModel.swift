@@ -14,7 +14,6 @@ class PostViewModel: ObservableObject {
     
     init(post: Post) {
         self.post = post
-        print(post.url)
         self.fetchComments()
     }
     

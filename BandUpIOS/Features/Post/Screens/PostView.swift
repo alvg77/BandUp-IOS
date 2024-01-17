@@ -16,8 +16,22 @@ struct PostView: View {
             ScrollView {
                 VStack (alignment: .leading) {
                     HStack(spacing: 4) {
-                        Image(systemName: "person.circle.fill").font(.title2)
-                        Text(viewModel.post.creator.username).bold()
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 40, height: 40)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                    
+                        VStack (alignment: .leading) {
+                            Text(viewModel.post.creator.username).bold()
+                            Text(viewModel.post.createdAt.formatted())
+                                .font(.footnote)
+                                .foregroundStyle(.gray)
+                        }
+                        
+                        Spacer()
+                        
                         FlairView(name: viewModel.post.flair.name).padding(.leading, 8)
                     }
                     
@@ -26,27 +40,40 @@ struct PostView: View {
                         .foregroundStyle(.purple)
                         .fontWeight(.heavy)
                     
-                    Text(viewModel.post.createdAt.formatted())
-                        .bold()
-                        .font(.caption)
-                    
                     if let url = viewModel.post.url {
                         LinkPreview(url: URL(string: url))
-                            .padding(.top)
                     }
                     
                     Text(viewModel.post.content)
-                        .padding(.top)
+                        .padding(.bottom)
                     
-                    HStack {
-                        likeDislikeView.padding(.trailing, 8)
-                        commentsNumberView
+                    HStack(spacing: 24) {
+                        HStack(spacing: 3) {
+                            Button {
+                                if !viewModel.post.liked {
+                                    viewModel.likePost()
+                                } else {
+                                    viewModel.unlikePost()
+                                }
+                            } label: {
+                                Image(systemName: viewModel.post.liked ? "heart.fill" : "heart")
+                                    .foregroundStyle(viewModel.post.liked ? .red : .primary)
+                            }
+                            Text(viewModel.post.likeCount.formattedString())
+                        }
+                        HStack {
+                            Image(systemName: "bubble")
+                            Text(viewModel.post.commentCount.formattedString())
+                        }
                     }
-                    .padding(.all, 2)
+                    .font(.system(size: 20))
+                    .bold()
                     
                     Divider().frame(height: 0.5).background(Color(.systemGray))
+                        .padding(.bottom)
                 }
             }
+            .scrollIndicators(.hidden)
             .padding(.all, 8)
             .ignoresSafeArea(edges: .bottom)
             .refreshable {
@@ -61,39 +88,6 @@ struct PostView: View {
                 Spacer()
             }
         }
-    }
-}
-
-extension PostView {
-    @ViewBuilder var likeDislikeView: some View {
-        HStack (spacing: 4) {
-            Button {
-                if viewModel.post.liked {
-                    viewModel.unlikePost()
-                } else {
-                    viewModel.likePost()
-                }
-            } label: {
-                Image(systemName: viewModel.post.liked ? "heart.fill" : "heart")
-                    .foregroundStyle(viewModel.post.liked ? .purple : .primary)
-                    .font(.title2)
-                    .animation(.easeInOut, value: viewModel.post.liked)
-            }
-            
-            Text("\(viewModel.post.likeCount)").bold()
-    
-        }
-        .padding(.all, 8)
-        .background(Capsule().stroke(.primary, lineWidth: 0.5))
-    }
-    
-    @ViewBuilder var commentsNumberView: some View {
-        HStack (spacing: 4) {
-            Image(systemName: "bubble").foregroundStyle(.primary).font(.title3)
-            Text("\(viewModel.post.commentCount)").bold()
-        }
-        .padding(.all, 8)
-        .background(Capsule().stroke(.primary, lineWidth: 0.5))
     }
 }
 

@@ -16,19 +16,54 @@ struct PostsView: View {
                 ErrorMessage(errorMessage: errorMessage)
                     .padding(.horizontal)
             }
-
             ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.posts) { post in
-                        PostCardView(post: post)
-                            .task {
-                                viewModel.getNextPage(postId: post.id)
+                LazyVStack (pinnedViews: [.sectionHeaders]) {
+                    Section(header:
+                        ScrollView(.horizontal) {
+                            HStack {
+                                Text("All")
+                                    .bold()
+                                    .foregroundStyle(.white)
+                                    .padding(.all, 8)
+                                    .background(viewModel.selectedFlair == nil ? .purple : .gray)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .onTapGesture {
+                                        viewModel.selectedFlair = nil
+                                        viewModel.filter.flairId = nil
+                                        viewModel.getPosts()
+                                    }
+                                ForEach(viewModel.flairs) { flair in
+                                    Text(flair.name)
+                                        .bold()
+                                        .foregroundStyle(.white)
+                                        .padding(.all, 8)
+                                        .background(viewModel.selectedFlair == flair ? .purple : .gray)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .onTapGesture {
+                                            viewModel.selectedFlair = flair
+                                            viewModel.filter.flairId = flair.id
+                                            viewModel.getPosts()
+                                        }
+                                        
+                                }
                             }
-                            .onTapGesture {
-                                viewModel.selectPost(postId: post.id)
-                            }
-                        Divider()
+                        }
+                        .scrollIndicators(.hidden)
+                        .padding(.horizontal)
+                    ) {
+                        ForEach(viewModel.posts) { post in
+                            PostCardView(post: post, likePost: viewModel.likePost, unlikePost: viewModel.unlikePost)
+                                .task {
+                                    viewModel.getNextPage(postId: post.id)
+                                }
+                                .onTapGesture {
+                                    viewModel.selectPost(postId: post.id)
+                                }
+                            Divider()
+                        }
                     }
+                    
+                    
                 }
             }
             .navigationTitle("Home")
@@ -37,14 +72,11 @@ struct PostsView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     create
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    filter
-                }
             }
-            .onAppear {
-                if viewModel.posts.isEmpty {
+            .task {
+//                if viewModel.posts.isEmpty {
                     viewModel.getPosts()
-                }
+//                }
             }
             .refreshable {
                 viewModel.getPosts()
@@ -64,18 +96,9 @@ extension PostsView {
         Button {
             viewModel.createPost?(nil)
         } label: {
-            Image(systemName: "plus.square")
-                .font(.title3)
-        }
-        .buttonStyle(.plain)
-    }
-    
-    @ViewBuilder var filter: some View {
-        Button {
-
-        } label: {
-            Image(systemName: "")
-                .font(.title3)
+            Image(systemName: "square.and.pencil")
+                .font(.system(size: 20))
+                .bold()
         }
         .buttonStyle(.plain)
     }

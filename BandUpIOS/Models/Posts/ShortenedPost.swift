@@ -10,8 +10,10 @@ import Foundation
 struct ShortenedPost: Decodable, Identifiable {
     let id: Int
     var title: String
-    var content: String
     var flair: PostFlair
     let creator: UserDetails
+    let commentCount: Int
+    var likeCount: Int
+    var liked: Bool
     let createdAt: Date
 }

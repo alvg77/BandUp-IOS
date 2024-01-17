@@ -42,7 +42,7 @@ class PostRouterViewModel: ObservableObject {
     func modify(post: Post?) {
         let toPost = { (post: Post) in
             self.back()
-            self.selectPost(post: post)
+//            self.selectPost(post: post)
         }
         
         let viewModel = post != nil ?

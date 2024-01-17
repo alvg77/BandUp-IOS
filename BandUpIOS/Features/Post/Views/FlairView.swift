@@ -12,12 +12,11 @@ struct FlairView: View {
     
     var body: some View {
         Text(name)
-            .font(.caption)
             .bold()
             .foregroundStyle(.white)
             .padding(.all, 4)
             .background(.purple)
-            .clipShape(.capsule)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 
