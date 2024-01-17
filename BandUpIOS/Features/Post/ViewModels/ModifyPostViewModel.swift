@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 
 class ModifyPostViewModel: ObservableObject {
+    
     @Published var title = ""
     let maxContentLength = 5000
     @Published var content = ""
@@ -17,8 +18,8 @@ class ModifyPostViewModel: ObservableObject {
     @Published var urlEnabled = false
     @Published var flair: PostFlair?
     @Published var urlState = TextFieldState.neutral
-    
     @Published var flairs = [PostFlair]()
+    
     @Published var error: APIError?
     
     private let toPost: ((Post) -> Void)?

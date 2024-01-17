@@ -88,6 +88,23 @@ struct PostView: View {
                 Spacer()
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if let email = JWTService.shared.extractEmail(), email == viewModel.post.creator.email {
+                    Menu {
+                        Button ("Delete", role: .destructive) {
+                            viewModel.delete()
+                        }
+                        
+                        Button ("Update") {
+                            viewModel.update()
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -98,7 +115,7 @@ struct PostView: View {
                    url: "https://tuesfest.bg/projects/405",
                    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
                    flair: PostFlair(id: 1, name: "Question"),
-                   creator: UserDetails(id: 1, username: "user1", profilePicture: nil), commentCount: 991,
+                   creator: UserDetails(id: 1, username: "user1", email: "a@a.a", profilePicture: nil), commentCount: 991,
                    likeCount: 100,
                    liked: false,
                    createdAt: Date.now

@@ -27,7 +27,7 @@ class PostsViewModel: ObservableObject {
     }
     
     func getPosts() {
-        pageNo = 0 
+        pageNo = 0
         PostService.shared.getAll(pageNo: pageNo, pageSize: pageSize, filter: filter) { [weak self] comletion in
             DispatchQueue.main.async {
                 switch comletion {

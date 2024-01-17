@@ -53,7 +53,6 @@ struct ModifyPostView: View {
         .safeAreaInset(edge: .bottom) {
             enableLinkButton
         }
-        
     }
 }
 

@@ -13,6 +13,7 @@ protocol JWTServiceProtocol {
     func removeToken() throws
     func getToken() -> String?
     func checkTokenExpiration() -> Bool
+    func extractEmail() -> String?
 }
 
 class JWTService {
@@ -48,9 +49,9 @@ extension JWTService: JWTServiceProtocol {
         }
     }
     
-    func checkTokenExpiration() -> Bool {
+    private func decodeJWT() -> [String: Any]? {
         guard let jwt = jwt else {
-            return false
+            return nil
         }
         
         var encoded = jwt.components(separatedBy: ".")[1]
@@ -61,9 +62,27 @@ extension JWTService: JWTServiceProtocol {
         
         let decoded = Data(base64Encoded: encoded , options:.ignoreUnknownCharacters)!
         let json = try! JSONSerialization.jsonObject(with: decoded, options: []) as! [String:Any]
+        
+        return json
+    }
+    
+    func checkTokenExpiration() -> Bool {
+        guard let json = decodeJWT() else {
+            return false
+        }
+        
         let exp = json["exp"] as! Int
         let expDate = Date(timeIntervalSince1970: TimeInterval(exp))
         
         return expDate.compare(Date()) == .orderedDescending
+    }
+    
+    func extractEmail() -> String? {
+        guard let json = decodeJWT() else {
+            return nil
+        }
+                
+        let email = json["sub"] as! String
+        return email
     }
 }

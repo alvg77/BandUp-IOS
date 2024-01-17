@@ -12,6 +12,8 @@ class PostViewModel: ObservableObject {
     @Published var post: Post
     @Published var error: APIError?
     
+//    let updatePost: ((Post) -> Void)?
+    
     init(post: Post) {
         self.post = post
         self.fetchComments()
@@ -47,10 +49,6 @@ class PostViewModel: ObservableObject {
         }
     }
     
-    func fetchComments() {
-        
-    }
-    
     func refreshPost() {
         PostService.shared.getById(postId: post.id) { [weak self] completion in
             DispatchQueue.main.async {
@@ -65,5 +63,26 @@ class PostViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func delete() {
+        PostService.shared.delete(postId: post.id) { [weak self] completion in
+            DispatchQueue.main.async {
+                switch completion {
+                case .success:
+                    self?.error = nil
+                case .failure(let error):
+                    self?.error = error
+                }
+            }
+        }
+    }
+    
+    func update() {
+        
+    }
+    
+    func fetchComments() {
+        
     }
 }
