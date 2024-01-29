@@ -31,6 +31,8 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
         
     @Published var emailAvailable: CredentialAvailability = .neutral
     @Published var usernameAvailable: CredentialAvailability = .neutral
+    
+    
         
     var validateStep: Bool {
         usernameState == .valid &&
