@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "flowstacks",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/johnpatrickmorgan/FlowStacks.git",
-      "state" : {
-        "revision" : "44ee1a60d8657bfe83d7433087427d5df9c6768a",
-        "version" : "0.3.7"
-      }
-    },
-    {
       "identity" : "ios-places-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/googlemaps/ios-places-sdk",
@@ -34,15 +25,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
-      }
-    },
-    {
-      "identity" : "linkpreview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/NuPlay/LinkPreview.git",
-      "state" : {
-        "revision" : "14ed9e55ee4ce651de85ce3a86daceba10214fea",
-        "version" : "1.1.0"
       }
     },
     {

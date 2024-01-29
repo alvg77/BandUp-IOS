@@ -8,8 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var auth: Bool
+
+    init() {
+        auth = JWTService.shared.getToken() == nil
+    }
+    
     var body: some View {
-        AppRouter()
+        if !auth {
+            MainView {
+                auth = true
+            }
+        } else {
+            AuthRouterView {
+                auth = false
+            }
+        }
     }
 }
 
