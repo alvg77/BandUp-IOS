@@ -10,7 +10,6 @@ import SwiftUI
 struct CommentRowView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var editing = false
-    @State var editContent: String 
     
     var commentId: Int
     var content: String
@@ -28,7 +27,6 @@ struct CommentRowView: View {
         update: @escaping (Int, String) -> Void,
         delete: @escaping (Int) -> Void
     ) {
-        self._editContent = State(initialValue: content)
         self.commentId = commentId
         self.content = content
         self.createdAt = createdAt
@@ -46,17 +44,18 @@ struct CommentRowView: View {
         .padding(.all, 15)
         .background(colorScheme == .dark ? Color(.systemGray6) : Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding(.all, 8)
+        .shadow(radius: 2, x: 0, y: 1)
+        .padding(.vertical, 2)
+        .sheet(isPresented: $editing) {
+            CommentUpdateView(commentId: commentId, content: content, update: update)
+        }
+
     }
 }
 
 private extension CommentRowView {
     @ViewBuilder var commentContent: some View {
-        if editing {
-            TextEditor(text: $editContent)
-        } else {
-            Text(content)
-        }
+        Text(content)
     }
     
     @ViewBuilder var commentCreator: some View {
@@ -89,17 +88,11 @@ private extension CommentRowView {
     }
     
     @ViewBuilder var menu: some View {
-        if !editing {
-            Menu {
-                Button("Delete", role: .destructive) { delete(commentId) }
-                Button("Edit") { editing.toggle() }
-            } label: {
-                Image(systemName: "ellipsis")
-            }
-        } else {
-            Button("Cancel") {
-                editing.toggle()
-            }
+        Menu {
+            Button("Delete", role: .destructive) { delete(commentId) }
+            Button("Edit") { editing.toggle() }
+        } label: {
+            Image(systemName: "ellipsis")
         }
     }
 }

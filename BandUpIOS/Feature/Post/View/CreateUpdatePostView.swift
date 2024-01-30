@@ -131,5 +131,6 @@ private extension CreateUpdatePostView {
         Button("Done") {
             viewModel.modify()
         }
+        .disabled(!viewModel.validate)
     }
 }

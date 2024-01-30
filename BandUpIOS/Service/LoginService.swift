@@ -31,7 +31,7 @@ extension LoginService: LoginServiceProtocol {
         request.httpBody = try? JSONEncoder().encode(loginRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        RequestHandler.makeRequest(request: URLRequest(url: endpoint)) { requestCompletion in
+        RequestHandler.makeRequest(request: request) { requestCompletion in
             switch requestCompletion {
             case .success(let data):
                 guard let data = data else {

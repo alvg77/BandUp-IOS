@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct CommentListView: View {
-    @StateObject var viewModel: CommentListViewModel
-    
-    init(postId: Int) {
-        _viewModel = StateObject(wrappedValue: CommentListViewModel(postId: postId))
-    }
+    var comments: [Comment]
+    var updateComment: (Int, String) -> Void
+    var deleteComment: (Int) -> Void
     
     var body: some View {
         commentList
@@ -21,18 +19,16 @@ struct CommentListView: View {
 
 private extension CommentListView {
     @ViewBuilder var commentList: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.comments) { comment in
-                    CommentRowView(
-                        commentId: comment.id,
-                        content: comment.content,
-                        createdAt: comment.createdAd,
-                        creator: comment.creator,
-                        update: viewModel.updateComment,
-                        delete: viewModel.deleteComment
-                    )
-                }
+        LazyVStack {
+            ForEach(comments) { comment in
+                CommentRowView(
+                    commentId: comment.id,
+                    content: comment.content,
+                    createdAt: comment.createdAt,
+                    creator: comment.creator,
+                    update: updateComment,
+                    delete: deleteComment
+                )
             }
         }
     }

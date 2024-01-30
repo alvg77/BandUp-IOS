@@ -8,52 +8,86 @@
 import SwiftUI
 
 struct PostDetailView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var viewModel: PostViewModel
+    @FocusState var focus: Bool
     
     var body: some View {
-        ZStack {
-            ScrollView {
-                VStack (alignment: .leading) {
-                    top
-                    
-                    Text(viewModel.post.title)
-                        .font(.title)
-                        .foregroundStyle(.purple)
-                        .fontWeight(.heavy)
-                    
-                    if let url = viewModel.post.url {
-                        LinkPreview(url: URL(string: url))
-                    }
-                    
-                    Text(viewModel.post.content)
-                        .padding(.bottom)
-                    
-                    HStack(spacing: 24) {
-                        likes
-                        comments
-                    }
-                    .font(.system(size: 20))
-                    .bold()
-                    
-                    Divider().frame(height: 0.5).background(Color(.systemGray))
-                        .padding(.bottom)
-                }
-            }
-            .scrollIndicators(.hidden)
-            .padding(.all, 8)
-            .ignoresSafeArea(edges: .bottom)
-            .refreshable {
-                viewModel.refreshPost()
-            }
-            
             VStack {
-                Spacer()
-                if let errorMessage = viewModel.error?.errorDescription {
-                    ErrorMessage(errorMessage: errorMessage)
-                        .padding(.horizontal)
+                ZStack {
+                    
+                    ScrollView {
+                        VStack (alignment: .leading) {
+                            top
+                            
+                            Text(viewModel.post.title)
+                                .font(.title)
+                                .foregroundStyle(.purple)
+                                .fontWeight(.heavy)
+                            
+                            if let url = viewModel.post.url {
+                                LinkPreview(url: URL(string: url))
+                            }
+                            
+                            Text(viewModel.post.content)
+                                .padding(.bottom)
+                            
+                            HStack(spacing: 24) {
+                                likes
+                                comments
+                            }
+                            .font(.system(size: 20))
+                            .bold()
+                            
+                            Divider()
+                                .frame(maxWidth: .infinity).background(Color(.systemGray))
+                                .padding(.bottom)
+                            
+                        }
+                        CommentListView(comments: viewModel.comments, updateComment: viewModel.updateComment, deleteComment: viewModel.deleteComment)
+                            .task {
+                                print(viewModel.comments)
+                            }
+                    }
+                    .scrollIndicators(.hidden)
+                    .padding(.all, 8)
+                    .ignoresSafeArea(edges: .bottom)
+                    .refreshable {
+                        viewModel.refreshPost()
+                    }
+                    
+                    
+                    
+                    VStack {
+                        Spacer()
+                        if let error = viewModel.error {
+                            ErrorMessage(errorMessage: error.localizedDescription)
+                                .background(.clear)
+                        }
+                    }
                 }
+
+                HStack {
+                    TextField("Comment", text: $viewModel.newCommentContent)
+                        .focused($focus)
+                        .padding(.all, 8)
+                        .background(Color(.systemGray6))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+
+                    if focus {
+                        Button("Done") {
+                            viewModel.createComment()
+                        }
+                        .disabled(viewModel.newCommentContent.isEmpty)
+                    }
+                }
+                .padding(.all, 8)
+                .background(Color(.systemGray5))
             }
-        }
+            .task {
+                viewModel.fetchComments()
+            }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 if viewModel.post.creator.email == JWTService.shared.extractEmail() {

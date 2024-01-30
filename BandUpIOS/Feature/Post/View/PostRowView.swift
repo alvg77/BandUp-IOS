@@ -45,6 +45,9 @@ struct PostRowView: View {
         .padding(15)
         .background(colorScheme == .dark ? Color(.systemGray6) : Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(radius: 2, x: 0, y: 1)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 2)
     }
 }
 

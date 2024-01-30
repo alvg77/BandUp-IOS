@@ -36,7 +36,7 @@ class CommentModel: ObservableObject {
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let comment):
-                    self?.comments.append(comment)
+                    self?.comments.insert(comment, at: 0)
                     onSuccess()
                     handleError(nil)
                 case .failure(let error):
@@ -48,28 +48,32 @@ class CommentModel: ObservableObject {
     
     func updateComment(_ update: CreateUpdateComment, id: Int,  handleError: @escaping HandleError) {
         CommentService.shared.update(commentId: id, commentUpdateRequest: update) { [weak self] completion in
-            switch completion {
-            case .success(let comment):
-                if let index = self?.comments.firstIndex(where: { $0.id == id }) {
-                    self?.comments[index] = comment
+            DispatchQueue.main.async {
+                switch completion {
+                case .success(let comment):
+                    if let index = self?.comments.firstIndex(where: { $0.id == id }) {
+                        self?.comments[index] = comment
+                    }
+                    handleError(nil)
+                case .failure(let error):
+                    handleError(error)
                 }
-                handleError(nil)
-            case .failure(let error):
-                handleError(error)
             }
         }
     }
     
     func deleteComment(id: Int, handleError: @escaping HandleError) {
         CommentService.shared.delete(commentId: id) { [weak self] completion in
-            switch completion {
-            case .success:
-                if let index = self?.comments.firstIndex(where: { $0.id == id }) {
-                    self?.comments.remove(at: index)
+            DispatchQueue.main.async {
+                switch completion {
+                case .success:
+                    if let index = self?.comments.firstIndex(where: { $0.id == id }) {
+                        self?.comments.remove(at: index)
+                    }
+                    handleError(nil)
+                case .failure(let error):
+                    handleError(error)
                 }
-                handleError(nil)
-            case .failure(let error):
-                handleError(error)
             }
         }
     }

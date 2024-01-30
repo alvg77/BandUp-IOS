@@ -10,7 +10,6 @@ import Foundation
 struct Comment: Decodable, Identifiable {
     let id: Int
     var content: String
-    var createdAd: Date
+    var createdAt: Date
     var creator: UserDetails
-    var createdAt: UserDetails
 }

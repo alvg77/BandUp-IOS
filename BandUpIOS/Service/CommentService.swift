@@ -83,6 +83,7 @@ extension CommentService: CommentServiceProtocol {
             switch requestCompletion {
             case .success(let data):
                 guard let data = data else {
+                    print("pishkaputka")
                     completion(.failure(.invalidResponseError))
                     return
                 }
@@ -94,6 +95,7 @@ extension CommentService: CommentServiceProtocol {
                     }
                     completion(.success(response))
                 } catch {
+                    print("P")
                     completion(.failure(.decodingError))
                 }
             case .failure(let error):
@@ -125,6 +127,7 @@ extension CommentService: CommentServiceProtocol {
             switch requestCompletion {
             case .success(let data):
                 guard let data = data else {
+                    print("PishkaPutka")
                     completion(.failure(.invalidResponseError))
                     return
                 }
@@ -136,6 +139,7 @@ extension CommentService: CommentServiceProtocol {
                     }
                     completion(.success(response))
                 } catch {
+                    print("pishka putka")
                     completion(.failure(.decodingError))
                 }
             case .failure(let error):
