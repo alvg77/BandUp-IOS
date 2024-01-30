@@ -46,9 +46,7 @@ struct PostDetailView: View {
                             
                         }
                         CommentListView(comments: viewModel.comments, updateComment: viewModel.updateComment, deleteComment: viewModel.deleteComment)
-                            .task {
-                                print(viewModel.comments)
-                            }
+                    
                     }
                     .scrollIndicators(.hidden)
                     .padding(.all, 8)

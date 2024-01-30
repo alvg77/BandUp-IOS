@@ -40,7 +40,7 @@ extension PostService: PostServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
             switch requestCompletion {
@@ -77,7 +77,7 @@ extension PostService: PostServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
             switch requestCompletion {
@@ -120,7 +120,7 @@ extension PostService: PostServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
             switch requestCompletion {
@@ -158,7 +158,7 @@ extension PostService: PostServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
             switch requestCompletion {
@@ -194,7 +194,7 @@ extension PostService: PostServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         RequestHandler.makeRequest(request: request) { requestCompletion in
             switch requestCompletion {
