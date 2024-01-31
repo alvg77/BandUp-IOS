@@ -13,6 +13,7 @@ struct PostListView: View {
     var body: some View {
         VStack {
             flairSelector
+                .padding(.horizontal, 8)
             ZStack {
                 posts
                     .scrollIndicators(.hidden)
@@ -23,13 +24,6 @@ struct PostListView: View {
                         guard viewModel.posts.isEmpty else { return }
                         viewModel.fetchPosts()
                     }
-                if let error = viewModel.error {
-                    VStack {
-                        Spacer()
-                        ErrorMessage(errorMessage: error.localizedDescription)
-                            .padding(.all)
-                    }
-                }
             }
         }
         .navigationTitle("Home")
@@ -40,7 +34,15 @@ struct PostListView: View {
             }
         }
         .searchable(text: $viewModel.queryString, placement: .navigationBarDrawer(displayMode: .always))
-        
+        .alert(
+            "Oops! Something went wrong...",
+            isPresented: $viewModel.error.isNotNil(),
+            presenting: $viewModel.error,
+            actions: { _ in },
+            message: { error in
+                Text(error.wrappedValue!.localizedDescription)
+            }
+        )
     }
 }
 

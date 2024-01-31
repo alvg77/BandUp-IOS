@@ -93,8 +93,6 @@ class PostViewModel: ObservableObject {
         if case .unauthorized = error {
             toAuth?()
         }
-        withAnimation {
-            self.error = error
-        }
+        self.error = error
     }
 }

@@ -24,6 +24,7 @@ class CreateUpdatePostViewModel: ObservableObject {
     @Published var flair: PostFlair?
     @Published var urlState = TextFieldState.neutral
     @Published var flairs: [PostFlair] = []
+    
     @Published var error: APIError?
     
     let modifyAction: ModifyAction
@@ -131,9 +132,7 @@ private extension CreateUpdatePostViewModel {
             toAuth?()
             return
         }
-        withAnimation {
-            self.error = error
-        }
+        self.error = error
     }
     
     func createPost() {

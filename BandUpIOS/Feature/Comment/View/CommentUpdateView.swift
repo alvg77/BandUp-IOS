@@ -40,6 +40,7 @@ struct CommentUpdateView: View {
                     }
                 }
                 .navigationTitle("Edit Comment")
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

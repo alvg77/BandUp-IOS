@@ -60,7 +60,6 @@ class PostListViewModel: ObservableObject {
                 }
             }
     }
-    
 
     func fetchPosts() {
         pageNo = 0
