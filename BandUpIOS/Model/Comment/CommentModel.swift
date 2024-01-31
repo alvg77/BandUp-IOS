@@ -14,7 +14,7 @@ class CommentModel: ObservableObject {
     @Published var comments: [Comment] = []
     
     func fetchComments(appending: Bool, postId: Int, pageNo: Int, pageSize: Int, handleError: @escaping HandleError) {
-        CommentService.shared.getAll(postId: postId, pageNo: pageNo, pageSize: pageSize) { [weak self] completion in
+        CommentService.shared.getAll(commentId: postId, pageNo: pageNo, pageSize: pageSize) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let comments):

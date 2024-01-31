@@ -299,6 +299,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		4B5FE4BF2B694C5500CCD4F1 /* Advert */ = {
+			isa = PBXGroup;
+			children = (
+				4BE1D4532B69585400719715 /* ViewModel */,
+				4BE1D4522B69584E00719715 /* View */,
+			);
+			path = Advert;
+			sourceTree = "<group>";
+		};
 		4B6515342B2CD96A004166D4 /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,6 +413,7 @@
 		4B7B5D6A2B23FF2E008943A8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				4B5FE4BF2B694C5500CCD4F1 /* Advert */,
 				4BF1CECE2B67E4250074E9A0 /* Comment */,
 				4B42856E2B484351005AF4E7 /* Post */,
 				4B7853872B24867B00D671B9 /* Authentication */,
@@ -507,6 +517,20 @@
 				4BAC9B7C2B643121006343EA /* Auth */,
 			);
 			path = Router;
+			sourceTree = "<group>";
+		};
+		4BE1D4522B69584E00719715 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4BE1D4532B69585400719715 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		4BE1FE852B30819D0094F52B /* Register */ = {
