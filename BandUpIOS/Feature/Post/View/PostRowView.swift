@@ -19,7 +19,7 @@ struct PostRowView: View {
         HStack {
             VStack(alignment: .leading) {
                 HStack (alignment: .center, spacing: 4) {
-                    UserProfilePicture(width: 28, heigth: 28, cornerRadius: 10)
+                    UserProfilePicture(diameter: 28)
                         
                     VStack (alignment: .leading) {
                         Text(creator.username).bold()
@@ -44,7 +44,7 @@ struct PostRowView: View {
         }
         .padding(15)
         .background(colorScheme == .dark ? Color(.systemGray6) : Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(radius: 2, x: 0, y: 1)
         .padding(.horizontal, 8)
         .padding(.vertical, 2)

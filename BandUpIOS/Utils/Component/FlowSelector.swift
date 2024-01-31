@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftUIFlow
+import Flow
 
 struct FlowSelector<Data: CustomStringConvertible & Identifiable>: View {
     let data: [Data]

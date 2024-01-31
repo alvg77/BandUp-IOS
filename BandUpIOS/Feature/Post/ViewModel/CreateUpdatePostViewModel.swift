@@ -136,7 +136,7 @@ private extension CreateUpdatePostViewModel {
     }
     
     func createPost() {
-        model.addPost(
+        model.createPost(
             CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             onSuccess: onCreate ?? {},
             handleError: handleError
