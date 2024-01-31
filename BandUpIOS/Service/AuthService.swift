@@ -7,17 +7,17 @@
 
 import Foundation
 
-protocol LoginServiceProtocol {
+protocol AuthServiceProtocol {
     func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void)
 }
 
-class LoginService {
-    static let shared: LoginServiceProtocol = LoginService()
+class AuthService {
+    static let shared: AuthServiceProtocol = AuthService()
     
     private init() { }
 }
 
-extension LoginService: LoginServiceProtocol {
+extension AuthService: AuthServiceProtocol {
     func login(loginRequest: LoginRequest, completion:  @escaping (Result<LoginResponse, APIError>) -> Void) {
         let endpoint = URL(string: "http://localhost:9090/api/v1/auth/login")
         
