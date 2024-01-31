@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct RegisterResponse: Codable {
+struct AuthResponse: Decodable {
     var token: String
 }

@@ -19,26 +19,19 @@ struct CreateUpdatePostView: View {
     }
     
     var body: some View {
-        VStack {
-            ScrollView {
-                if let errorMessage = viewModel.error?.errorDescription {
-                    ErrorMessage(errorMessage: errorMessage)
-                }
-                
-                title
-                postFlairPicker
-                url
-                
-                CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
-                    .focused($focus, equals: .content)
-            }
-            .task {
-                guard viewModel.flairs.isEmpty else { return }
-                viewModel.getFlairs()
-            }
-            .refreshable {
-                viewModel.getFlairs()
-            }
+        ScrollView {
+            title
+            postFlairPicker
+            url
+            CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
+                .focused($focus, equals: .content)
+        }
+        .task {
+            guard viewModel.flairs.isEmpty else { return }
+            viewModel.getFlairs()
+        }
+        .refreshable {
+            viewModel.getFlairs()
         }
         .padding(.all, 8)
         .navigationTitle(viewModel.modifyAction == .create ? "Create Post" : "Edit Post")
@@ -51,6 +44,15 @@ struct CreateUpdatePostView: View {
                 doneButton
             }
         }
+        .alert(
+            "Oops! Something went wrong...",
+            isPresented: $viewModel.error.isNotNil(),
+            presenting: $viewModel.error,
+            actions: { _ in },
+            message: { error in
+                Text(error.wrappedValue!.localizedDescription)
+            }
+        )
     }
 }
 

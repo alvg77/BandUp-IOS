@@ -113,7 +113,7 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     private func checkEmail() {
-        RegisterService.shared.checkEmailAvailability(email: email) { [weak self] completion in
+        AuthService.shared.checkEmailAvailability(email: email) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let availability):
@@ -129,7 +129,7 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     private func checkUsername() {
-        RegisterService.shared.checkUsernameAvailability(username: username) { [weak self] completion in
+        AuthService.shared.checkUsernameAvailability(username: username) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let availability):

@@ -49,6 +49,7 @@ struct CommentRowView: View {
         .sheet(isPresented: $editing) {
             CommentUpdateView(commentId: commentId, content: content, update: update)
         }
+        .padding(.all, 2)
 
     }
 }

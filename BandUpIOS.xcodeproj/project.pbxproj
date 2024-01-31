@@ -17,8 +17,7 @@
 		4B42791A2B30BB9B000A5631 /* LocationSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279182B30BB9B000A5631 /* LocationSelectViewModel.swift */; };
 		4B42791B2B30BB9B000A5631 /* GenreSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279172B30BB9B000A5631 /* GenreSelectViewModel.swift */; };
 		4B42791C2B30BB9B000A5631 /* ProfileInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279192B30BB9B000A5631 /* ProfileInfoViewModel.swift */; };
-		4B42791F2B30BBB0000A5631 /* RegisterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42791E2B30BBB0000A5631 /* RegisterService.swift */; };
-		4B4279242B30BBCD000A5631 /* RegisterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279212B30BBCC000A5631 /* RegisterResponse.swift */; };
+		4B4279242B30BBCD000A5631 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279212B30BBCC000A5631 /* AuthResponse.swift */; };
 		4B4279252B30BBCD000A5631 /* RegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279222B30BBCC000A5631 /* RegisterRequest.swift */; };
 		4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279272B30BC19000A5631 /* CredentialsViewModel.swift */; };
 		4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279292B30BF28000A5631 /* RegisterView.swift */; };
@@ -58,8 +57,7 @@
 		4B840E372B2A525300292508 /* GenreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B840E362B2A525300292508 /* GenreService.swift */; };
 		4B8E3DDE2B2631840090A60C /* SwiftUIFlow in Frameworks */ = {isa = PBXBuildFile; productRef = 4B8E3DDD2B2631840090A60C /* SwiftUIFlow */; };
 		4B8E3DF22B2661BC0090A60C /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */; };
-		4B8E3DF42B26762A0090A60C /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF32B26762A0090A60C /* LoginResponse.swift */; };
-		4B8E3DF72B2676810090A60C /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF62B2676810090A60C /* LoginService.swift */; };
+		4B8E3DF72B2676810090A60C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF62B2676810090A60C /* AuthService.swift */; };
 		4B95B9C82B273E8F00F17432 /* ArtistType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C72B273E8F00F17432 /* ArtistType.swift */; };
 		4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C92B273ED400F17432 /* Genre.swift */; };
 		4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9CB2B27430D00F17432 /* PasswordField.swift */; };
@@ -121,8 +119,7 @@
 		4B4279172B30BB9B000A5631 /* GenreSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSelectViewModel.swift; sourceTree = "<group>"; };
 		4B4279182B30BB9B000A5631 /* LocationSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectViewModel.swift; sourceTree = "<group>"; };
 		4B4279192B30BB9B000A5631 /* ProfileInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoViewModel.swift; sourceTree = "<group>"; };
-		4B42791E2B30BBB0000A5631 /* RegisterService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterService.swift; sourceTree = "<group>"; };
-		4B4279212B30BBCC000A5631 /* RegisterResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterResponse.swift; sourceTree = "<group>"; };
+		4B4279212B30BBCC000A5631 /* AuthResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		4B4279222B30BBCC000A5631 /* RegisterRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterRequest.swift; sourceTree = "<group>"; };
 		4B4279272B30BC19000A5631 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
 		4B4279292B30BF28000A5631 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -162,8 +159,7 @@
 		4B840E342B2A523E00292508 /* ArtistTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistTypeService.swift; sourceTree = "<group>"; };
 		4B840E362B2A525300292508 /* GenreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreService.swift; sourceTree = "<group>"; };
 		4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
-		4B8E3DF32B26762A0090A60C /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
-		4B8E3DF62B2676810090A60C /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		4B8E3DF62B2676810090A60C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		4B95B9C72B273E8F00F17432 /* ArtistType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistType.swift; sourceTree = "<group>"; };
 		4B95B9C92B273ED400F17432 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		4B95B9CB2B27430D00F17432 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
@@ -233,24 +229,6 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		4B253F6C2B46EB2300962CC1 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */,
-				4B8E3DF32B26762A0090A60C /* LoginResponse.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		4B253F6D2B46EB3000962CC1 /* Register */ = {
-			isa = PBXGroup;
-			children = (
-				4B4279222B30BBCC000A5631 /* RegisterRequest.swift */,
-				4B4279212B30BBCC000A5631 /* RegisterResponse.swift */,
-			);
-			path = Register;
-			sourceTree = "<group>";
-		};
 		4B253F6E2B46EC1C00962CC1 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,8 +244,7 @@
 				4B840E362B2A525300292508 /* GenreService.swift */,
 				4BA9F11B2B4D6471007849C6 /* PostFlairService.swift */,
 				4B651C652B3F873B00738CF8 /* JWTService.swift */,
-				4B8E3DF62B2676810090A60C /* LoginService.swift */,
-				4B42791E2B30BBB0000A5631 /* RegisterService.swift */,
+				4B8E3DF62B2676810090A60C /* AuthService.swift */,
 				4B6FFEBC2B4C8DF500569D12 /* PostService.swift */,
 				4B355F182B55EF950044B5FD /* LikeService.swift */,
 				4BF1CECC2B67E3F30074E9A0 /* CommentService.swift */,
@@ -278,10 +255,9 @@
 		4B4279202B30BBC0000A5631 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4BB564342B69D2CA008F7D24 /* Auth */,
 				4BF1CEC52B67E2080074E9A0 /* Comment */,
 				4BBB97E42B62F2480054ECB3 /* Post */,
-				4B253F6C2B46EB2300962CC1 /* Login */,
-				4B253F6D2B46EB3000962CC1 /* Register */,
 				4B95B9C72B273E8F00F17432 /* ArtistType.swift */,
 				4BD8AAFB2B2FABAA00288C03 /* APIErrorMessage.swift */,
 				4B95B9C92B273ED400F17432 /* Genre.swift */,
@@ -451,6 +427,16 @@
 				4BAC9B802B644625006343EA /* PostRouterView.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		4BB564342B69D2CA008F7D24 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				4B4279212B30BBCC000A5631 /* AuthResponse.swift */,
+				4B4279222B30BBCC000A5631 /* RegisterRequest.swift */,
+				4B8E3DF12B2661BC0090A60C /* LoginRequest.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		4BBAD0BD2B59B62600FB8635 /* Component */ = {
@@ -747,7 +733,6 @@
 				4B42857B2B484870005AF4E7 /* CreateUpdatePostView.swift in Sources */,
 				4BF1CEC92B67E25D0074E9A0 /* CreateUpdateComment.swift in Sources */,
 				4B6FFEB22B4C84A900569D12 /* PostListViewModel.swift in Sources */,
-				4B42791F2B30BBB0000A5631 /* RegisterService.swift in Sources */,
 				4BBBEAA82B5801E0008941F0 /* Extensions.swift in Sources */,
 				4B4279142B30BB72000A5631 /* FlowSelector.swift in Sources */,
 				4BD8AAFC2B2FABAA00288C03 /* APIErrorMessage.swift in Sources */,
@@ -757,7 +742,6 @@
 				4BAC9B812B644625006343EA /* PostRouterView.swift in Sources */,
 				4B0EF1DB2B67089F00A269C8 /* RequestHandler.swift in Sources */,
 				4B42791A2B30BB9B000A5631 /* LocationSelectViewModel.swift in Sources */,
-				4B8E3DF42B26762A0090A60C /* LoginResponse.swift in Sources */,
 				4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */,
 				4BAC9B7F2B6437BA006343EA /* PostRouter.swift in Sources */,
 				4B65218D2B24F915001D429E /* RoundButton.swift in Sources */,
@@ -786,7 +770,7 @@
 				4BEF5A422B45BB2300C32F71 /* Contacts.swift in Sources */,
 				4B99B7532B692F32009D8A87 /* CommentUpdateView.swift in Sources */,
 				4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */,
-				4B8E3DF72B2676810090A60C /* LoginService.swift in Sources */,
+				4B8E3DF72B2676810090A60C /* AuthService.swift in Sources */,
 				4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */,
 				4B253F702B46EC3000962CC1 /* LoadingState.swift in Sources */,
 				4BEF5A3D2B45A95F00C32F71 /* ContactsViewModel.swift in Sources */,
@@ -795,7 +779,7 @@
 				4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */,
 				4B7853952B24873900D671B9 /* LoginViewModel.swift in Sources */,
 				4B6FFEBB2B4C850C00569D12 /* PostRowView.swift in Sources */,
-				4B4279242B30BBCD000A5631 /* RegisterResponse.swift in Sources */,
+				4B4279242B30BBCD000A5631 /* AuthResponse.swift in Sources */,
 				4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */,
 				4B4285852B48492A005AF4E7 /* CharacterCountTextEditor.swift in Sources */,
 				4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */,

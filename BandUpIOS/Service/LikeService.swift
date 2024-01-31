@@ -31,7 +31,7 @@ extension LikeService: LikeServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         RequestHandler.makeRequest(request: request) { requestCompletion in
             switch requestCompletion {
@@ -54,7 +54,7 @@ extension LikeService: LikeServiceProtocol {
             return
         }
         
-        request.addValue("Bearer \(String(describing: token))", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         RequestHandler.makeRequest(request: request) { requestCompletion in
             switch requestCompletion {
