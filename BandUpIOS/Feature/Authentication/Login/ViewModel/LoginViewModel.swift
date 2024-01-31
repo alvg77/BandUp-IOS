@@ -22,7 +22,7 @@ final class LoginViewModel: ObservableObject {
     }
         
     func login() {
-        LoginService.shared.login(loginRequest: LoginRequest(email: email, password: password)) { [weak self] completion in
+        AuthService.shared.login(loginRequest: LoginRequest(email: email, password: password)) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let response):

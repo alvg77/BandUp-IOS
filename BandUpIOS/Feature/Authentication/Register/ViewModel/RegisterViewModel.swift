@@ -71,7 +71,7 @@ class RegisterViewModel: ObservableObject {
             )
         )
                 
-        RegisterService.shared.register(registerRequest: registerRequest) { [weak self] completion in
+        AuthService.shared.register(registerRequest: registerRequest) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let response):
