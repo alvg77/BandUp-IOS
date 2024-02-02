@@ -72,7 +72,9 @@ private extension AdvertDetailView {
         HStack {
             VStack {
                 Text("Genres").font(.subheadline).bold()
+                Spacer()
                 FlowList(data: viewModel.advert.genres)
+                Spacer()
             }
             .frame(maxWidth: .infinity)
             
@@ -80,7 +82,9 @@ private extension AdvertDetailView {
             
             VStack  {
                 Text("Searched").font(.subheadline).bold()
+                Spacer()
                 FlowList(data: viewModel.advert.searchedArtistTypes)
+                Spacer()
             }
             .frame(maxWidth: .infinity)
         }

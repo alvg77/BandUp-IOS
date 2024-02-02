@@ -18,7 +18,7 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
             ForEach(options) { selectable in
                 Button(action: { toggleSelection(selectable: selectable) }) {
                     HStack {
-                        Text(optionToString(selectable)).foregroundColor(.black)
+                        Text(optionToString(selectable)).foregroundColor(.primary)
                         Spacer()
                         if selected.contains(where: { $0.id == selectable.id }) {
                             Image(systemName: "checkmark").foregroundColor(.accentColor)

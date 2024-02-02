@@ -32,6 +32,8 @@ class AdvertCreateUpdateViewModel: ObservableObject {
         self.advertId = nil
         self.modifyAction = .create
         self.model = model
+        self.availableGenres = self.model.genres
+        self.availableArtistTypes = self.model.artistTypes
         
         self.model.$genres.sink { [weak self] in
             self?.availableGenres = $0
@@ -50,6 +52,16 @@ class AdvertCreateUpdateViewModel: ObservableObject {
         self.searchedArtistTypes = advert.searchedArtistTypes
         self.modifyAction = .update
         self.model = model
+        self.availableGenres = self.model.genres
+        self.availableArtistTypes = self.model.artistTypes
+        
+        self.model.$genres.sink { [weak self] in
+            self?.availableGenres = $0
+        }.store(in: &cancellables)
+        
+        self.model.$artistTypes.sink { [weak self] in
+            self?.availableArtistTypes = $0
+        }.store(in: &cancellables)
     }
     
     var validate: Bool {
