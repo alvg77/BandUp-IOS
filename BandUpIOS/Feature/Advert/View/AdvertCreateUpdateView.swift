@@ -13,29 +13,8 @@ struct AdvertCreateUpdateView: View {
     
     var body: some View {
         Form {
-            Section {
-                TextField("Title", text: $viewModel.title)
-                    .font(.title2)
-                    .foregroundStyle(.purple)
-                    .bold()
-                CharacterCountTextEditor("Description", text: $viewModel.description, maxChars: 5000)
-                    .frame(height: 300)
-            }
-            Section {
-                MultiSelector(
-                    label: Text("Genres"),
-                    options: viewModel.availableGenres,
-                    optionToString: { $0.description },
-                    selected: $viewModel.genres
-                )
-                
-                MultiSelector(
-                    label: Text("Searched Artist Types"),
-                    options: viewModel.availableArtistTypes,
-                    optionToString: { $0.description },
-                    selected: $viewModel.searchedArtistTypes
-                )
-            }
+            displayTextSection
+            displayGenresAndArtistTypesSelectSection
         }
         .task {
             guard viewModel.availableGenres.isEmpty || viewModel.availableArtistTypes.isEmpty else { return }
@@ -47,9 +26,7 @@ struct AdvertCreateUpdateView: View {
         .navigationTitle(viewModel.modifyAction == .create ? "Create Advert" : "Update Advert")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(viewModel.modifyAction == .create ? "Create" : "Done") {
-                    viewModel.modify()
-                }
+                displayDoneButton
             }
         }
         .alert(
@@ -61,6 +38,44 @@ struct AdvertCreateUpdateView: View {
                 Text(error.wrappedValue!.localizedDescription)
             }
         )
+    }
+}
+
+private extension AdvertCreateUpdateView {
+    @ViewBuilder var displayTextSection: some View {
+        Section {
+            TextField("Title", text: $viewModel.title)
+                .font(.title2)
+                .foregroundStyle(.purple)
+                .bold()
+            CharacterCountTextEditor("Description", text: $viewModel.description, maxChars: 5000)
+                .frame(height: 300)
+        }
+    }
+    
+    @ViewBuilder var displayGenresAndArtistTypesSelectSection: some View {
+        Section {
+            MultiSelector(
+                label: Text("Genres"),
+                options: viewModel.availableGenres,
+                optionToString: { $0.description },
+                selected: $viewModel.genres
+            )
+            
+            MultiSelector(
+                label: Text("Searched Artist Types"),
+                options: viewModel.availableArtistTypes,
+                optionToString: { $0.description },
+                selected: $viewModel.searchedArtistTypes
+            )
+        }
+    }
+    
+    @ViewBuilder var displayDoneButton: some View {
+        Button(viewModel.modifyAction == .create ? "Create" : "Done") {
+            viewModel.modify()
+        }
+        .disabled(!viewModel.validate)
     }
 }
 
