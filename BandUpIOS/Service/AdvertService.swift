@@ -10,7 +10,7 @@ import Foundation
 protocol AdvertServiceProtocol {
     func create(advertCreateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void)
     func getById(advertId: Int, completion: @escaping (Result<Advert, APIError>) -> Void)
-    func getAll(pageNo: Int, pageSize: Int, completion: @escaping (Result<[Advert], APIError>) -> Void)
+    func getAll(pageNo: Int, pageSize: Int, artistTypeIds: [Int]?, genreIds: [Int]?, completion: @escaping (Result<[Advert], APIError>) -> Void)
     func update(advertId: Int, advertUpdateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void)
     func delete(advertId: Int, completion: @escaping (Result<Void, APIError>) -> Void)
 }
@@ -18,7 +18,7 @@ protocol AdvertServiceProtocol {
 class AdvertService {
     static let shared: AdvertServiceProtocol = AdvertService()
     
-    private static let baseURL = URL(string: "")!
+    private static let baseURL = URL(string: "http://localhost:9090/api/v1/advertisements")!
     private let decoder = JSONDecoder()
     private let formatter = DateFormatter()
     
@@ -34,7 +34,7 @@ extension AdvertService: AdvertServiceProtocol {
         var request = URLRequest(url: AdvertService.baseURL)
         request.httpMethod = "POST"
         request.httpBody = try? JSONEncoder().encode(advertCreateRequest)
-        request.setValue("application/jspn", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
             completion(.failure(.unauthorized))
@@ -103,8 +103,31 @@ extension AdvertService: AdvertServiceProtocol {
         }
     }
     
-    func getAll(pageNo: Int, pageSize: Int, completion: @escaping (Result<[Advert], APIError>) -> Void) {
-        var request = URLRequest(url: AdvertService.baseURL)
+    func getAll(pageNo: Int, pageSize: Int, artistTypeIds: [Int]?, genreIds: [Int]?, completion: @escaping (Result<[Advert], APIError>) -> Void) {
+        var queryArtistTypeIds: [URLQueryItem] = []
+        var queryGenreIds: [URLQueryItem] = []
+        
+        if let artistTypeIds = artistTypeIds {
+            queryArtistTypeIds = artistTypeIds.map {
+                URLQueryItem(name: "artistTypeIds", value: "\($0)")
+            }
+        }
+        
+        if let genreIds = genreIds {
+            queryGenreIds = genreIds.map {
+                URLQueryItem(name: "genreIds", value: "\($0)")
+            }
+        }
+        
+        var queryItems: [URLQueryItem] = []
+        queryItems.append(URLQueryItem(name: "pageNo", value: "\(pageNo)"))
+        queryItems.append(URLQueryItem(name: "pageSize", value: "\(pageSize)"))
+        queryItems.append(contentsOf: queryArtistTypeIds)
+        queryItems.append(contentsOf: queryGenreIds)
+
+        let endpoint = AdvertService.baseURL.appending(queryItems: queryItems)
+                
+        var request = URLRequest(url: endpoint)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         

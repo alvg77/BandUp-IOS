@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Genre: Encodable, Decodable, Identifiable, CustomStringConvertible {
+struct Genre: Codable, Hashable, Identifiable, CustomStringConvertible {
+    
     var id: Int
     var name: String
     
-    public var description: String { self.name }
+    var description: String { self.name }
 }

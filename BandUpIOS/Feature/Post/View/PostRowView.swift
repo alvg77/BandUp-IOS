@@ -19,7 +19,7 @@ struct PostRowView: View {
         HStack {
             VStack(alignment: .leading) {
                 HStack (alignment: .center, spacing: 4) {
-                    UserProfilePicture(diameter: 28)
+                    UserProfilePicture(diameter: 40)
                         
                     VStack (alignment: .leading) {
                         Text(creator.username).bold()

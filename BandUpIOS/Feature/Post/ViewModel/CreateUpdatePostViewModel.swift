@@ -9,11 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-enum ModifyAction {
-    case create
-    case update
-}
-
 class CreateUpdatePostViewModel: ObservableObject {
     let postId: Int?
     

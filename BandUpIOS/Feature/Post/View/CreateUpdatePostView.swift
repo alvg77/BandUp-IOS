@@ -136,3 +136,7 @@ private extension CreateUpdatePostView {
         .disabled(!viewModel.validate)
     }
 }
+
+#Preview {
+    CreateUpdatePostView(viewModel: CreateUpdatePostViewModel(model: PostModel()))
+}

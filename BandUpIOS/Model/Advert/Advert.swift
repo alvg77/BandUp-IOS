@@ -14,7 +14,7 @@ struct Advert: Decodable, Identifiable {
     var location: Location
     var genres: [Genre]
     var searchedArtistTypes: [ArtistType]
-    var createor: UserDetails
+    var creator: UserDetails
     var contacts: Contacts
     var createdAt: Date
 }

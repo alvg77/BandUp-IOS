@@ -15,9 +15,11 @@ class AdvertListViewModel: ObservableObject {
     private var model: AdvertModel
     private var cancellables = Set<AnyCancellable>()
     private var pageNo = 0
-    private let pageSize = 10
     
     var toAuth: (() -> Void)?
+    var navigateToAdvertDetail: ((Advert) -> Void)?
+    var navigateToCreateAdvert: (() -> Void)?
+    var navigateToFilterAdverts: (() -> Void)?
     
     init(model: AdvertModel) {
         self.model = model
@@ -29,7 +31,7 @@ class AdvertListViewModel: ObservableObject {
     
     func fetchAdverts() {
         pageNo = 0
-        model.fetchAdverts(appending: false, pageNo: pageNo, pageSize: pageSize, handleError: handleError)
+        model.fetchAdverts(appending: false, pageNo: pageNo, handleError: handleError)
     }
     
     func fetchNextPage(advert: Advert) {
@@ -37,7 +39,19 @@ class AdvertListViewModel: ObservableObject {
             return
         }
         pageNo += 1
-        model.fetchAdverts(appending: true, pageNo: pageNo, pageSize: pageSize, handleError: handleError)
+        model.fetchAdverts(appending: true, pageNo: pageNo, handleError: handleError)
+    }
+    
+    func createAdvert() {
+        navigateToCreateAdvert?()
+    }
+    
+    func advertDetail(advert: Advert) {
+        navigateToAdvertDetail?(advert)
+    }
+    
+    func filterAdverts() {
+        navigateToFilterAdverts?()
     }
     
     private func handleError(error: APIError?) {

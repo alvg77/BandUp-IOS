@@ -7,14 +7,14 @@
 
 import Foundation
 
-class AdvertDetailViewModel: ObservableObject {
+class AdvertViewModel: ObservableObject {
     @Published var advert: Advert
     @Published var error: APIError?
     
     private var model: AdvertModel
     
     var toAuth: (() -> Void)?
-    var navigateToUpdate: (() -> Void)?
+    var navigateToUpdateAdvert: ((Advert, @escaping (Advert) -> Void) -> Void)?
     var onDelete: (() -> Void)?
     
     init(advert: Advert, model: AdvertModel) {
@@ -23,7 +23,9 @@ class AdvertDetailViewModel: ObservableObject {
     }
     
     func updateAdvert() {
-        navigateToUpdate?()
+        navigateToUpdateAdvert?(advert) { [weak self] in
+            self?.advert = $0
+        }
     }
     
     func deleteAdvert() {
