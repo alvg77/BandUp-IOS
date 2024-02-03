@@ -13,15 +13,24 @@ struct AdvertDetailView: View {
     @ObservedObject var viewModel: AdvertViewModel
 
     var body: some View {
-        ScrollView {
-            displayCreator
-            displayAdvertDetails
-            displayGenresAndSearchedArtistTypes
-            displayCreatorContacts
+        Form {
+            Section {
+                displayCreator
+                displayAdvertDetails
+            }
+            
+            Section {
+                displayGenres
+                displaySearchedArtistTypes
+            }
+            
+            Section {
+                displayCreatorContacts
+            }
             displayLocation
         }
         .scrollIndicators(.hidden)
-        .padding(.horizontal, 16)
+        .navigationTitle("Advert")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 displayMenu
@@ -64,49 +73,34 @@ private extension AdvertDetailView {
             Text(viewModel.advert.description)
                 .multilineTextAlignment(.leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.bottom, 12)
     }
     
-    @ViewBuilder var displayGenresAndSearchedArtistTypes: some View {
-        HStack {
-            VStack {
-                Text("Genres").font(.subheadline).bold()
-                Spacer()
-                FlowList(data: viewModel.advert.genres)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-            
-            Divider()
-            
-            VStack  {
-                Text("Searched").font(.subheadline).bold()
-                Spacer()
-                FlowList(data: viewModel.advert.searchedArtistTypes)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
+    @ViewBuilder var displayGenres: some View {
+        VStack(alignment: .leading) {
+            Text("Genres").font(.title3).bold()
+            FlowList(data: viewModel.advert.genres)
         }
-        .cardBackground()
-        .padding(.bottom, 12)
-        .padding(.horizontal, 2)
+    }
+    
+    @ViewBuilder var displaySearchedArtistTypes: some View {
+        VStack(alignment: .leading)  {
+            Text("Searched").font(.title3).bold()
+            FlowList(data: viewModel.advert.searchedArtistTypes)
+        }
     }
         
     @ViewBuilder var displayCreatorContacts: some View {
-            VStack {
+        VStack (alignment: .leading) {
                 Text("Creator contacts: ")
                     .bold()
                     .font(.title3)
                     .padding(.bottom, 8)
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if let email = viewModel.advert.contacts.contactsEmail {
                     HStack {
                         Image(systemName: "envelope").foregroundStyle(.purple).bold()
                         Text(email)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
 
                 }
                 
@@ -115,7 +109,6 @@ private extension AdvertDetailView {
                         Image(systemName: "phone").foregroundStyle(.purple).bold()
                         Text(number)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
                 if let website = viewModel.advert.contacts.website {
@@ -123,12 +116,8 @@ private extension AdvertDetailView {
                         Image(systemName: "globe").foregroundStyle(.purple).bold()
                         Text(website)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .cardBackground()
-            .padding(.bottom, 12)
-            .padding(.horizontal, 2)
     }
     
     @ViewBuilder var displayLocation: some View {

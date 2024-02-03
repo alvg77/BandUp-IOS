@@ -25,9 +25,6 @@ struct AdvertRowView: View {
                 Text(title)
                     .font(.title2)
                     .bold()
-                Text(content)
-                    .font(.subheadline)
-                    .lineLimit(2)
                 displayGenres
                 displayDate
                     .padding(.top, 4)
@@ -60,7 +57,7 @@ private extension AdvertRowView {
     
     @ViewBuilder var displayGenres: some View {
         HStack {
-            VStack {
+            VStack(alignment: .leading) {
                 Text("Genres").font(.subheadline).bold()
                 HStack {
                     Text(genres.first?.description ?? "")
@@ -77,11 +74,10 @@ private extension AdvertRowView {
                     }
                 }
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-            Divider()
             
-            VStack {
+            VStack(alignment: .leading) {
                 Text("Searched").font(.subheadline).bold()
                 HStack {
                     Text(searchedArtistTypes.first?.description ?? "")
@@ -98,7 +94,7 @@ private extension AdvertRowView {
                     }
                 }
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.vertical, 8)
         .frame(height: 80)
