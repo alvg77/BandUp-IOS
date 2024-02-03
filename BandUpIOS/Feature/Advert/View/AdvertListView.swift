@@ -62,7 +62,7 @@ private extension AdvertListView {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.adverts) { advert in
-                    AdvertRowView(title: advert.title, content: advert.description, location: advert.location, genres: advert.genres, searchedArtistTypes: advert.searchedArtistTypes, createor: advert.creator, createdAt: advert.createdAt)
+                    AdvertRowView(title: advert.title, location: advert.location, genres: advert.genres, searchedArtistTypes: advert.searchedArtistTypes, createor: advert.creator, createdAt: advert.createdAt)
                         .onTapGesture {
                             viewModel.advertDetail(advert: advert)
                         }

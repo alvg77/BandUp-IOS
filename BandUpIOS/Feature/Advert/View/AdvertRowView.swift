@@ -11,7 +11,6 @@ struct AdvertRowView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var title: String
-    var content: String
     var location: Location
     var genres: [Genre]
     var searchedArtistTypes: [ArtistType]
@@ -113,7 +112,6 @@ private extension AdvertRowView {
 #Preview {
     AdvertRowView(
         title: "Searching for a bass player",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         location: Location(country: "Bulgaria", city: "Sofia", postalCode: "1712"),
         genres: [Genre(id: 0, name: "Metal"), Genre(id: 1, name: "Rock")],
         searchedArtistTypes: [ArtistType(id: 0, name: "Guitarist"), ArtistType(id: 1, name: "Bassist")],

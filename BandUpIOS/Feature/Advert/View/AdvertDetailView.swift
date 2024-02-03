@@ -13,22 +13,22 @@ struct AdvertDetailView: View {
     @ObservedObject var viewModel: AdvertViewModel
 
     var body: some View {
-        Form {
-            Section {
-                displayCreator
-                displayAdvertDetails
-            }
+        ScrollView {
+            displayCreator
+            displayAdvertDetails
+                
+            Divider()
             
-            Section {
-                displayGenres
-                displaySearchedArtistTypes
-            }
+            displayGenres
+            displaySearchedArtistTypes
             
-            Section {
-                displayCreatorContacts
-            }
+            Divider()
+            
+            displayCreatorContacts
             displayLocation
+            
         }
+        .padding(.all)
         .scrollIndicators(.hidden)
         .navigationTitle("Advert")
         .toolbar {
@@ -80,6 +80,8 @@ private extension AdvertDetailView {
             Text("Genres").font(.title3).bold()
             FlowList(data: viewModel.advert.genres)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.bottom)
     }
     
     @ViewBuilder var displaySearchedArtistTypes: some View {
@@ -87,6 +89,8 @@ private extension AdvertDetailView {
             Text("Searched").font(.title3).bold()
             FlowList(data: viewModel.advert.searchedArtistTypes)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.bottom)
     }
         
     @ViewBuilder var displayCreatorContacts: some View {
@@ -100,24 +104,25 @@ private extension AdvertDetailView {
                     HStack {
                         Image(systemName: "envelope").foregroundStyle(.purple).bold()
                         Text(email)
-                    }
+                    }.bold()
 
                 }
                 
                 if let number = viewModel.advert.contacts.phoneNumer {
                     HStack {
-                        Image(systemName: "phone").foregroundStyle(.purple).bold()
+                        Image(systemName: "phone").foregroundStyle(.purple)
                         Text(number)
-                    }
+                    }.bold()
                 }
                 
                 if let website = viewModel.advert.contacts.website {
                     HStack {
-                        Image(systemName: "globe").foregroundStyle(.purple).bold()
+                        Image(systemName: "globe").foregroundStyle(.purple)
                         Text(website)
-                    }
+                    }.bold()
                 }
             }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     @ViewBuilder var displayLocation: some View {
@@ -148,8 +153,7 @@ private extension AdvertDetailView {
                 genres: [Genre (id: 0, name: "METAL"), Genre(id: 1, name: "ROCK")],
                 searchedArtistTypes: [ArtistType(id: 0, name: "GUITARIST"), ArtistType(id: 1, name: "DRUMMER")],
                 creator: UserDetails(id: 0, username: "Username", email: "email@email"),
-                contacts: Contacts(phoneNumer: "+359893690922",
-                contactsEmail: "contacts@band.com", website: "bandwebsite.com"),
+                contacts: Contacts(phoneNumer: "+359893690922"),
                 createdAt: Date.now),
             model: AdvertModel()
         )
