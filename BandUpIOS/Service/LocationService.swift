@@ -21,9 +21,6 @@ class LocationService: ObservableObject {
             guard let response = response else {
                 if let error = error {
                     print("Search error: \(error.localizedDescription)")
-                    if let mapError = error as? MKError {
-                        print(mapError.errorCode, mapError.localizedDescription)
-                    }
                 }
                 return
             }
