@@ -76,5 +76,7 @@ private extension AdvertListView {
 }
 
 #Preview {
-    AdvertListView(viewModel: AdvertListViewModel(model: AdvertModel()))
+    NavigationStack {
+        AdvertListView(viewModel: AdvertListViewModel(model: AdvertModel()))
+    }
 }

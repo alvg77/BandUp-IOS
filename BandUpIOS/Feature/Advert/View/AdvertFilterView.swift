@@ -89,5 +89,7 @@ private extension AdvertFilterView {
 }
 
 #Preview {
-    AdvertFilterView(viewModel: AdvertFilterViewModel(model: AdvertModel()))
+    NavigationStack {
+        AdvertFilterView(viewModel: AdvertFilterViewModel(model: AdvertModel()))
+    }
 }

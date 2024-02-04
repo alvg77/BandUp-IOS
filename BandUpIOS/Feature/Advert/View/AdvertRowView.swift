@@ -44,7 +44,7 @@ private extension AdvertRowView {
                 Text(createor.username)
                 HStack (spacing: 0) {
                     Image(systemName: "mappin")
-                    Text("\(location.city ?? ""), \(location.administrativeArea ?? ""), \(location.country ?? "")")
+                    Text(getLocationString())
                 }
                 .bold()
                 .foregroundStyle(.purple)
@@ -106,6 +106,14 @@ private extension AdvertRowView {
         }
         .font(.caption)
         .foregroundStyle(.gray)
+    }
+    
+    private func getLocationString() -> String {
+        let city = location.city != nil ? location.city! + ", " : ""
+        let administrativeArea = location.administrativeArea != nil && location.administrativeArea != city ? location.administrativeArea! + ", " : ""
+        let country = location.country != nil ? location.country! : ""
+        
+        return city + administrativeArea + country
     }
 }
 
