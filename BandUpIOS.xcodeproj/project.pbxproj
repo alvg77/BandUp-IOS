@@ -41,7 +41,6 @@
 		4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279272B30BC19000A5631 /* CredentialsViewModel.swift */; };
 		4B42792A2B30BF28000A5631 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279292B30BF28000A5631 /* RegisterView.swift */; };
 		4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42792B2B30BF3B000A5631 /* RegisterViewModel.swift */; };
-		4B42792F2B310200000A5631 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 4B42792E2B310200000A5631 /* GooglePlaces */; };
 		4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */; };
 		4B4285772B484791005AF4E7 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285762B484791005AF4E7 /* Post.swift */; };
 		4B4285792B4847AD005AF4E7 /* CreateUpdatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285782B4847AD005AF4E7 /* CreateUpdatePost.swift */; };
@@ -51,6 +50,9 @@
 		4B4285852B48492A005AF4E7 /* CharacterCountTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285842B48492A005AF4E7 /* CharacterCountTextEditor.swift */; };
 		4B42858B2B484B73005AF4E7 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42858A2B484B73005AF4E7 /* UserDetails.swift */; };
 		4B5451572B572504009589FA /* LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5451562B572504009589FA /* LinkPreview.swift */; };
+		4B555E412B6ED5DA00AC72C1 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E402B6ED5DA00AC72C1 /* LocationService.swift */; };
+		4B555E432B6EEB1F00AC72C1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E422B6EEB1F00AC72C1 /* MapView.swift */; };
+		4B555E452B6EED4000AC72C1 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E442B6EED4000AC72C1 /* SearchBar.swift */; };
 		4B6515362B2CD976004166D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6515352B2CD976004166D4 /* APIError.swift */; };
 		4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C652B3F873B00738CF8 /* JWTService.swift */; };
 		4B65218D2B24F915001D429E /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* RoundButton.swift */; };
@@ -92,7 +94,6 @@
 		4BBAD0CD2B59C69900FB8635 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBAD0CC2B59C69900FB8635 /* MainView.swift */; };
 		4BBBEAA82B5801E0008941F0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBBEAA72B5801E0008941F0 /* Extensions.swift */; };
 		4BC1A90B2B6C3CA1007C207E /* ModifyAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1A90A2B6C3CA1007C207E /* ModifyAction.swift */; };
-		4BC1A90E2B6C3F45007C207E /* MultiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4BC1A90D2B6C3F45007C207E /* MultiPicker */; };
 		4BC1A9102B6C50F2007C207E /* MultiSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1A90F2B6C50F2007C207E /* MultiSelectionView.swift */; };
 		4BC1A9122B6C5125007C207E /* MultiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1A9112B6C5125007C207E /* MultiSelector.swift */; };
 		4BC1A9142B6C5C91007C207E /* AdvertFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1A9132B6C5C91007C207E /* AdvertFilter.swift */; };
@@ -173,6 +174,9 @@
 		4B4285842B48492A005AF4E7 /* CharacterCountTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCountTextEditor.swift; sourceTree = "<group>"; };
 		4B42858A2B484B73005AF4E7 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		4B5451562B572504009589FA /* LinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreview.swift; sourceTree = "<group>"; };
+		4B555E402B6ED5DA00AC72C1 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		4B555E422B6EEB1F00AC72C1 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		4B555E442B6EED4000AC72C1 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		4B6515352B2CD976004166D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		4B651C652B3F873B00738CF8 /* JWTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTService.swift; sourceTree = "<group>"; };
 		4B65218C2B24F915001D429E /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
@@ -243,9 +247,7 @@
 			files = (
 				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
 				4B373BBE2B6AD8F900FC295A /* Flow in Frameworks */,
-				4B42792F2B310200000A5631 /* GooglePlaces in Frameworks */,
 				4B373BC02B6AD8F900FC295A /* Renderer in Frameworks */,
-				4BC1A90E2B6C3F45007C207E /* MultiPicker in Frameworks */,
 				4BD966C22B4390ED0031A6FB /* iPhoneNumberField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +318,7 @@
 				4B355F182B55EF950044B5FD /* LikeService.swift */,
 				4BF1CECC2B67E3F30074E9A0 /* CommentService.swift */,
 				4B373BA32B6AA0FC00FC295A /* AdvertService.swift */,
+				4B555E402B6ED5DA00AC72C1 /* LocationService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -534,6 +537,8 @@
 				4B373BB22B6AD3E200FC295A /* FlowList.swift */,
 				4BC1A90F2B6C50F2007C207E /* MultiSelectionView.swift */,
 				4BC1A9112B6C5125007C207E /* MultiSelector.swift */,
+				4B555E422B6EEB1F00AC72C1 /* MapView.swift */,
+				4B555E442B6EED4000AC72C1 /* SearchBar.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -696,12 +701,10 @@
 			);
 			name = BandUpIOS;
 			packageProductDependencies = (
-				4B42792E2B310200000A5631 /* GooglePlaces */,
 				4B6E78072B386FA300721D49 /* KeychainAccess */,
 				4BD966C12B4390ED0031A6FB /* iPhoneNumberField */,
 				4B373BBD2B6AD8F900FC295A /* Flow */,
 				4B373BBF2B6AD8F900FC295A /* Renderer */,
-				4BC1A90D2B6C3F45007C207E /* MultiPicker */,
 			);
 			productName = BandUpIOS;
 			productReference = 4B7B5D372B23FE3B008943A8 /* BandUpIOS.app */;
@@ -776,11 +779,9 @@
 			);
 			mainGroup = 4B7B5D2E2B23FE3B008943A8;
 			packageReferences = (
-				4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */,
 				4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
-				4BC1A90C2B6C3F45007C207E /* XCRemoteSwiftPackageReference "MultiPicker" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
 			projectDirPath = "";
@@ -859,6 +860,7 @@
 				4BD8AAFC2B2FABAA00288C03 /* APIErrorMessage.swift in Sources */,
 				4B42791C2B30BB9B000A5631 /* ProfileInfoViewModel.swift in Sources */,
 				4B6515362B2CD976004166D4 /* APIError.swift in Sources */,
+				4B555E412B6ED5DA00AC72C1 /* LocationService.swift in Sources */,
 				4B4285792B4847AD005AF4E7 /* CreateUpdatePost.swift in Sources */,
 				4BAC9B812B644625006343EA /* PostRouterView.swift in Sources */,
 				4B0EF1DB2B67089F00A269C8 /* RequestHandler.swift in Sources */,
@@ -877,6 +879,7 @@
 				4B373BA22B6A902500FC295A /* CreateUpdateAdvert.swift in Sources */,
 				4B6FFEBD2B4C8DF500569D12 /* PostService.swift in Sources */,
 				4B42858B2B484B73005AF4E7 /* UserDetails.swift in Sources */,
+				4B555E452B6EED4000AC72C1 /* SearchBar.swift in Sources */,
 				4BF1CED62B67E5360074E9A0 /* CommentRowView.swift in Sources */,
 				4BC1A9102B6C50F2007C207E /* MultiSelectionView.swift in Sources */,
 				4B42791B2B30BB9B000A5631 /* GenreSelectViewModel.swift in Sources */,
@@ -896,6 +899,7 @@
 				4BADA65A2B27B8F40059E9EC /* ErrorMessage.swift in Sources */,
 				4B251ADD2B6D87EC004B63A5 /* CardBackground.swift in Sources */,
 				4BEF5A422B45BB2300C32F71 /* Contacts.swift in Sources */,
+				4B555E432B6EEB1F00AC72C1 /* MapView.swift in Sources */,
 				4B99B7532B692F32009D8A87 /* CommentUpdateView.swift in Sources */,
 				4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */,
 				4B8E3DF72B2676810090A60C /* AuthService.swift in Sources */,
@@ -1257,27 +1261,11 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.3.0;
-			};
-		};
 		4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
 			requirement = {
 				branch = master;
-				kind = branch;
-			};
-		};
-		4BC1A90C2B6C3F45007C207E /* XCRemoteSwiftPackageReference "MultiPicker" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/toastersocks/MultiPicker.git";
-			requirement = {
-				branch = main;
 				kind = branch;
 			};
 		};
@@ -1302,20 +1290,10 @@
 			package = 4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
 			productName = Renderer;
 		};
-		4B42792E2B310200000A5631 /* GooglePlaces */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4B42792D2B310200000A5631 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
-			productName = GooglePlaces;
-		};
 		4B6E78072B386FA300721D49 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		4BC1A90D2B6C3F45007C207E /* MultiPicker */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4BC1A90C2B6C3F45007C207E /* XCRemoteSwiftPackageReference "MultiPicker" */;
-			productName = MultiPicker;
 		};
 		4BD966C12B4390ED0031A6FB /* iPhoneNumberField */ = {
 			isa = XCSwiftPackageProductDependency;

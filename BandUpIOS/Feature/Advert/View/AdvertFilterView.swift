@@ -11,6 +11,7 @@ struct AdvertFilterView: View {
     @ObservedObject var viewModel: AdvertFilterViewModel
 
     var body: some View {
+
         Form {
             displayLocationSection
             displayGenresAndArtistTypesSection
@@ -46,7 +47,11 @@ struct AdvertFilterView: View {
 private extension AdvertFilterView {
     @ViewBuilder var displayLocationSection: some View {
         Section("Filter by location") {
-            Text("Location filter")
+            VStack {
+                SearchBar(text: $viewModel.searchQuery, onSearchButtonClicked: viewModel.searchForCity)
+                MapView(mapItems: viewModel.mapItems)
+                    .frame(height: 300)
+            }.padding(.vertical, 4)
         }
     }
     

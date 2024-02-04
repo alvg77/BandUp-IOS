@@ -9,14 +9,10 @@ import Foundation
 import Combine
 import CoreLocation
 
-class LocationSelectViewModel: ObservableObject, RegisterStepViewModel {
+class LocationSelectViewModel: LocationService, RegisterStepViewModel {
     var register: (() -> Void)?
-    
-    @Published var country = ""
-    @Published var city = ""
-    @Published var zipcode = ""
-    
+            
     var validateStep: Bool {
-        true
+        getLocation() != nil
     }
 }

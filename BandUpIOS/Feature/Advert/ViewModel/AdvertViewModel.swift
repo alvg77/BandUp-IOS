@@ -23,13 +23,19 @@ class AdvertViewModel: ObservableObject {
     }
     
     func updateAdvert() {
-        navigateToUpdateAdvert?(advert) { [weak self] in
-            self?.advert = $0
-        }
+        navigateToUpdateAdvert?(advert, onCompleteValue)
     }
     
     func deleteAdvert() {
         model.deleteAdvert(id: advert.id, onComplete: onDelete ?? {}, handleError: handleError)
+    }
+    
+    func fetchAdvert() {
+        model.fetchAdvert(advertId: advert.id, onComplete: onCompleteValue, handleError: handleError)
+    }
+    
+    private func onCompleteValue(advert: Advert) {
+        self.advert = advert
     }
     
     private func handleError(error: APIError?) {

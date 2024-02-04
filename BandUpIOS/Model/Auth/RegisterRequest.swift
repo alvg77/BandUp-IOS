@@ -14,6 +14,6 @@ struct RegisterRequest: Encodable {
     var artistTypeId: Int
     var genreIds: [Int]
     var bio: String
-    var location = Location()
+    var location: Location
     var contacts: Contacts
 }

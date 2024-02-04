@@ -44,7 +44,7 @@ private extension AdvertRowView {
                 Text(createor.username)
                 HStack (spacing: 0) {
                     Image(systemName: "mappin")
-                    Text("\(location.postalCode), \(location.city ), \(location.country)")
+                    Text("\(location.city ?? ""), \(location.administrativeArea ?? ""), \(location.country ?? "")")
                 }
                 .bold()
                 .foregroundStyle(.purple)
@@ -112,7 +112,7 @@ private extension AdvertRowView {
 #Preview {
     AdvertRowView(
         title: "Searching for a bass player",
-        location: Location(country: "Bulgaria", city: "Sofia", postalCode: "1712"),
+        location: Location(country: "Bulgaria", city: "Sofia", administrativeArea: "Sofia-city", lat: 0, lon: 0),
         genres: [Genre(id: 0, name: "Metal"), Genre(id: 1, name: "Rock")],
         searchedArtistTypes: [ArtistType(id: 0, name: "Guitarist"), ArtistType(id: 1, name: "Bassist")],
         createor: UserDetails(id: 0, username: "username", email: "username@email.com"),

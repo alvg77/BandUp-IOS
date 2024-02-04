@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import MapKit
 
 extension URL {
     func isReachable(completion: @escaping (Bool) -> ()) {
@@ -67,5 +68,11 @@ extension Binding {
         }, set: { _ in
             wrappedValue = nil
         })
+    }
+}
+
+extension MKMapItem: Identifiable {
+    public var id: String {
+        return name ?? ""
     }
 }

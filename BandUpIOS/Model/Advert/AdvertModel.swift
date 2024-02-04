@@ -26,7 +26,7 @@ class AdvertModel: ObservableObject {
     }
     
     func fetchAdverts(appending: Bool, pageNo: Int, onComplete: OnComplete? = nil, handleError: @escaping HandleError) {
-        AdvertService.shared.getAll(pageNo: pageNo, pageSize: pageSize, artistTypeIds: advertFilter?.searchedArtistTypes.map {$0.id}, genreIds: advertFilter?.genres.map {$0.id}) { [weak self] completion in
+        AdvertService.shared.getAll(pageNo: pageNo, pageSize: pageSize, filter: advertFilter) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let adverts):
@@ -70,7 +70,6 @@ class AdvertModel: ObservableObject {
                     onComplete()
                     handleError(nil)
                 case .failure(let error):
-                    print("Shite")
                     handleError(error)
                 }
             }

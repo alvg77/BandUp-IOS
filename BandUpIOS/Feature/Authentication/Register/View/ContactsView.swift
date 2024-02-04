@@ -23,7 +23,6 @@ struct ContactsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.all, 4)
 
-                
                 Text("Provide your contact information, so other members on the platform can reach to you.")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom)

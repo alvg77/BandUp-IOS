@@ -1,24 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "helpers",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/toastersocks/Helpers.git",
-      "state" : {
-        "revision" : "ae8fe3d43f72082cd4a67a0e9791fa982aa90d54",
-        "version" : "0.6.0"
-      }
-    },
-    {
-      "identity" : "ios-places-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/googlemaps/ios-places-sdk",
-      "state" : {
-        "revision" : "db961cdf29b116c497baf87c1ef8188082089fb7",
-        "version" : "8.3.0"
-      }
-    },
-    {
       "identity" : "iphonenumberfield",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MojtabaHs/iPhoneNumberField",
@@ -34,15 +16,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
-      }
-    },
-    {
-      "identity" : "multipicker",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/toastersocks/MultiPicker.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "fe4b14ca6556ee9f71d1a4475f2f229cc7d2f5d8"
       }
     },
     {

@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
+import MapKit
 
-class AdvertFilterViewModel: ObservableObject {
+class AdvertFilterViewModel: LocationService {
     @Published var filter: AdvertFilter
     @Published var availableGenres: [Genre]
     @Published var availableArtistTypes: [ArtistType]
@@ -28,12 +29,32 @@ class AdvertFilterViewModel: ObservableObject {
         self.availableGenres = model.genres
         self.availableArtistTypes = model.artistTypes
         
+        super.init()
+        
+        if let location = self.model.advertFilter?.location {
+            self.mapItems.append(
+                MKMapItem(
+                    placemark: MKPlacemark(
+                        coordinate: CLLocationCoordinate2D(
+                            latitude: location.lat,
+                            longitude: location.lon
+                        )
+                    )
+                )
+            )
+        }
+        
         self.model.$genres.sink { [weak self] in
             self?.availableGenres = $0
         }.store(in: &cancellables)
         
         self.model.$artistTypes.sink { [weak self] in
             self?.availableArtistTypes = $0
+        }.store(in: &cancellables)
+        
+        self.$mapItems.sink { [weak self] in
+            guard let mapItem = $0.first else { return }
+            self?.filter.location = Location(mapItem: mapItem)
         }.store(in: &cancellables)
     }
     
@@ -42,12 +63,12 @@ class AdvertFilterViewModel: ObservableObject {
     }
     
     var applyEnabled: Bool {
+        filter.location != nil ||
         !filter.genres.isEmpty ||
         !filter.searchedArtistTypes.isEmpty
     }
     
     func clearFilter() {
-        filter = AdvertFilter()
         model.applyFilter(advertFilter: nil, onComplete: onComplete ?? {}, handleError: handleError)
     }
     

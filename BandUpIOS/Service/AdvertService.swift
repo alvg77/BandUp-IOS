@@ -10,7 +10,7 @@ import Foundation
 protocol AdvertServiceProtocol {
     func create(advertCreateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void)
     func getById(advertId: Int, completion: @escaping (Result<Advert, APIError>) -> Void)
-    func getAll(pageNo: Int, pageSize: Int, artistTypeIds: [Int]?, genreIds: [Int]?, completion: @escaping (Result<[Advert], APIError>) -> Void)
+    func getAll(pageNo: Int, pageSize: Int, filter: AdvertFilter?, completion: @escaping (Result<[Advert], APIError>) -> Void)
     func update(advertId: Int, advertUpdateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void)
     func delete(advertId: Int, completion: @escaping (Result<Void, APIError>) -> Void)
 }
@@ -103,17 +103,17 @@ extension AdvertService: AdvertServiceProtocol {
         }
     }
     
-    func getAll(pageNo: Int, pageSize: Int, artistTypeIds: [Int]?, genreIds: [Int]?, completion: @escaping (Result<[Advert], APIError>) -> Void) {
+    func getAll(pageNo: Int, pageSize: Int, filter: AdvertFilter?, completion: @escaping (Result<[Advert], APIError>) -> Void) {
         var queryArtistTypeIds: [URLQueryItem] = []
         var queryGenreIds: [URLQueryItem] = []
-        
-        if let artistTypeIds = artistTypeIds {
+
+        if let artistTypeIds = filter?.searchedArtistTypes.map({ $0.id }) {
             queryArtistTypeIds = artistTypeIds.map {
                 URLQueryItem(name: "artistTypeIds", value: "\($0)")
             }
         }
         
-        if let genreIds = genreIds {
+        if let genreIds = filter?.genres.map({ $0.id }) {
             queryGenreIds = genreIds.map {
                 URLQueryItem(name: "genreIds", value: "\($0)")
             }
@@ -122,6 +122,9 @@ extension AdvertService: AdvertServiceProtocol {
         var queryItems: [URLQueryItem] = []
         queryItems.append(URLQueryItem(name: "pageNo", value: "\(pageNo)"))
         queryItems.append(URLQueryItem(name: "pageSize", value: "\(pageSize)"))
+        queryItems.append(URLQueryItem(name: "city", value: filter?.location?.city))
+        queryItems.append(URLQueryItem(name: "administrativeArea", value: filter?.location?.administrativeArea))
+        queryItems.append(URLQueryItem(name: "country", value: filter?.location?.country))
         queryItems.append(contentsOf: queryArtistTypeIds)
         queryItems.append(contentsOf: queryGenreIds)
 
