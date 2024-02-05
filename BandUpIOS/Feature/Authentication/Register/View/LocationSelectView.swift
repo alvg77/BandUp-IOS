@@ -12,7 +12,7 @@ struct LocationSelectView: View {
     @ObservedObject var viewModel: LocationSelectViewModel
     
     var body: some View {
-        ScrollView {
+        VStack {
             Text("Location")
                 .bold()
                 .font(.largeTitle)
@@ -23,17 +23,10 @@ struct LocationSelectView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom)
             
-            // later to be changed
-            Group {
-                TextField("Country", text: $viewModel.country)
-                    .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "mappin.and.ellipse"))
-                TextField("City", text: $viewModel.city)
-                    .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "building.2"))
-                TextField("Zip-Code", text: $viewModel.zipcode)
-                    .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "mail.and.text.magnifyingglass"))
-            }
-            .padding(.bottom, 8)
-
+            SearchBar(text: $viewModel.searchQuery, onSearchButtonClicked: viewModel.searchForCity)
+            MapView(mapItems: viewModel.mapItems)
+                .padding(.vertical)
+            
             Button {
                 viewModel.register?()
             } label: {
@@ -43,8 +36,7 @@ struct LocationSelectView: View {
             .buttonStyle(RoundButton())
             .disabled(!viewModel.validateStep)
         }
-        .padding(.vertical)
-        .padding(.horizontal, 8)
+        .padding(.all)
     }
 }
 

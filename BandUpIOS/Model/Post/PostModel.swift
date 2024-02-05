@@ -47,7 +47,7 @@ class PostModel: ObservableObject {
         }
     }
     
-    func addPost(_ new: CreateUpdatePost, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func createPost(_ new: CreateUpdatePost, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         PostService.shared.create(
             postCreateRequest: CreateUpdatePost(title: new.title, url: new.url, content: new.content, flairId: new.flairId)
         ) { [weak self] completion in

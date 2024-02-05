@@ -30,8 +30,7 @@ struct GenreSelectView: View {
                 .padding(.bottom)
             continueButton
         }
-        .padding(.vertical)
-        .padding(.horizontal, 8)
+        .padding(.all)
         .task {
             if viewModel.genres.isEmpty {
                 viewModel.getGenres()

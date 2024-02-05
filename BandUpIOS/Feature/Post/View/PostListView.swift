@@ -13,6 +13,7 @@ struct PostListView: View {
     var body: some View {
         VStack {
             flairSelector
+                .padding(.horizontal)
             ZStack {
                 posts
                     .scrollIndicators(.hidden)
@@ -23,13 +24,6 @@ struct PostListView: View {
                         guard viewModel.posts.isEmpty else { return }
                         viewModel.fetchPosts()
                     }
-                if let error = viewModel.error {
-                    VStack {
-                        Spacer()
-                        ErrorMessage(errorMessage: error.localizedDescription)
-                            .padding(.all)
-                    }
-                }
             }
         }
         .navigationTitle("Home")
@@ -40,7 +34,15 @@ struct PostListView: View {
             }
         }
         .searchable(text: $viewModel.queryString, placement: .navigationBarDrawer(displayMode: .always))
-        
+        .alert(
+            "Oops! Something went wrong...",
+            isPresented: $viewModel.error.isNotNil(),
+            presenting: $viewModel.error,
+            actions: { _ in },
+            message: { error in
+                Text(error.wrappedValue!.localizedDescription)
+            }
+        )
     }
 }
 
@@ -63,13 +65,15 @@ private extension PostListView {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.posts) { post in
-                    PostRowView(title: post.title, flair: post.flair, creator: post.creator, createdAt: post.createdAt)
+                    PostRowView(title: post.title, flair: post.flair, likeCount: post.likeCount, commentCount: post.commentCount, creator: post.creator, createdAt: post.createdAt)
                         .onTapGesture {
                             viewModel.postDetail(post: post)
                         }
                         .task {
                             viewModel.fetchNextPage(post: post)
                         }
+                        .padding(.horizontal)
+                        .padding(.vertical, 4)
                 }
             }
         }
@@ -85,5 +89,7 @@ private extension PostListView {
 }
 
 #Preview {
-    PostListView(viewModel: PostListViewModel(model: PostModel()))
+    NavigationStack {
+        PostListView(viewModel: PostListViewModel(model: PostModel()))
+    }
 }

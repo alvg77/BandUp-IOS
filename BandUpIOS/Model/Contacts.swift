@@ -8,7 +8,7 @@
 import Foundation
 
 struct Contacts: Codable {
-    var phoneNumer: String
-    var contactsEmail: String
-    var website: String
+    var phoneNumer: String?
+    var contactEmail: String?
+    var website: String?
 }

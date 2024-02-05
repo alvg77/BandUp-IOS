@@ -41,15 +41,10 @@ struct CommentRowView: View {
             commentContent
                 .multilineTextAlignment(.leading)
         }
-        .padding(.all, 15)
-        .background(colorScheme == .dark ? Color(.systemGray6) : Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .shadow(radius: 2, x: 0, y: 1)
-        .padding(.vertical, 2)
+        .cardBackground()
         .sheet(isPresented: $editing) {
             CommentUpdateView(commentId: commentId, content: content, update: update)
         }
-
     }
 }
 

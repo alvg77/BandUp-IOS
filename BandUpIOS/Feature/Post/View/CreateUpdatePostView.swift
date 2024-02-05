@@ -19,28 +19,25 @@ struct CreateUpdatePostView: View {
     }
     
     var body: some View {
-        VStack {
-            ScrollView {
-                if let errorMessage = viewModel.error?.errorDescription {
-                    ErrorMessage(errorMessage: errorMessage)
-                }
-                
+        Form {
+            Section {
                 title
-                postFlairPicker
                 url
-                
                 CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
                     .focused($focus, equals: .content)
             }
-            .task {
-                guard viewModel.flairs.isEmpty else { return }
-                viewModel.getFlairs()
-            }
-            .refreshable {
-                viewModel.getFlairs()
+            Section {
+                postFlairPicker
             }
         }
-        .padding(.all, 8)
+        .task {
+            guard viewModel.flairs.isEmpty else { return }
+            viewModel.getFlairs()
+        }
+        .refreshable {
+            viewModel.getFlairs()
+        }
+        
         .navigationTitle(viewModel.modifyAction == .create ? "Create Post" : "Edit Post")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
@@ -51,6 +48,15 @@ struct CreateUpdatePostView: View {
                 doneButton
             }
         }
+        .alert(
+            "Oops! Something went wrong...",
+            isPresented: $viewModel.error.isNotNil(),
+            presenting: $viewModel.error,
+            actions: { _ in },
+            message: { error in
+                Text(error.wrappedValue!.localizedDescription)
+            }
+        )
     }
 }
 
@@ -60,26 +66,17 @@ private extension CreateUpdatePostView {
             .font(.title2)
             .foregroundStyle(.purple)
             .bold()
-            .padding(.bottom)
             .focused($focus, equals: .title)
     }
     
     @ViewBuilder private var postFlairPicker: some View {
-        HStack {
-            Text("Post Flair")
-            Spacer()
-            Picker("Post Flair", selection: $viewModel.flair) {
-                Text("None").tag(Optional<PostFlair>(nil))
-                ForEach(viewModel.flairs) {
-                    Text($0.name).tag(Optional($0))
-                }
+        Picker("Post Flair", selection: $viewModel.flair) {
+            Text("None").tag(Optional<PostFlair>(nil))
+            ForEach(viewModel.flairs) {
+                Text($0.name).tag(Optional($0))
             }
-            .pickerStyle(.menu)
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal)
-        .background(RoundedRectangle(cornerRadius: 15).foregroundStyle(Color(.systemGray6)))
-        .padding(.bottom, 8)
+        .pickerStyle(.menu)
     }
   
     @ViewBuilder private var url: some View {
@@ -93,7 +90,6 @@ private extension CreateUpdatePostView {
                         .focused($focus, equals: .url)
                         .textInputAutocapitalization(.never)
                 }
-                .padding(.bottom, 8)
                 
                 if case .invalid(let errorMessage) = viewModel.urlState {
                     FieldError(errorMessage: errorMessage)
@@ -133,4 +129,8 @@ private extension CreateUpdatePostView {
         }
         .disabled(!viewModel.validate)
     }
+}
+
+#Preview {
+    CreateUpdatePostView(viewModel: CreateUpdatePostViewModel(model: PostModel()))
 }

@@ -30,6 +30,8 @@ private extension CommentListView {
                     delete: deleteComment
                 )
             }
+            .padding(.horizontal)
+            .padding(.vertical, 4)
         }
     }
 }

@@ -9,11 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-enum ModifyAction {
-    case create
-    case update
-}
-
 class CreateUpdatePostViewModel: ObservableObject {
     let postId: Int?
     
@@ -24,6 +19,7 @@ class CreateUpdatePostViewModel: ObservableObject {
     @Published var flair: PostFlair?
     @Published var urlState = TextFieldState.neutral
     @Published var flairs: [PostFlair] = []
+    
     @Published var error: APIError?
     
     let modifyAction: ModifyAction
@@ -122,29 +118,24 @@ class CreateUpdatePostViewModel: ObservableObject {
             updatePost()
         }
     }
-}
 
-// MARK: Private methods
-private extension CreateUpdatePostViewModel {
-    func handleError(error: APIError?) {
+    private func handleError(error: APIError?) {
         if case .unauthorized = error {
             toAuth?()
             return
         }
-        withAnimation {
-            self.error = error
-        }
+        self.error = error
     }
     
-    func createPost() {
-        model.addPost(
+    private func createPost() {
+        model.createPost(
             CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             onSuccess: onCreate ?? {},
             handleError: handleError
         )
     }
     
-    func updatePost() {
+    private func updatePost() {
         model.updatePost(
             CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             id: postId!,

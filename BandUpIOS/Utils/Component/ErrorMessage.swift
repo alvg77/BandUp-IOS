@@ -17,11 +17,7 @@ struct ErrorMessage: View {
                 .font(.callout)
         }
         .foregroundStyle(.red)
-        .padding(.vertical)
-        .padding(.horizontal, 8)
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
-        .shadow(radius: 5, x: 0, y: 2)
+        .cardBackground()
     }
 }
 

@@ -14,7 +14,7 @@ struct Post: Decodable, Identifiable {
     var content: String
     var flair: PostFlair
     let creator: UserDetails
-    let commentCount: Int
+    var commentCount: Int
     var likeCount: Int
     var liked: Bool
     let createdAt: Date

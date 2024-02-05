@@ -25,11 +25,17 @@ struct MainView: View {
 private extension MainView {
     @ViewBuilder private func appTabs() -> some View {
         TabView(selection: $tab) {
-            homeTab()
+            homeTab
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
                 .tag(TabScreen.home)
+            
+            advertsTab
+                .tabItem {
+                    Label("Adverts", systemImage: "list.bullet.rectangle.portrait")
+                }
+                .tag(TabScreen.adverts)
         }
         .onAppear {
             let tabBarAppearance = UITabBarAppearance()
@@ -40,8 +46,12 @@ private extension MainView {
 }
 
 private extension MainView {
-    @ViewBuilder private func homeTab() -> some View {
+    @ViewBuilder var homeTab: some View {
         PostsRouterView(toAuth: toAuth)
+    }
+    
+    @ViewBuilder var advertsTab: some View {
+        AdvertRouterView(toAuth: toAuth)
     }
 }
 

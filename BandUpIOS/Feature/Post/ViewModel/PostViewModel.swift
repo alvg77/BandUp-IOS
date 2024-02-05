@@ -74,7 +74,7 @@ class PostViewModel: ObservableObject {
     }
     
     func deleteComment(commentId: Int) {
-        commentModel.deleteComment(id: commentId, handleError: handleError)
+        commentModel.deleteComment(id: commentId, onSuccess: { [weak self] in self?.post.commentCount -= 1 }, handleError: handleError)
     }
     
     func updateComment(commentId: Int, content: String) {
@@ -87,14 +87,13 @@ class PostViewModel: ObservableObject {
     
     private func onSuccessComment() {
         self.newCommentContent = ""
+        self.post.commentCount += 1
     }
     
     private func handleError(error: APIError?) {
         if case .unauthorized = error {
             toAuth?()
         }
-        withAnimation {
-            self.error = error
-        }
+        self.error = error
     }
 }

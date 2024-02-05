@@ -26,7 +26,7 @@ struct AuthView: View {
                 .padding(.bottom, 8)
             registerButton
         }
-        .padding(.horizontal, 8)
+        .padding(.all, 8)
     }
 }
 
