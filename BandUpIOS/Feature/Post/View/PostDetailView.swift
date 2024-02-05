@@ -26,6 +26,7 @@ struct PostDetailView: View {
                     
                     if let url = viewModel.post.url {
                         LinkPreview(url: URL(string: url))
+                            .padding(.bottom, 8)
                     }
                     
                     Text(viewModel.post.content)
@@ -53,23 +54,12 @@ struct PostDetailView: View {
                 viewModel.refreshPost()
             }
             
-            HStack {
-                TextField("Comment", text: $viewModel.newCommentContent)
-                    .focused($focus)
-                    .padding(.all, 8)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                
-                if focus {
-                    Button("Done") {
-                        viewModel.createComment()
-                    }
-                    .disabled(viewModel.newCommentContent.isEmpty)
-                }
-            }
-            .padding(.all, 8)
-            .background(Color(.systemGray5))
+            commentField
+                .padding(.all, 8)
+                .background(Color(.systemGray5))
         }
+        .navigationTitle("Post")
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             viewModel.fetchComments()
         }
@@ -139,21 +129,40 @@ private extension PostDetailView {
             Image(systemName: "ellipsis")
         }
     }
+    
+    @ViewBuilder var commentField: some View {
+        HStack {
+            TextField("Comment", text: $viewModel.newCommentContent)
+                .focused($focus)
+                .padding(.all, 8)
+                .background(Color(.systemGray6))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            
+            if focus {
+                Button("Done") {
+                    viewModel.createComment()
+                }
+                .disabled(viewModel.newCommentContent.isEmpty)
+            }
+        }
+    }
 }
 
 #Preview {
-    PostDetailView(viewModel: PostViewModel(
-        post: Post(id: 1,
-                   title: "This is my first post on here",
-                   url: "https://tuesfest.bg/projects/405",
-                   content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-                   flair: PostFlair(id: 1, name: "Question"),
-                   creator: UserDetails(id: 1, username: "user1", email: "a@a.a", profilePicture: nil), 
-                   commentCount: 991,
-                   likeCount: 100,
-                   liked: false,
-                   createdAt: Date.now
-                  ),
-        model: PostModel()
-    ))
+    NavigationStack {
+        PostDetailView(viewModel: PostViewModel(
+            post: Post(id: 1,
+                       title: "This is my first post on here",
+                       url: "https://tuesfest.bg/projects/405",
+                       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                       flair: PostFlair(id: 1, name: "Question"),
+                       creator: UserDetails(id: 1, username: "user1", email: "a@a.a", profilePicture: nil),
+                       commentCount: 991,
+                       likeCount: 100,
+                       liked: false,
+                       createdAt: Date.now
+                      ),
+            model: PostModel()
+        ))
+    }
 }

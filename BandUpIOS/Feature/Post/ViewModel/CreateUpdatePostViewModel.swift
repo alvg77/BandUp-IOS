@@ -123,11 +123,8 @@ class CreateUpdatePostViewModel: ObservableObject {
             updatePost()
         }
     }
-}
 
-// MARK: Private methods
-private extension CreateUpdatePostViewModel {
-    func handleError(error: APIError?) {
+    private func handleError(error: APIError?) {
         if case .unauthorized = error {
             toAuth?()
             return
@@ -135,7 +132,7 @@ private extension CreateUpdatePostViewModel {
         self.error = error
     }
     
-    func createPost() {
+    private func createPost() {
         model.addPost(
             CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             onSuccess: onCreate ?? {},
@@ -143,7 +140,7 @@ private extension CreateUpdatePostViewModel {
         )
     }
     
-    func updatePost() {
+    private func updatePost() {
         model.updatePost(
             CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             id: postId!,
