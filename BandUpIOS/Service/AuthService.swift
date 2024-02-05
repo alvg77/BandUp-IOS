@@ -98,7 +98,7 @@ extension AuthService: AuthServiceProtocol {
         request.httpMethod = "POST"
         request.httpBody = try? JSONEncoder().encode(registerRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        
         RequestHandler.makeRequest(request: request) { requestCompletion in
             switch requestCompletion {
             case .success(let data):

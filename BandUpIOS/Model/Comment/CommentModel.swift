@@ -14,7 +14,7 @@ class CommentModel: ObservableObject {
     @Published var comments: [Comment] = []
     
     func fetchComments(appending: Bool, postId: Int, pageNo: Int, pageSize: Int, handleError: @escaping HandleError) {
-        CommentService.shared.getAll(commentId: postId, pageNo: pageNo, pageSize: pageSize) { [weak self] completion in
+        CommentService.shared.getAll(postId: postId, pageNo: pageNo, pageSize: pageSize) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
                 case .success(let comments):
@@ -62,7 +62,7 @@ class CommentModel: ObservableObject {
         }
     }
     
-    func deleteComment(id: Int, handleError: @escaping HandleError) {
+    func deleteComment(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         CommentService.shared.delete(commentId: id) { [weak self] completion in
             DispatchQueue.main.async {
                 switch completion {
@@ -70,6 +70,7 @@ class CommentModel: ObservableObject {
                     if let index = self?.comments.firstIndex(where: { $0.id == id }) {
                         self?.comments.remove(at: index)
                     }
+                    onSuccess()
                     handleError(nil)
                 case .failure(let error):
                     handleError(error)

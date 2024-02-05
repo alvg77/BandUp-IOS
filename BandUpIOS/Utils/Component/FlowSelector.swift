@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftUIFlow
+import Flow
 
 struct FlowSelector<Data: CustomStringConvertible & Identifiable>: View {
     let data: [Data]
@@ -14,7 +14,7 @@ struct FlowSelector<Data: CustomStringConvertible & Identifiable>: View {
     
     var body: some View {
         ScrollView {
-            VFlow (alignment: .leading) {
+            HFlow(alignment: .top) {
                 ForEach(data) { element in
                     Button {
                         guard let index = selected.firstIndex(where: {$0.id == element.id}) else {
