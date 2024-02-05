@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import MultiPicker
 
 struct AdvertCreateUpdateView: View {
     @ObservedObject var viewModel: AdvertCreateUpdateViewModel

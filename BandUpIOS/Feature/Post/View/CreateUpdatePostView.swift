@@ -19,12 +19,16 @@ struct CreateUpdatePostView: View {
     }
     
     var body: some View {
-        ScrollView {
-            title
-            postFlairPicker
-            url
-            CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
-                .focused($focus, equals: .content)
+        Form {
+            Section {
+                title
+                url
+                CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
+                    .focused($focus, equals: .content)
+            }
+            Section {
+                postFlairPicker
+            }
         }
         .task {
             guard viewModel.flairs.isEmpty else { return }
@@ -33,7 +37,7 @@ struct CreateUpdatePostView: View {
         .refreshable {
             viewModel.getFlairs()
         }
-        .padding(.all, 8)
+        
         .navigationTitle(viewModel.modifyAction == .create ? "Create Post" : "Edit Post")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
@@ -62,26 +66,17 @@ private extension CreateUpdatePostView {
             .font(.title2)
             .foregroundStyle(.purple)
             .bold()
-            .padding(.bottom)
             .focused($focus, equals: .title)
     }
     
     @ViewBuilder private var postFlairPicker: some View {
-        HStack {
-            Text("Post Flair")
-            Spacer()
-            Picker("Post Flair", selection: $viewModel.flair) {
-                Text("None").tag(Optional<PostFlair>(nil))
-                ForEach(viewModel.flairs) {
-                    Text($0.name).tag(Optional($0))
-                }
+        Picker("Post Flair", selection: $viewModel.flair) {
+            Text("None").tag(Optional<PostFlair>(nil))
+            ForEach(viewModel.flairs) {
+                Text($0.name).tag(Optional($0))
             }
-            .pickerStyle(.menu)
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal)
-        .background(RoundedRectangle(cornerRadius: 15).foregroundStyle(Color(.systemGray6)))
-        .padding(.bottom, 8)
+        .pickerStyle(.menu)
     }
   
     @ViewBuilder private var url: some View {
@@ -95,7 +90,6 @@ private extension CreateUpdatePostView {
                         .focused($focus, equals: .url)
                         .textInputAutocapitalization(.never)
                 }
-                .padding(.bottom, 8)
                 
                 if case .invalid(let errorMessage) = viewModel.urlState {
                     FieldError(errorMessage: errorMessage)
