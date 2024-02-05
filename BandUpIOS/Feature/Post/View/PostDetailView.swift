@@ -44,11 +44,11 @@ struct PostDetailView: View {
                         .padding(.bottom, 4)
                     
                 }
+                .padding(.horizontal)
                 CommentListView(comments: viewModel.comments, updateComment: viewModel.updateComment, deleteComment: viewModel.deleteComment)
                 
             }
             .scrollIndicators(.hidden)
-            .padding(.all, 8)
             .ignoresSafeArea(edges: .bottom)
             .refreshable {
                 viewModel.refreshPost()
