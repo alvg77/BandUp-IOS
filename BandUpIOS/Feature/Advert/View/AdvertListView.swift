@@ -69,6 +69,9 @@ private extension AdvertListView {
                         .onAppear {
                             viewModel.fetchNextPage(advert: advert)
                         }
+                        .padding(.horizontal)
+                        .padding(.vertical, 4)
+
                 }
             }
         }

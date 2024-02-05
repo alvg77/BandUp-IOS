@@ -25,14 +25,13 @@ struct AdvertRowView: View {
                     .font(.title2)
                     .bold()
                 displayGenres
+                Divider()
                 displayDate
                     .padding(.top, 4)
             }
             Spacer()
         }
         .cardBackground()
-        .padding(.horizontal, 16)
-        .padding(.vertical, 2)
     }
 }
 
