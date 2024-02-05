@@ -8,22 +8,15 @@
 import SwiftUI
 
 struct UserProfilePicture: View {
-    let width: CGFloat
-    let heigth: CGFloat
-    let cornerRadius: CGFloat
+    let diameter: CGFloat
     
     var body: some View {
-        Image(systemName: "person.fill")
+        Image(systemName: "person.circle")
             .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: width, height: heigth)
-            .foregroundStyle(.white)
-            .padding(.all, 4)
-            .background(.purple)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .frame(width: diameter, height: diameter)
     }
 }
 
 #Preview {
-    UserProfilePicture(width: 24, heigth: 24, cornerRadius: 10)
+    UserProfilePicture(diameter: 50)
 }

@@ -32,17 +32,14 @@ struct PostRowView: View {
             }
             Spacer()
         }
-        .padding(.all, 15)
-        .background(colorScheme == .dark ? Color(.systemGray6) : Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .shadow(radius: 2, x: 0, y: 1)
+        .cardBackground()
     }
 }
 
 private extension PostRowView {
     @ViewBuilder var top: some View {
         HStack (alignment: .center, spacing: 4) {
-            UserProfilePicture(width: 28, heigth: 28, cornerRadius: 10)
+            UserProfilePicture(diameter: 40)
             Text(creator.username).bold()
             
             Spacer()

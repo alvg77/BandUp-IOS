@@ -111,7 +111,7 @@ private extension PostDetailView {
     }
     
     @ViewBuilder var user: some View {
-        UserProfilePicture(width: 28, heigth: 28, cornerRadius: 10)
+        UserProfilePicture(diameter: 40).padding(.trailing, 4)
         
         VStack (alignment: .leading) {
             Text(viewModel.post.creator.username).bold()
