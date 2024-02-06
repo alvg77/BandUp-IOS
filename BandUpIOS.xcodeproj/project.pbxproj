@@ -103,6 +103,8 @@
 		4BD966BF2B4381270031A6FB /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD966BE2B4381270031A6FB /* ContactsView.swift */; };
 		4BD966C22B4390ED0031A6FB /* iPhoneNumberField in Frameworks */ = {isa = PBXBuildFile; productRef = 4BD966C12B4390ED0031A6FB /* iPhoneNumberField */; };
 		4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDD0EBC2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift */; };
+		4BDF99D82B72EDAF00199E97 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4BDF99D72B72EDAF00199E97 /* AWSS3 */; };
+		4BDF99DA2B72EE4C00199E97 /* AWSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF99D92B72EE4C00199E97 /* AWSImage.swift */; };
 		4BE1FE8C2B3083150094F52B /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FE8B2B3083150094F52B /* CredentialsView.swift */; };
 		4BEF5A3D2B45A95F00C32F71 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEF5A3C2B45A95F00C32F71 /* ContactsViewModel.swift */; };
 		4BEF5A422B45BB2300C32F71 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEF5A412B45BB2300C32F71 /* Contacts.swift */; };
@@ -228,6 +230,7 @@
 		4BD8AAFB2B2FABAA00288C03 /* APIErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorMessage.swift; sourceTree = "<group>"; };
 		4BD966BE2B4381270031A6FB /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
 		4BDD0EBC2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundBorderTextFieldStyle.swift; sourceTree = "<group>"; };
+		4BDF99D92B72EE4C00199E97 /* AWSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSImage.swift; sourceTree = "<group>"; };
 		4BE1FE8B2B3083150094F52B /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
 		4BEF5A3C2B45A95F00C32F71 /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
 		4BEF5A412B45BB2300C32F71 /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
@@ -245,6 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BDF99D82B72EDAF00199E97 /* AWSS3 in Frameworks */,
 				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
 				4B373BBE2B6AD8F900FC295A /* Flow in Frameworks */,
 				4B373BC02B6AD8F900FC295A /* Renderer in Frameworks */,
@@ -533,12 +537,13 @@
 				4B6FFEB62B4C84F300569D12 /* FlairView.swift */,
 				4B4279132B30BB72000A5631 /* FlowSelector.swift */,
 				4BC8BFB42B5F347E003E54DF /* FlairSelectHScroll.swift */,
-				4BF1CEC32B67CC650074E9A0 /* UserProfilePicture.swift */,
 				4B373BB22B6AD3E200FC295A /* FlowList.swift */,
 				4BC1A90F2B6C50F2007C207E /* MultiSelectionView.swift */,
 				4BC1A9112B6C5125007C207E /* MultiSelector.swift */,
 				4B555E422B6EEB1F00AC72C1 /* MapView.swift */,
 				4B555E442B6EED4000AC72C1 /* SearchBar.swift */,
+				4BF1CEC32B67CC650074E9A0 /* UserProfilePicture.swift */,
+				4BDF99D92B72EE4C00199E97 /* AWSImage.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -705,6 +710,7 @@
 				4BD966C12B4390ED0031A6FB /* iPhoneNumberField */,
 				4B373BBD2B6AD8F900FC295A /* Flow */,
 				4B373BBF2B6AD8F900FC295A /* Renderer */,
+				4BDF99D72B72EDAF00199E97 /* AWSS3 */,
 			);
 			productName = BandUpIOS;
 			productReference = 4B7B5D372B23FE3B008943A8 /* BandUpIOS.app */;
@@ -782,6 +788,7 @@
 				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */,
 				4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
+				4BDF99D42B72ECD100199E97 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
 			projectDirPath = "";
@@ -915,6 +922,7 @@
 				4B6FFEBB2B4C850C00569D12 /* PostRowView.swift in Sources */,
 				4B373BAF2B6AC6F500FC295A /* AdvertDetailView.swift in Sources */,
 				4B4279242B30BBCD000A5631 /* AuthResponse.swift in Sources */,
+				4BDF99DA2B72EE4C00199E97 /* AWSImage.swift in Sources */,
 				4B4279282B30BC19000A5631 /* CredentialsViewModel.swift in Sources */,
 				4B4285852B48492A005AF4E7 /* CharacterCountTextEditor.swift in Sources */,
 				4B42792C2B30BF3B000A5631 /* RegisterViewModel.swift in Sources */,
@@ -1277,6 +1285,14 @@
 				minimumVersion = 0.10.1;
 			};
 		};
+		4BDF99D42B72ECD100199E97 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/awslabs/aws-sdk-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.34.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1299,6 +1315,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */;
 			productName = iPhoneNumberField;
+		};
+		4BDF99D72B72EDAF00199E97 /* AWSS3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4BDF99D42B72ECD100199E97 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSS3;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

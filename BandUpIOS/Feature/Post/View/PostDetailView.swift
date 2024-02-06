@@ -111,7 +111,7 @@ private extension PostDetailView {
     }
     
     @ViewBuilder var user: some View {
-        UserProfilePicture(diameter: 40).padding(.trailing, 4)
+        UserProfilePicture(imageURL: URL(string: viewModel.post.creator.profilePicture ?? ""), diameter: 40).padding(.trailing, 4)
         
         VStack (alignment: .leading) {
             Text(viewModel.post.creator.username).bold()

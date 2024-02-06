@@ -39,7 +39,7 @@ struct PostRowView: View {
 private extension PostRowView {
     @ViewBuilder var top: some View {
         HStack (alignment: .center, spacing: 4) {
-            UserProfilePicture(diameter: 40)
+            UserProfilePicture(imageURL: URL(string: creator.profilePicture ?? ""), diameter: 40)
             Text(creator.username).bold()
             
             Spacer()

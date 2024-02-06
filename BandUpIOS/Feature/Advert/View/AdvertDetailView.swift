@@ -58,7 +58,7 @@ struct AdvertDetailView: View {
 private extension AdvertDetailView {
     @ViewBuilder var displayCreator: some View {
         HStack {
-            UserProfilePicture(diameter: 40)
+            UserProfilePicture(imageURL: URL(string: viewModel.advert.creator.profilePicture ?? ""), diameter: 40)
             Text(viewModel.advert.creator.username).bold()
             
             Spacer()

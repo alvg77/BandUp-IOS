@@ -6,17 +6,23 @@
 //
 
 import SwiftUI
+import AWSS3
 
 struct UserProfilePicture: View {
+    let imageURL: URL?
     let diameter: CGFloat
     
     var body: some View {
-        Image(systemName: "person.circle")
-            .resizable()
-            .frame(width: diameter, height: diameter)
+        if let imageURL = imageURL {
+            AWSImage(imageURL: imageURL, shape: .circle, width: diameter, height: diameter)
+        } else {
+            Image(systemName: "person.circle")
+                .resizable()
+                .frame(width: diameter, height: diameter)
+        }
     }
 }
 
 #Preview {
-    UserProfilePicture(diameter: 50)
+    UserProfilePicture(imageURL: nil, diameter: 50)
 }
