@@ -17,6 +17,8 @@ struct AdvertRowView: View {
     var creator: UserDetails
     var createdAt: Date
     
+    var profileDetail: () -> Void
+    
     var body: some View {
         HStack {
             VStack (alignment: .leading){
@@ -38,7 +40,7 @@ struct AdvertRowView: View {
 private extension AdvertRowView {
     @ViewBuilder var displayCreator: some View {
         HStack {
-            UserProfilePicture(imageURL: URL(string: creator.profilePicture ?? ""), diameter: 40)
+            UserProfilePicture(imageKey: creator.profilePictureKey, diameter: 40)
             VStack (alignment: .leading) {
                 Text(creator.username)
                 HStack (spacing: 0) {
@@ -48,8 +50,10 @@ private extension AdvertRowView {
                 .bold()
                 .foregroundStyle(.purple)
                 .font(.footnote)
-                
             }
+        }
+        .onTapGesture {
+            profileDetail()
         }
     }
     
@@ -124,5 +128,5 @@ private extension AdvertRowView {
         searchedArtistTypes: [ArtistType(id: 0, name: "Guitarist"), ArtistType(id: 1, name: "Bassist")],
         creator: UserDetails(id: 0, username: "username", email: "username@email.com"),
         createdAt: Date.now
-    )
+    ) {}
 }

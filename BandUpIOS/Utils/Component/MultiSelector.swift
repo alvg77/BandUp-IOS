@@ -24,7 +24,7 @@ struct MultiSelector<LabelView: View, Selectable: Identifiable & Hashable>: View
                 label
                 Spacer()
                 Text(formattedSelectedListString)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.purple)
                     .lineLimit(2)
                     .multilineTextAlignment(.trailing)
             }

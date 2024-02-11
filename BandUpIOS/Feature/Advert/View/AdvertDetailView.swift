@@ -11,32 +11,35 @@ import MapKit
 struct AdvertDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @ObservedObject var viewModel: AdvertViewModel
+    @ObservedObject var viewModel: AdvertDetailViewModel
 
     var body: some View {
-        ScrollView {
-            displayCreator
-            displayAdvertDetails
+        LoadingView(loading: viewModel.loading) {
+            ScrollView {
+                displayCreator
+                displayAdvertDetails
                 
-            Divider()
-            
-            displayGenres
-            displaySearchedArtistTypes
-            
-            Divider()
-            
-            displayCreatorContacts
-            
-            Divider()
-            
-            displayLocation
-            
+                Divider()
+                
+                displayGenres
+                displaySearchedArtistTypes
+                
+                Divider()
+                
+                displayCreatorContacts
+                
+                Divider()
+                
+                displayLocation
+                
+            }
         }
-        .padding(.all)
+        .padding(.horizontal)
         .scrollIndicators(.hidden)
         .navigationTitle("Advert")
+        .navigationBarTitleDisplayMode(.inline)
         .refreshable {
-            viewModel.fetchAdvert()
+            viewModel.refreshAdvert()
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -58,8 +61,13 @@ struct AdvertDetailView: View {
 private extension AdvertDetailView {
     @ViewBuilder var displayCreator: some View {
         HStack {
-            UserProfilePicture(imageURL: URL(string: viewModel.advert.creator.profilePicture ?? ""), diameter: 40)
-            Text(viewModel.advert.creator.username).bold()
+            Group {
+                UserProfilePicture(imageKey: viewModel.advert.creator.profilePictureKey, diameter: 40)
+                Text(viewModel.advert.creator.username).bold()
+            }
+            .onTapGesture {
+                viewModel.profileDetail()
+            }
             
             Spacer()
             
@@ -103,32 +111,12 @@ private extension AdvertDetailView {
         
     @ViewBuilder var displayCreatorContacts: some View {
         VStack (alignment: .leading) {
-            Text("Creator contacts: ")
+            Text("Creator contacts")
                 .bold()
                 .font(.title3)
                 .padding(.bottom, 8)
             
-            if let email = viewModel.advert.contacts.contactEmail {
-                HStack {
-                    Image(systemName: "envelope").foregroundStyle(.purple).bold()
-                    Text(email)
-                }.bold()
-
-            }
-            
-            if let number = viewModel.advert.contacts.phoneNumer {
-                HStack {
-                    Image(systemName: "phone").foregroundStyle(.purple)
-                    Text(number)
-                }.bold()
-            }
-            
-            if let website = viewModel.advert.contacts.website {
-                HStack {
-                    Image(systemName: "globe").foregroundStyle(.purple)
-                    Text(website)
-                }.bold()
-            }
+            ContactsList(contacts: viewModel.advert.contacts)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical)
@@ -136,7 +124,7 @@ private extension AdvertDetailView {
     
     @ViewBuilder var displayLocation: some View {
         VStack (alignment: .leading) {
-            Text("Location: ")
+            Text("Location")
                 .bold()
                 .font(.title3)
                 .padding(.bottom, 8)
@@ -144,23 +132,11 @@ private extension AdvertDetailView {
             VStack {
                 MapView(
                     mapItems: [
-                        MKMapItem(
-                            placemark: MKPlacemark(
-                                coordinate: CLLocationCoordinate2D(
-                                    latitude: viewModel.advert.location.lat,
-                                    longitude: viewModel.advert.location.lon
-                                )
-                            )
-                        )
+                        LocationService.getMapItem(location: viewModel.advert.location)
                     ]
                 )
                 .frame(height: 300)
-                HStack {
-                    Image(systemName: "mappin")
-                    Text("\(viewModel.advert.location.city ?? ""), \(viewModel.advert.location.administrativeArea ?? ""), \(viewModel.advert.location.country ?? "")")
-                }
-                .font(.subheadline)
-                .foregroundStyle(.gray)
+                LocationText(location: viewModel.advert.location)
             }
         }
         .padding(.vertical)
@@ -170,7 +146,7 @@ private extension AdvertDetailView {
         if JWTService.shared.extractEmail() == viewModel.advert.creator.email {
             Menu {
                 Button("Delete", role: .destructive) { viewModel.deleteAdvert() }
-                Button("Edit") { viewModel.updateAdvert() }
+                Button("Edit") { viewModel.editAdvert() }
             } label: {
                 Image(systemName: "ellipsis")
             }
@@ -181,7 +157,7 @@ private extension AdvertDetailView {
 #Preview {
     NavigationStack {
         AdvertDetailView(
-            viewModel: AdvertViewModel(
+            viewModel: AdvertDetailViewModel(
                 advert: Advert(
                     id: 0,
                     title: "Searching for a guitarist",
@@ -192,9 +168,9 @@ private extension AdvertDetailView {
                     genres: [Genre (id: 0, name: "METAL"), Genre(id: 1, name: "ROCK")],
                     searchedArtistTypes: [ArtistType(id: 0, name: "GUITARIST"), ArtistType(id: 1, name: "DRUMMER")],
                     creator: UserDetails(id: 0, username: "Username", email: "email@email"),
-                    contacts: Contacts(phoneNumer: "+359893690922"),
+                    contacts: Contacts(phoneNumber: "+35949494949"),
                     createdAt: Date.now),
-                model: AdvertModel()
+                store: AdvertStore()
             )
         )
     }

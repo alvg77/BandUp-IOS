@@ -18,8 +18,7 @@ struct PostsRouterView: View {
         NavigationStack(path: $router.path) {
             router.initialView()
                 .navigationDestination(for: PostPath.self, destination: destination)
-        }
-        .tint(.primary)
+        }.tint(.purple)
     }
 }
 
@@ -28,8 +27,12 @@ private extension PostsRouterView {
         switch path.route {
         case .detail(let viewModel):
             return AnyView(PostDetailView(viewModel: viewModel))
-        case .createUpdate(let viewModel):
-            return AnyView(CreateUpdatePostView(viewModel: viewModel))
+        case .createEdit(let viewModel):
+            return AnyView(PostCreateEditView(viewModel: viewModel))
+        case .profileDetail(let viewModel):
+            return AnyView(ProfileDetailView(viewModel: viewModel))
+        case .profileEdit(let viewModel):
+            return AnyView(ProfileEditView(viewModel: viewModel))
         }
     }
 }

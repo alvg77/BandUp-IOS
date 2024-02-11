@@ -11,10 +11,11 @@ struct AdvertFilterView: View {
     @ObservedObject var viewModel: AdvertFilterViewModel
 
     var body: some View {
-
-        Form {
-            displayLocationSection
-            displayGenresAndArtistTypesSection
+        LoadingView(loading: viewModel.loading) {
+            Form {
+                displayLocationSection
+                displayGenresAndArtistTypesSection
+            }
         }
         .task {
             guard viewModel.filter.genres.isEmpty || viewModel.filter.searchedArtistTypes.isEmpty else { return }
@@ -49,8 +50,13 @@ private extension AdvertFilterView {
         Section("Filter by location") {
             VStack {
                 SearchBar(text: $viewModel.searchQuery, onSearchButtonClicked: viewModel.searchForCity)
-                MapView(mapItems: viewModel.mapItems)
-                    .frame(height: 300)
+                VStack {
+                    MapView(mapItems: viewModel.mapItems)
+                        .frame(height: 300)
+                    if let location = viewModel.filter.location {
+                        LocationText(location: location)
+                    }
+                }
             }.padding(.vertical, 4)
         }
     }
@@ -90,6 +96,6 @@ private extension AdvertFilterView {
 
 #Preview {
     NavigationStack {
-        AdvertFilterView(viewModel: AdvertFilterViewModel(model: AdvertModel()))
+        AdvertFilterView(viewModel: AdvertFilterViewModel(store: AdvertStore()))
     }
 }

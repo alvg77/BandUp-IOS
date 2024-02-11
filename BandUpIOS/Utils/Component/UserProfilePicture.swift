@@ -6,23 +6,46 @@
 //
 
 import SwiftUI
-import AWSS3
 
 struct UserProfilePicture: View {
     let imageURL: URL?
     let diameter: CGFloat
     
+    init(imageKey: String?, diameter: CGFloat) {
+        self.imageURL = imageKey != nil ? URL(string:"\(Secrets.s3BucketURL)/\(imageKey!)") : nil
+        self.diameter = diameter
+    }
+    
     var body: some View {
         if let imageURL = imageURL {
-            AWSImage(imageURL: imageURL, shape: .circle, width: diameter, height: diameter)
+            AsyncImage(url: imageURL) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(width: diameter, height: diameter)
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: diameter, height: diameter)
+                        .clipShape(Circle())
+                case .failure(let error):
+                    Image(systemName: "person.crop.circle.badge.exclamationmark.fill")
+                        .resizable()
+                        .frame(width: diameter, height: diameter - 0.1 * diameter)
+                @unknown default:
+                    EmptyView()
+                }
+            }
         } else {
-            Image(systemName: "person.circle")
+            Image(systemName: "person.circle.fill")
                 .resizable()
                 .frame(width: diameter, height: diameter)
+                .foregroundStyle(.primary)
         }
     }
 }
 
 #Preview {
-    UserProfilePicture(imageURL: nil, diameter: 50)
+    UserProfilePicture(imageKey: "dsafsdaf", diameter: 50)
 }

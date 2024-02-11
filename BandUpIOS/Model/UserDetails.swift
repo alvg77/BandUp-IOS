@@ -11,5 +11,5 @@ struct UserDetails: Decodable {
     var id: Int
     var username: String
     var email: String
-    var profilePicture: String?
+    var profilePictureKey: String?
 }

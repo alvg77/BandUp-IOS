@@ -9,9 +9,8 @@ import Foundation
 import SwiftUI
 import Combine
 
-class CreateUpdatePostViewModel: ObservableObject {
+class PostCreateEditViewModel: ObservableObject {
     let postId: Int?
-    
     @Published var title = ""
     @Published var content = ""
     @Published var url = ""
@@ -19,50 +18,18 @@ class CreateUpdatePostViewModel: ObservableObject {
     @Published var flair: PostFlair?
     @Published var urlState = TextFieldState.neutral
     @Published var flairs: [PostFlair] = []
-    
+    @Published var loading: LoadingState = .notLoading
     @Published var error: APIError?
     
     let modifyAction: ModifyAction
     let maxContentLength = 5000
     
-    private var model: PostModel
+    private var store: PostStore
     private var cancellables = Set<AnyCancellable>()
     
-    var onCreate: (() -> Void)? = nil
-    var onUpdate: ((Post) -> Void)? = nil
-    var toAuth: (() -> Void)? = nil
+    var onSuccess: (() -> Void)?
+    var toAuth: (() -> Void)?
 
-    init(model: PostModel) {
-        self.postId = nil
-        self.modifyAction = .create
-        self.model = model
-        
-        self.model.$flairs.sink { [weak self] in
-            self?.flairs = $0
-        }.store(in: &cancellables)
-        
-        checkURLValidity.store(in: &cancellables)
-    }
-    
-    init(post: Post, model: PostModel) {
-        self.postId = post.id
-        self.modifyAction = .update
-        self.title = post.title
-        self.content = post.content
-        if let url = post.url {
-            self.url = url
-            self.urlEnabled = true
-        }
-        self.flair = post.flair
-        self.model = model
-        
-        self.model.$flairs.sink { [weak self] in
-            self?.flairs = $0
-        }.store(in: &cancellables)
-        
-        checkURLValidity.store(in: &cancellables)
-    }
-    
     var validate: Bool {
         !title.isEmpty &&
         !content.isEmpty && content.count <= maxContentLength &&
@@ -100,6 +67,37 @@ class CreateUpdatePostViewModel: ObservableObject {
             }
     }
     
+    var observeFlairsChanges: AnyCancellable {
+        self.store.$flairs.sink { [weak self] in
+            self?.flairs = $0
+        }
+    }
+    
+    init(store: PostStore) {
+        self.postId = nil
+        self.modifyAction = .create
+        self.store = store
+        self.flairs = self.store.flairs
+        observeFlairsChanges.store(in: &cancellables)
+        checkURLValidity.store(in: &cancellables)
+    }
+    
+    init(post: Post, store: PostStore) {
+        self.postId = post.id
+        self.modifyAction = .edit
+        self.title = post.title
+        self.content = post.content
+        if let url = post.url {
+            self.url = url
+            self.urlEnabled = true
+        }
+        self.flair = post.flair
+        self.store = store
+        self.flairs = self.store.flairs
+        observeFlairsChanges.store(in: &cancellables)
+        checkURLValidity.store(in: &cancellables)
+    }
+    
     func enableLink() {
         withAnimation {
             urlEnabled.toggle()
@@ -107,15 +105,17 @@ class CreateUpdatePostViewModel: ObservableObject {
     }
     
     func getFlairs() {
-        model.fetchFlairs(handleError: handleError)
+        loading = .loading
+        store.fetchFlairs(onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     func modify() {
+        loading = .loading
         switch modifyAction {
         case .create:
             createPost()
-        case .update:
-            updatePost()
+        case .edit:
+            editPost()
         }
     }
 
@@ -128,18 +128,20 @@ class CreateUpdatePostViewModel: ObservableObject {
     }
     
     private func createPost() {
-        model.createPost(
-            CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
-            onSuccess: onCreate ?? {},
+        store.createPost(
+            CreateEditPost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id), 
+            onComplete: { [weak self] in self?.loading = .notLoading},
+            onSuccess: onSuccess ?? {},
             handleError: handleError
         )
     }
     
-    private func updatePost() {
-        model.updatePost(
-            CreateUpdatePost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
+    private func editPost() {
+        store.editPost(
+            CreateEditPost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             id: postId!,
-            onSuccess: onUpdate ?? { _ in },
+            onComplete: { [weak self] in self?.loading = .notLoading },
+            onSuccess: onSuccess ?? {},
             handleError: handleError
         )
     }

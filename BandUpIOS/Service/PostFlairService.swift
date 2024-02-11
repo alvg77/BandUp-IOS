@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Combine
 
 protocol PostFlairServiceProtocol {
-    func getPostFlairs(completion: @escaping (Result<[PostFlair], APIError>) -> Void)
+    func getPostFlairs() -> AnyPublisher<[PostFlair], APIError>
 }
 
 class PostFlairService {
@@ -17,39 +18,34 @@ class PostFlairService {
 }
 
 extension PostFlairService: PostFlairServiceProtocol {
-    func getPostFlairs(completion: @escaping (Result<[PostFlair], APIError>) -> Void) {
-        let endpoint = URL(string: "http://localhost:9090/api/v1/post-flairs")
+    func getPostFlairs() -> AnyPublisher<[PostFlair], APIError> {
+        let endpoint = URL(string: "\(Secrets.baseApiURL)/post-flairs")
         
         guard let endpoint = endpoint else {
-            completion(.failure(.invalidURLError))
-            return
+            return Fail(error: APIError.invalidURLError).eraseToAnyPublisher()
         }
         
         var request = URLRequest(url: endpoint)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
-        
+
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: [PostFlair].self, decoder: JSONDecoder())
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try JSONDecoder().decode([PostFlair].self, from: data)
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
 }

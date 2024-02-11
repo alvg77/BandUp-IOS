@@ -57,19 +57,12 @@ extension ContactsView {
     }
     
     @ViewBuilder private var phoneNumberField: some View {
-        iPhoneNumberField("Phone Number", text: $viewModel.phoneNumber)
-            .flagHidden(false)
-            .flagSelectable(true)
-            .maximumDigits(15)
-            .clearButtonMode(.whileEditing)
-            .padding(.horizontal)
-            .padding(.vertical, 12)
+        PhoneNumberTextField(countryCode: $viewModel.phoneNumberCountryCode, phoneNumber: $viewModel.phoneNumber)
             .background(Color(.systemGray6))
-            .overlay(RoundedRectangle(cornerRadius: 15)
-            .stroke(lineWidth: phoneNumberFocus ? 4 : 2)
-            .foregroundStyle(.purple))
+            .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: phoneNumberFocus ? 4 : 2).foregroundStyle(.purple))
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .focused($phoneNumberFocus)
+
     }
     
     @ViewBuilder private var contactEmailField: some View {

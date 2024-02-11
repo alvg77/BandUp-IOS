@@ -10,43 +10,46 @@ import SwiftUI
 struct PostDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @ObservedObject var viewModel: PostViewModel
+    @ObservedObject var viewModel: PostDetailViewModel
     @FocusState var focus: Bool
     
     var body: some View {
         VStack {
             ScrollView {
-                VStack (alignment: .leading) {
-                    top
-                    
-                    Text(viewModel.post.title)
-                        .font(.title)
-                        .foregroundStyle(.purple)
-                        .fontWeight(.heavy)
-                    
-                    if let url = viewModel.post.url {
-                        LinkPreview(url: URL(string: url))
-                            .padding(.bottom, 8)
+                LoadingView(loading: viewModel.postLoading) {
+                    VStack (alignment: .leading) {
+                        top
+                        
+                        Text(viewModel.post.title)
+                            .font(.title)
+                            .foregroundStyle(.purple)
+                            .fontWeight(.heavy)
+                        
+                        if let url = viewModel.post.url {
+                            LinkPreview(url: URL(string: url))
+                                .padding(.bottom, 8)
+                        }
+                        
+                        Text(viewModel.post.content)
+                            .padding(.bottom)
+                        
+                        HStack(spacing: 24) {
+                            likes
+                            comments
+                        }
+                        .font(.system(size: 20))
+                        .bold()
                     }
-                    
-                    Text(viewModel.post.content)
-                        .padding(.bottom)
-                    
-                    HStack(spacing: 24) {
-                        likes
-                        comments
-                    }
-                    .font(.system(size: 20))
-                    .bold()
-                    
-                    Divider()
-                        .frame(maxWidth: .infinity).background(Color(.systemGray))
-                        .padding(.bottom, 4)
-                    
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
-                CommentListView(comments: viewModel.comments, updateComment: viewModel.updateComment, deleteComment: viewModel.deleteComment)
                 
+                Divider()
+                    .frame(maxWidth: .infinity).background(Color(.systemGray))
+                    .padding(.bottom, 4)
+                
+                LoadingView(loading: viewModel.commentsLoading) {
+                    CommentListView(comments: viewModel.comments, editComment: viewModel.editComment, deleteComment: viewModel.deleteComment)
+                }
             }
             .scrollIndicators(.hidden)
             .ignoresSafeArea(edges: .bottom)
@@ -94,7 +97,7 @@ private extension PostDetailView {
     @ViewBuilder var likes: some View {
         HStack(spacing: 3) {
             Button {
-                viewModel.toggleLiked()
+                viewModel.togglePostLiked()
             } label: {
                 Image(systemName: viewModel.post.liked ? "heart.fill" : "heart")
                     .foregroundStyle(viewModel.post.liked ? .red : .primary)
@@ -111,20 +114,25 @@ private extension PostDetailView {
     }
     
     @ViewBuilder var user: some View {
-        UserProfilePicture(imageURL: URL(string: viewModel.post.creator.profilePicture ?? ""), diameter: 40).padding(.trailing, 4)
-        
-        VStack (alignment: .leading) {
-            Text(viewModel.post.creator.username).bold()
-            Text(viewModel.post.createdAt.formatted())
-                .font(.footnote)
-                .foregroundStyle(.gray)
+        Group {
+            UserProfilePicture(imageKey: viewModel.post.creator.profilePictureKey, diameter: 40).padding(.trailing, 4)
+            
+            VStack (alignment: .leading) {
+                Text(viewModel.post.creator.username).bold()
+                Text(viewModel.post.createdAt.formatted())
+                    .font(.footnote)
+                    .foregroundStyle(.gray)
+            }
+        }
+        .onTapGesture {
+            viewModel.profileDetail()
         }
     }
     
     @ViewBuilder var menu: some View {
         Menu {
-            Button("Delete", role: .destructive, action: viewModel.delete)
-            Button("Edit") { viewModel.update() }
+            Button("Delete", role: .destructive, action: viewModel.deletePost)
+            Button("Edit") { viewModel.editPost() }
         } label: {
             Image(systemName: "ellipsis")
         }
@@ -150,19 +158,19 @@ private extension PostDetailView {
 
 #Preview {
     NavigationStack {
-        PostDetailView(viewModel: PostViewModel(
+        PostDetailView(viewModel: PostDetailViewModel(
             post: Post(id: 1,
                        title: "This is my first post on here",
                        url: "https://tuesfest.bg/projects/405",
                        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
                        flair: PostFlair(id: 1, name: "Question"),
-                       creator: UserDetails(id: 1, username: "user1", email: "a@a.a", profilePicture: nil),
+                       creator: UserDetails(id: 1, username: "user1", email: "a@a.a", profilePictureKey: nil),
                        commentCount: 991,
                        likeCount: 100,
                        liked: false,
                        createdAt: Date.now
                       ),
-            model: PostModel()
+            store: PostStore()
         ))
-    }
+    }.tint(.purple)
 }

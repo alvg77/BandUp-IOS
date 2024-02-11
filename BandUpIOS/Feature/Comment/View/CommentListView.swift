@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommentListView: View {
     var comments: [Comment]
-    var updateComment: (Int, String) -> Void
+    var editComment: (Int, String) -> Void
     var deleteComment: (Int) -> Void
     
     var body: some View {
@@ -26,7 +26,7 @@ private extension CommentListView {
                     content: comment.content,
                     createdAt: comment.createdAt,
                     creator: comment.creator,
-                    update: updateComment,
+                    edit: editComment,
                     delete: deleteComment
                 )
             }
