@@ -153,13 +153,13 @@ private extension ProfileDetailView {
                 Text("Delete")
             }
         } label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "ellipsis")
         }
     }
 }
 
 #Preview {
-    let viewModel = ProfileDetailViewModel()
+    let viewModel = ProfileDetailViewModel(navigateToProfileEdit: { _,_  in }, toAuth: {})
     viewModel.user = User(id: 0, username: "Username", email: "user@email.mail", artistType: ArtistType(id: 0, name: "GUITARIST"), genres: [Genre(id: 0, name: "METAL")], bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", location: Location(country: "Country", city: "City", administrativeArea: "Area", lat: 32, lon: 23), contacts: Contacts(phoneNumber: "+3598988989"), createdAt: Date.now)
     return NavigationStack { ProfileDetailView(viewModel: viewModel) }.tint(.purple)
 }

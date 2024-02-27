@@ -96,5 +96,5 @@ private extension CredentialsView {
 }
 
 #Preview {
-    CredentialsView(viewModel: CredentialsViewModel())
+    CredentialsView(viewModel: CredentialsViewModel(next: {}))
 }

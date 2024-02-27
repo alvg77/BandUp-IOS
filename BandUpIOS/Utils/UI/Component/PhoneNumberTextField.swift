@@ -22,7 +22,7 @@ struct PhoneNumberTextField : View {
             Text(countryCode.isEmpty ? "🇧🇬 +359" : "\(countryFlag) +\(countryCode)")
                 .padding(.vertical)
                 .padding(.horizontal, 8)
-                .background(Color.secondary.opacity(0.2))
+                .background(Color(.systemGray2))
                 .cornerRadius(10)
                 .foregroundColor(countryCode.isEmpty ? .secondary : .black)
                 .onTapGesture {

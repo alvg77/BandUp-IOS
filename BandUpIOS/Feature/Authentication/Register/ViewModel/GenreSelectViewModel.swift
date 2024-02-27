@@ -9,8 +9,6 @@ import Foundation
 import Combine
 
 class GenreSelectViewModel: ObservableObject, RegisterStepViewModel {
-    var next: (() -> Void)?
-    
     @Published var genres: [Genre] = []
     @Published var selected: [Genre] = []
     @Published var loading: LoadingState = .notLoading
@@ -18,11 +16,15 @@ class GenreSelectViewModel: ObservableObject, RegisterStepViewModel {
     
     var cancellables = Set<AnyCancellable>()
         
+    var next: () -> Void
+    
     var validateStep: Bool {
         !selected.isEmpty
     }
     
-    init() { }
+    init(next: @escaping () -> Void) {
+        self.next = next
+    }
     
     func getGenres() {
         loading = .loading

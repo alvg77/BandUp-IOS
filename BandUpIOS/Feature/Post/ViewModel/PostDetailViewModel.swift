@@ -22,10 +22,9 @@ class PostDetailViewModel: ObservableObject {
     private var commentStore: CommentStore
     private var cancellables = Set<AnyCancellable>()
     
-    var toAuth: (() -> Void)?
-    var onDelete: (() -> Void)?
-    var navigateToEditPost: ((Post) -> Void)?
-    var navigateToProfileDetail: ((Int) -> Void)?
+    private let onDelete: () -> Void
+    private let navigateToEditPost: (Post) -> Void
+    private let navigateToProfileDetail: (Int) -> Void
     
     var observePostUpdates: AnyCancellable {
         self.postStore.$posts.sink { [weak self] posts in
@@ -41,10 +40,20 @@ class PostDetailViewModel: ObservableObject {
         }
     }
     
-    init(post: Post, store: PostStore) {
+    init(
+        post: Post,
+        postStore: PostStore,
+        commentStore: CommentStore,
+        onDelete: @escaping () -> Void,
+        navigateToEditPost: @escaping (Post) -> Void,
+        navigateToProfileDetail: @escaping (Int) -> Void
+    ) {
         self.post = post
-        self.postStore = store
-        self.commentStore = CommentStore()
+        self.postStore = postStore
+        self.commentStore = commentStore
+        self.onDelete = onDelete
+        self.navigateToEditPost = navigateToEditPost
+        self.navigateToProfileDetail = navigateToProfileDetail
         observePostUpdates.store(in: &cancellables)
         observeCommentsUpdates.store(in: &cancellables)
     }
@@ -56,27 +65,31 @@ class PostDetailViewModel: ObservableObject {
     
     func refreshPost() {
         postLoading = .loading
-        self.postStore.fetchPost(id: post.id, onComplete: { [weak self] in
-            self?.postLoading = .notLoading }, onSuccess: fetchComments, handleError: handleError)
+        self.postStore.fetchPost(id: post.id, onSuccess: { [weak self] in
+            self?.postLoading = .notLoading
+            self?.fetchComments()
+        }, handleError: handleError)
     }
     
     func editPost() {
-        navigateToEditPost?(post)
+        navigateToEditPost(post)
     }
     
     func deletePost() {
-        postStore.deletePost(id: post.id, onComplete: { [weak self] in
-            self?.postLoading = .notLoading }, onSuccess: onDelete ?? {}, handleError: handleError)
+        postStore.deletePost(id: post.id, onSuccess: { [weak self] in
+                self?.postLoading = .notLoading
+                self?.onDelete()
+            }, handleError: handleError)
     }
     
     func profileDetail() {
-        navigateToProfileDetail?(post.creator.id)
+        navigateToProfileDetail(post.creator.id)
     }
     
     func fetchComments() {
         commentsLoading = .loading
         commentPageNo = 0
-        commentStore.fetchComments(appending: false, postId: post.id, pageNo: commentPageNo, onComplete: { [weak self] in self?.commentsLoading = .notLoading }, handleError: handleError)
+        commentStore.fetchComments(appending: false, postId: post.id, pageNo: commentPageNo, onSuccess: { [weak self] in self?.commentsLoading = .notLoading }, handleError: handleError)
     }
     
     func fetchNextCommentPage(comment: Comment) {
@@ -109,9 +122,8 @@ class PostDetailViewModel: ObservableObject {
     }
     
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-        }
+        self.postLoading = .notLoading
+        self.commentsLoading = .notLoading
         self.error = error
     }
 }

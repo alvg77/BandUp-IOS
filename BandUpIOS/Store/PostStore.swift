@@ -8,23 +8,35 @@
 import Foundation
 import Combine
 
+//enum PostByid: Equatable {
+//    case all
+//    case owner(String)
+//}
+
 class PostStore: ObservableObject {
-    typealias OnComplete = () -> Void
     typealias OnSuccess = () -> Void
     typealias HandleError = (APIError?) -> Void
     
     @Published var posts: [Post] = []
     @Published var flairs: [PostFlair] = []
     
+//    var cachedPosts: [PostByid: Post] = [:]
+    
+    let toAuth: () -> Void
+    
     private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
+    
+    init(toAuth: @escaping () -> Void) {
+        self.toAuth = toAuth
+    }
     
     func fetchPosts(
         append: Bool,
         pageNo: Int,
         queryString: String?,
         queryFlair: PostFlair?,
-        onComplete: OnComplete? = nil,
+        onSuccess: OnSuccess? = nil,
         handleError: @escaping HandleError
     ) {
         PostService.shared.getAll(
@@ -34,12 +46,12 @@ class PostStore: ObservableObject {
             flair: queryFlair
         )
         .receive(on: DispatchQueue.main)
-        .sink { completion in
+        .sink { [weak self] completion in
             switch completion {
             case .finished:
-                onComplete?()
+                onSuccess?()
             case .failure(let error):
-                onComplete?()
+                self?.checkAuth(error: error)
                 handleError(error)
             }
         } receiveValue: { [weak self] in
@@ -55,7 +67,6 @@ class PostStore: ObservableObject {
     
     func createPost(
         _ new: CreateEditPost,
-        onComplete: @escaping OnComplete,
         onSuccess: @escaping OnSuccess,
         handleError: @escaping HandleError
     ) {
@@ -63,13 +74,12 @@ class PostStore: ObservableObject {
             postCreateRequest: new
         ) 
         .receive(on: DispatchQueue.main)
-        .sink { completion in
+        .sink { [weak self] completion in
             switch completion {
             case .finished:
-                onComplete()
                 onSuccess()
             case .failure(let error):
-                onComplete()
+                self?.checkAuth(error: error)
                 handleError(error)
             }
         } receiveValue: { [weak self] in
@@ -78,16 +88,15 @@ class PostStore: ObservableObject {
         .store(in: &cancellables)
     }
     
-    func fetchPost(id: Int, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func fetchPost(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         PostService.shared.getById(postId: id)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
                     onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] post in
@@ -98,19 +107,18 @@ class PostStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func editPost(_ edit: CreateEditPost, id: Int, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func editPost(_ edit: CreateEditPost, id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         PostService.shared.edit(
             postId: id,
             postEditRequest: edit
         )
         .receive(on: DispatchQueue.main)
-        .sink { completion in
+        .sink { [weak self] completion in
             switch completion {
             case .finished:
-                onComplete()
                 onSuccess()
             case .failure(let error):
-                onComplete()
+                self?.checkAuth(error: error)
                 handleError(error)
             }
         } receiveValue: { [weak self] post in
@@ -160,16 +168,15 @@ class PostStore: ObservableObject {
         }
     }
     
-    func deletePost(id: Int, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func deletePost(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         PostService.shared.delete(postId: id)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
                     onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] _ in
@@ -180,20 +187,26 @@ class PostStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func fetchFlairs(onComplete: OnComplete? = nil, handleError: @escaping HandleError) {
+    func fetchFlairs(onSuccess: OnSuccess? = nil, handleError: @escaping HandleError) {
         PostFlairService.shared.getPostFlairs()
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete?()
+                    onSuccess?()
                 case .failure(let error):
-                    onComplete?()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] in
                 self?.flairs = $0
             }
             .store(in: &cancellables)
+    }
+    
+    private func checkAuth(error: APIError) {
+        if case .unauthorized = error {
+            toAuth()
+        }
     }
 }

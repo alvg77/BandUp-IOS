@@ -39,6 +39,9 @@ extension AuthService: AuthServiceProtocol {
                 case is DecodingError:
                     return .decodingError
                 case is APIError:
+                    if case APIError.unauthorized = error {
+                        return .serverError(reason: "Invalid login credentials")
+                    }
                     return error as! APIError
                 default:
                     return .unknownError

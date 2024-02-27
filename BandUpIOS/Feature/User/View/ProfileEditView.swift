@@ -43,7 +43,6 @@ struct ProfileEditView: View {
             }
         }
         .task {
-            guard viewModel.availableArtistTypes.isEmpty && viewModel.availableGenres.isEmpty else { return }
             viewModel.fetchSelectionData()
         }
         .refreshable {
@@ -141,7 +140,9 @@ private extension ProfileEditView {
     NavigationStack {
         ProfileEditView(
             viewModel: ProfileEditViewModel(
-                user: User(id: 0, username: "Username", email: "user@email.mail", artistType: ArtistType(id: 0, name: "GUITARIST"), genres: [Genre(id: 1, name: "ROCK")], bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", location: Location(country: "Country", city: "City", administrativeArea: "Area", lat: 32, lon: 23), contacts: Contacts(phoneNumber: "+3598988989"), createdAt: Date.now)
+                user: User(id: 0, username: "Username", email: "user@email.mail", artistType: ArtistType(id: 0, name: "GUITARIST"), genres: [Genre(id: 1, name: "ROCK")], bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", location: Location(country: "Country", city: "City", administrativeArea: "Area", lat: 32, lon: 23), contacts: Contacts(phoneNumber: "+3598988989"), createdAt: Date.now),
+                onSuccess: { _ in },
+                toAuth: {}
             )
         )
     }.tint(.purple)

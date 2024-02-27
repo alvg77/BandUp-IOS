@@ -170,7 +170,10 @@ private extension AdvertDetailView {
                     creator: UserDetails(id: 0, username: "Username", email: "email@email"),
                     contacts: Contacts(phoneNumber: "+35949494949"),
                     createdAt: Date.now),
-                store: AdvertStore()
+                store: AdvertStore(toAuth: {}),
+                onDelete: {},
+                navigateToEditAdvert: { _ in },
+                navigateToProfileDetail: { _ in }
             )
         )
     }

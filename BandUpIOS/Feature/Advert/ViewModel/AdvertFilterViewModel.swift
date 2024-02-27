@@ -20,8 +20,7 @@ class AdvertFilterViewModel: LocationService {
     private var cancellables = Set<AnyCancellable>()
     private var filterExists: Bool
     
-    var onSuccess: (() -> Void)?
-    var toAuth: (() -> Void)?
+    private let onSuccess: () -> Void
     
     var clearEnabled: Bool {
         filterExists
@@ -52,8 +51,12 @@ class AdvertFilterViewModel: LocationService {
         }
     }
     
-    init(store: AdvertStore) {
+    init(
+        store: AdvertStore,
+        onSuccess: @escaping () -> Void
+    ) {
         self.store = store
+        self.onSuccess = onSuccess
         self.filter = store.advertFilter ?? AdvertFilter()
         self.filterExists = store.advertFilter != nil
         self.availableGenres = store.genres
@@ -80,31 +83,33 @@ class AdvertFilterViewModel: LocationService {
         loading = .loading
         store.applyFilter(
             advertFilter: nil,
-            onComplete: { [weak self] in self?.loading = .notLoading },
-            onSuccess: onSuccess ?? {},
+            onSuccess: { [weak self] in
+                self?.loading = .notLoading
+                self?.onSuccess()
+            },
             handleError: handleError
         )
     }
-    
+
     func applyFilter() {
         loading = .loading
         store.applyFilter(
             advertFilter: filter,
-            onComplete: { [weak self] in self?.loading = .notLoading },
-            onSuccess: onSuccess ?? {},
+            onSuccess: { [weak self] in
+                self?.loading = .notLoading
+                self?.onSuccess()
+            },
             handleError: handleError
         )
     }
-    
+
     func fetchGenresAndArtistTypes() {
         loading = .loading
-        store.fetchGenresAndArtistTypes(onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
+        store.fetchGenresAndArtistTypes(onSuccess: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-        }
+        self.loading = .notLoading
         self.error = error
     }
 }

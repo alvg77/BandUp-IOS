@@ -92,6 +92,11 @@ private extension PostListView {
 
 #Preview {
     NavigationStack {
-        PostListView(viewModel: PostListViewModel(store: PostStore()))
+        PostListView(viewModel: PostListViewModel(
+            store: PostStore(toAuth: {}),
+            navigateToPostDetail: { _ in },
+            navigateToCreatePost: {},
+            navigateToProfileDetail: { _ in }
+        ))
     }
 }

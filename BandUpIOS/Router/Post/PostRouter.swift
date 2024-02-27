@@ -50,17 +50,20 @@ struct PostPath: Hashable {
 class PostRouter: ObservableObject {
     @Published var path = NavigationPath()
     
-    var store = PostStore()
-    var viewModel: PostListViewModel
-    var toAuth: () -> Void
+    private var store: PostStore
+    private let toAuth: () -> Void
+    private lazy var viewModel: PostListViewModel = {
+        PostListViewModel(
+            store: store,
+            navigateToPostDetail: navigateToPostDetail,
+            navigateToCreatePost: navigateToCreatePost,
+            navigateToProfileDetail: navigateToProfileDetail
+        )
+    }()
 
     init(toAuth: @escaping () -> Void) {
         self.toAuth = toAuth
-        viewModel = PostListViewModel(store: store)
-        viewModel.navigateToPostDetail = navigateToPostDetail
-        viewModel.navigateToCreatePost = navigateToCreatePost
-        viewModel.navigateToProfileDetail = navigateToProfileDetail
-        viewModel.toAuth = toAuth
+        self.store = PostStore(toAuth: toAuth)
     }
     
     func initialView() -> AnyView {
@@ -76,39 +79,41 @@ class PostRouter: ObservableObject {
     }
     
     func navigateToPostDetail(post: Post) {
-        let viewModel = PostDetailViewModel(post: post, store: store)
-        viewModel.onDelete = navigateBackToPrevious
-        viewModel.navigateToEditPost = navigateToEditPost
-        viewModel.navigateToProfileDetail = navigateToProfileDetail
-        viewModel.toAuth = toAuth
+        let viewModel = PostDetailViewModel(
+            post: post,
+            postStore: store,
+            commentStore: CommentStore(toAuth: toAuth),
+            onDelete: navigateBackToPrevious,
+            navigateToEditPost: navigateToEditPost,
+            navigateToProfileDetail: navigateToProfileDetail
+        )
         path.append(PostPath(route: .detail(viewModel)))
     }
     
     func navigateToCreatePost() {
-        let viewModel = PostCreateEditViewModel(store: store)
-        viewModel.onSuccess = navigateBackToPrevious
-        viewModel.toAuth = toAuth
+        let viewModel = PostCreateEditViewModel(store: store, onSuccess: navigateBackToPrevious)
         path.append(PostPath(route: .createEdit(viewModel)))
     }
     
     func navigateToEditPost(post: Post) {
-        let viewModel = PostCreateEditViewModel(post: post, store: store)
-        viewModel.onSuccess = navigateBackToPrevious
-        viewModel.toAuth = toAuth
+        let viewModel = PostCreateEditViewModel(post: post, store: store, onSuccess: navigateBackToPrevious)
         path.append(PostPath(route: .createEdit(viewModel)))
     }
     
     func navigateToProfileDetail(userId: Int) {
-        let viewModel = ProfileDetailViewModel(userId: userId)
-        viewModel.navigateToProfileEdit = navigateToProfileEdit
-        viewModel.toAuth = toAuth
+        let viewModel = ProfileDetailViewModel(
+            userId: userId,
+            navigateToProfileEdit: navigateToProfileEdit,
+            toAuth: toAuth
+        )
         path.append(PostPath(route: .profileDetail(viewModel)))
     }
     
-    func navigateToProfileEdit(user: User, onComplete: @escaping (User) -> Void) {
-        let viewModel = ProfileEditViewModel(user: user)
-        viewModel.toAuth = toAuth
-        viewModel.onComplete = onComplete
+    func navigateToProfileEdit(user: User, onSuccess: @escaping (User) -> Void) {
+        let viewModel = ProfileEditViewModel(user: user, onSuccess: { [weak self] in
+            onSuccess($0)
+            self?.navigateBackToPrevious()
+        }, toAuth: toAuth)
         path.append(PostPath(route: .profileEdit(viewModel)))
     }
 }

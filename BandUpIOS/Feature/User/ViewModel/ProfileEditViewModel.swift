@@ -43,18 +43,22 @@ class ProfileEditViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    var onComplete: ((User) -> Void)?
-    var toAuth: (() -> Void)?
+    private let onSuccess: (User) -> Void
+    private let toAuth: () -> Void
     
     var validate: Bool {
         let isBasicInfoValid = !username.isEmpty && !bio.isEmpty && !genres.isEmpty
-        
         let isContactInfoValid = validateContactInformation()
-        
         return isBasicInfoValid && isContactInfoValid
     }
     
-    init(user: User) {
+    init(
+        user: User,
+        onSuccess: @escaping (User) -> Void,
+        toAuth: @escaping () -> Void
+    ) {
+        self.onSuccess = onSuccess
+        self.toAuth = toAuth
         self.userId = user.id
         self.username = user.username
         self.profilePictureKey = user.profilePictureKey
@@ -72,7 +76,7 @@ class ProfileEditViewModel: ObservableObject {
             self.phoneNumberCountryCode = phoneNumberParts[phoneNumberParts.startIndex].description
         }
     }
-    
+
     func editProfile() {
         loading = .loading
         guard let profilePictureUIImage = profilePictureUIImage else {
@@ -109,29 +113,29 @@ class ProfileEditViewModel: ObservableObject {
                 self?.handleError(error: error)
             }
         } receiveValue: { [weak self] in
-            self?.onComplete?($0)
+            self?.onSuccess($0)
         }
         .store(in: &cancellables)
     }
     
-    private func uploadImage(profilePictureUIImage: UIImage) {
-        profilePictureKey = "user/\(userId)/profile_main_\(Date.now.timeIntervalSince1970)"
-        AWSS3Service.shared.fetchUploadSignedURL(objectKey: "\(profilePictureKey!)")
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    self?.handleError(error: error)
-                    self?.loading = .notLoading
-                }
-            } receiveValue: { [weak self] in
-                self?.uploadWithPresignedURL(presignedURL: $0, profilePictureUIImage: profilePictureUIImage)
+private func uploadImage(profilePictureUIImage: UIImage) {
+    profilePictureKey = "user/\(userId)/profile_main_\(Date.now.timeIntervalSince1970)"
+    AWSS3Service.shared.fetchUploadSignedURL(objectKey: "\(profilePictureKey!)")
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let error):
+                self?.handleError(error: error)
+                self?.loading = .notLoading
             }
-            .store(in: &cancellables)
-    }
-    
+        } receiveValue: { [weak self] in
+            self?.uploadWithPresignedURL(presignedURL: $0, profilePictureUIImage: profilePictureUIImage)
+        }
+        .store(in: &cancellables)
+}
+
     private func uploadWithPresignedURL(presignedURL: URL, profilePictureUIImage: UIImage) {
         AWSS3Service.shared.uploadImage(signedURL: presignedURL, image: profilePictureUIImage) { [weak self] completion in
             DispatchQueue.main.async {
@@ -145,7 +149,7 @@ class ProfileEditViewModel: ObservableObject {
             }
         }
     }
-    
+        
     func fetchSelectionData() {
         loading = .loading
         GenreService.shared.getGenres()
@@ -176,7 +180,7 @@ class ProfileEditViewModel: ObservableObject {
     
     private func handleError(error: APIError?) {
         if case .unauthorized = error {
-            toAuth?()
+            toAuth()
             return
         }
         self.error = error

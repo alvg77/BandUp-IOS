@@ -111,7 +111,6 @@
 		4BC922812B37258C00D49E2F /* FieldError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC922802B37258C00D49E2F /* FieldError.swift */; };
 		4BD8AAFC2B2FABAA00288C03 /* APIErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD8AAFB2B2FABAA00288C03 /* APIErrorMessage.swift */; };
 		4BD966BF2B4381270031A6FB /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD966BE2B4381270031A6FB /* ContactsView.swift */; };
-		4BD966C22B4390ED0031A6FB /* iPhoneNumberField in Frameworks */ = {isa = PBXBuildFile; productRef = 4BD966C12B4390ED0031A6FB /* iPhoneNumberField */; };
 		4BDD0EBD2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDD0EBC2B25080C00F365A4 /* RoundBorderTextFieldStyle.swift */; };
 		4BE1FE8C2B3083150094F52B /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FE8B2B3083150094F52B /* CredentialsView.swift */; };
 		4BE7F0C62B7431CE000D4CE8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE7F0C52B7431CE000D4CE8 /* User.swift */; };
@@ -281,7 +280,6 @@
 				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
 				4B373BBE2B6AD8F900FC295A /* Flow in Frameworks */,
 				4B373BC02B6AD8F900FC295A /* Renderer in Frameworks */,
-				4BD966C22B4390ED0031A6FB /* iPhoneNumberField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,9 +471,8 @@
 		4B7853862B24864800D671B9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				4BBDF7DD2B7F75400058826D /* UI */,
 				4B0EF1D92B67088200A269C8 /* Networking */,
-				4BBAD0BE2B59B64000FB8635 /* Style */,
-				4BBAD0BD2B59B62600FB8635 /* Component */,
 				4B253F6E2B46EC1C00962CC1 /* Enum */,
 				4B6515342B2CD96A004166D4 /* Error */,
 			);
@@ -520,10 +517,10 @@
 				4B55C3D32B761A3A00139B02 /* Info.plist */,
 				4B55C3DA2B76CC2300139B02 /* Store */,
 				4BBB97EB2B631B8E0054ECB3 /* Router */,
-				4B7853862B24864800D671B9 /* Utils */,
 				4B4279202B30BBC0000A5631 /* Model */,
 				4B42791D2B30BBA6000A5631 /* Service */,
 				4B7B5D6A2B23FF2E008943A8 /* Feature */,
+				4B7853862B24864800D671B9 /* Utils */,
 				4B7B5D3A2B23FE3B008943A8 /* BandUpIOSApp.swift */,
 				4B7B5D3C2B23FE3B008943A8 /* ContentView.swift */,
 				4BBAD0CC2B59C69900FB8635 /* MainView.swift */,
@@ -689,6 +686,15 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		4BBDF7DD2B7F75400058826D /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				4BBAD0BD2B59B62600FB8635 /* Component */,
+				4BBAD0BE2B59B64000FB8635 /* Style */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		4BE1D4522B69584E00719715 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,7 +807,6 @@
 			name = BandUpIOS;
 			packageProductDependencies = (
 				4B6E78072B386FA300721D49 /* KeychainAccess */,
-				4BD966C12B4390ED0031A6FB /* iPhoneNumberField */,
 				4B373BBD2B6AD8F900FC295A /* Flow */,
 				4B373BBF2B6AD8F900FC295A /* Renderer */,
 			);
@@ -879,7 +884,6 @@
 			mainGroup = 4B7B5D2E2B23FE3B008943A8;
 			packageReferences = (
 				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */,
 				4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
@@ -1388,14 +1392,6 @@
 				kind = branch;
 			};
 		};
-		4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MojtabaHs/iPhoneNumberField";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.10.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1413,11 +1409,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		4BD966C12B4390ED0031A6FB /* iPhoneNumberField */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4BD966C02B4390ED0031A6FB /* XCRemoteSwiftPackageReference "iPhoneNumberField" */;
-			productName = iPhoneNumberField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

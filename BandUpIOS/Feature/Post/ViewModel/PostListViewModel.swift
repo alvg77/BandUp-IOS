@@ -21,10 +21,9 @@ class PostListViewModel: ObservableObject {
     private var pageNo = 0
     private var cancellables = Set<AnyCancellable>()
     
-    var navigateToPostDetail: ((Post) -> Void)?
-    var navigateToCreatePost: (() -> Void)?
-    var navigateToProfileDetail: ((Int) -> Void)?
-    var toAuth: (() -> Void)?
+    private let navigateToPostDetail: (Post) -> Void
+    private let navigateToCreatePost: () -> Void
+    private let navigateToProfileDetail: (Int) -> Void
     
     var observePostsChanges: AnyCancellable {
         self.store.$posts.sink { [weak self] in
@@ -47,6 +46,8 @@ class PostListViewModel: ObservableObject {
             }
     }
     
+    // the value of selectedFlairChange is not set to the new one during the execution of .sink
+    // that's why queryFlair is used
     var selectedFlairChange: AnyCancellable {
         $selectedFlair
             .sink { [weak self] flair in
@@ -57,8 +58,16 @@ class PostListViewModel: ObservableObject {
             }
     }
     
-    init(store: PostStore) {
+    init(
+        store: PostStore,
+        navigateToPostDetail: @escaping (Post) -> Void,
+        navigateToCreatePost: @escaping () -> Void,
+        navigateToProfileDetail: @escaping (Int) -> Void
+    ) {
         self.store = store
+        self.navigateToPostDetail = navigateToPostDetail
+        self.navigateToCreatePost = navigateToCreatePost
+        self.navigateToProfileDetail = navigateToProfileDetail
         observePostsChanges.store(in: &cancellables)
         observeFlairsChanges.store(in: &cancellables)
         queryStringChange.store(in: &cancellables)
@@ -73,7 +82,7 @@ class PostListViewModel: ObservableObject {
             pageNo: pageNo,
             queryString: queryString,
             queryFlair: queryFlair,
-            onComplete: { [weak self] in self?.loading = .notLoading },
+            onSuccess: { [weak self] in self?.loading = .notLoading },
             handleError: handleError
         )
     }
@@ -87,22 +96,19 @@ class PostListViewModel: ObservableObject {
     }
     
     func postDetail(post: Post) {
-        navigateToPostDetail?(post)
+        navigateToPostDetail(post)
     }
     
     func createPost() {
-        navigateToCreatePost?()
+        navigateToCreatePost()
     }
     
     func profileDetail(post: Post) {
-        navigateToProfileDetail?(post.creator.id)
+        navigateToProfileDetail(post.creator.id)
     }
     
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-            return
-        }
+        self.loading = .notLoading
         self.error = error
     }
 }

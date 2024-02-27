@@ -47,7 +47,7 @@ extension ContactsView {
             if case .invalid(_) = viewModel.contactEmailState {
                 viewModel.contactEmail = ""
             }
-            viewModel.next?()
+            viewModel.next()
         } label: {
             Text("Continue")
                 .frame(maxWidth: .infinity)
@@ -94,5 +94,5 @@ extension ContactsView {
 }
 
 #Preview {
-    ContactsView(viewModel: ContactsViewModel())
+    ContactsView(viewModel: ContactsViewModel(next: {}))
 }

@@ -22,7 +22,7 @@ class ContactsViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    var next: (() -> Void)?
+    var next: () -> Void
 
     var validateStep: Bool {
         let isAtLeastOneContactFieldNotEmpty = !contactEmail.isEmpty || !website.isEmpty || (!phoneNumber.isEmpty && !phoneNumberCountryCode.isEmpty)
@@ -32,7 +32,8 @@ class ContactsViewModel: ObservableObject {
         return isAtLeastOneContactFieldNotEmpty && isPhoneNumberValid
     }
     
-    init() {
+    init(next: @escaping () -> Void) {
+        self.next = next
         validateContactEmail.store(in: &cancellables)
         validateContactWebsite.store(in: &cancellables)
     }

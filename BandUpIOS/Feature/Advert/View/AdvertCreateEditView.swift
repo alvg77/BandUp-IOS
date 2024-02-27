@@ -82,6 +82,6 @@ private extension AdvertCreateEditView {
 
 #Preview {
     NavigationStack {
-        AdvertCreateEditView(viewModel: AdvertCreateEditViewModel(store: AdvertStore()))
+        AdvertCreateEditView(viewModel: AdvertCreateEditViewModel(store: AdvertStore(toAuth: {}), onSuccess: {}))
     }
 }
