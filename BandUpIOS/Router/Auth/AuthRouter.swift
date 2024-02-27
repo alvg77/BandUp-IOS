@@ -47,20 +47,17 @@ class AuthRouter: ObservableObject {
         self.onComplete = onComplete
     }
     
-    func initialView() -> AnyView {
-        return AnyView(AuthView(navigateToLogin: navigateToLogin, navigateToRegister: navigateToRegister))
+    func initialView() -> some View {
+        return AuthView(navigateToLogin: navigateToLogin, navigateToRegister: navigateToRegister)
     }
     
     func navigateToLogin() {
-        let viewModel = LoginViewModel()
-        viewModel.navigateToRegister = navigateToRegister
-        viewModel.onComplete = onComplete
+        let viewModel = LoginViewModel(navigateToRegister: navigateToRegister, onComplete: onComplete)
         path.append(AuthPath(route: .login(viewModel)))
     }
     
     func navigateToRegister() {
-        let viewModel = RegisterViewModel()
-        viewModel.onComplete = onComplete
+        let viewModel = RegisterViewModel(onComplete: onComplete)
         path.append(AuthPath(route: .register(viewModel)))
     }
 }

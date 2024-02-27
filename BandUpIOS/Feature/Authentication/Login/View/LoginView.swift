@@ -76,7 +76,7 @@ private extension LoginView {
     
     @ViewBuilder private var createAccountButton: some View {
         Button("Create account") {
-            viewModel.navigateToRegister?()
+            viewModel.register()
         }
         .foregroundStyle(.purple)
         .font(.headline)
@@ -85,6 +85,6 @@ private extension LoginView {
 
 #Preview {
     NavigationStack {
-        LoginView(viewModel: LoginViewModel())
+        LoginView(viewModel: LoginViewModel(navigateToRegister: {}, onComplete: {}))
     }
 }

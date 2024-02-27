@@ -23,27 +23,22 @@ protocol RegisterStepViewModel {
 
 class RegisterViewModel: ObservableObject {
     @Published var registerError: APIError?
-    @Published var registerErrorOccured = false
     @Published var loading: LoadingState = .notLoading
     @Published var step = RegisterStep.credentials
     @Published var steps: [RegisterStep] = [.credentials]
     
-    var credentials = CredentialsViewModel()
-    var contacts = ContactsViewModel()
-    var profileInfo = ProfileInfoViewModel()
-    var genreSelect = GenreSelectViewModel()
-    var locationSelect = LocationSelectViewModel()
+    lazy var credentials = { CredentialsViewModel(next: goToNext) }()
+    lazy var contacts = { ContactsViewModel(next: goToNext) }()
+    lazy var profileInfo = { ProfileInfoViewModel(next: goToNext) }()
+    lazy var genreSelect = { GenreSelectViewModel(next: goToNext) }()
+    lazy var locationSelect = { LocationSelectViewModel(register: register) }()
     
     private var cancellables = Set<AnyCancellable>()
     
-    var onComplete: (() -> Void)?
+    private let onComplete: () -> Void
     
-    init() {
-        credentials.next = goToNext
-        contacts.next = goToNext
-        profileInfo.next = goToNext
-        genreSelect.next = goToNext
-        locationSelect.register = register
+    init(onComplete: @escaping () -> Void) {
+        self.onComplete = onComplete
     }
 
     func goToPrev() {
@@ -83,11 +78,10 @@ class RegisterViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     self?.loading = .notLoading
-                    self?.onComplete?()
+                    self?.onComplete()
                 case .failure(let error):
                     self?.loading = .notLoading
                     self?.registerError = error
-                    self?.registerErrorOccured = true
                 }
             } receiveValue: { 
                 JWTService.shared.saveToken(token: $0.token)

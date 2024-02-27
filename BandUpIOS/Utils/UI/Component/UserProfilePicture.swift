@@ -29,7 +29,7 @@ struct UserProfilePicture: View {
                         .scaledToFill()
                         .frame(width: diameter, height: diameter)
                         .clipShape(Circle())
-                case .failure(let error):
+                case .failure(_):
                     Image(systemName: "person.crop.circle.badge.exclamationmark.fill")
                         .resizable()
                         .frame(width: diameter, height: diameter - 0.1 * diameter)

@@ -17,11 +17,10 @@ class AdvertListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var pageNo = 0
     
-    var toAuth: (() -> Void)?
-    var navigateToAdvertDetail: ((Advert) -> Void)?
-    var navigateToCreateAdvert: (() -> Void)?
-    var navigateToFilterAdverts: (() -> Void)?
-    var navigateToProfileDetail: ((Int) -> Void)?
+    private let navigateToAdvertDetail: (Advert) -> Void
+    private let navigateToCreateAdvert: () -> Void
+    private let navigateToFilterAdverts: () -> Void
+    private let navigateToProfileDetail: (Int) -> Void
     
     var observeAdvertsUpdates: AnyCancellable {
         self.store.$adverts.sink { [weak self] in
@@ -29,15 +28,25 @@ class AdvertListViewModel: ObservableObject {
         }
     }
     
-    init(store: AdvertStore) {
+    init(
+        store: AdvertStore,
+        navigateToAdvertDetail: @escaping (Advert) -> Void,
+        navigateToCreateAdvert: @escaping () -> Void,
+        navigateToFilterAdverts: @escaping () -> Void,
+        navigateToProfileDetail: @escaping (Int) -> Void
+    ) {
         self.store = store
+        self.navigateToAdvertDetail = navigateToAdvertDetail
+        self.navigateToCreateAdvert = navigateToCreateAdvert
+        self.navigateToFilterAdverts = navigateToFilterAdverts
+        self.navigateToProfileDetail = navigateToProfileDetail
         observeAdvertsUpdates.store(in: &cancellables)
     }
     
     func fetchAdverts() {
         loading = .loading
         pageNo = 0
-        store.fetchAdverts(appending: false, pageNo: pageNo, onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
+        store.fetchAdverts(appending: false, pageNo: pageNo, onSuccess: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     func fetchNextPage(advert: Advert) {
@@ -49,25 +58,23 @@ class AdvertListViewModel: ObservableObject {
     }
     
     func createAdvert() {
-        navigateToCreateAdvert?()
+        navigateToCreateAdvert()
     }
     
     func advertDetail(advert: Advert) {
-        navigateToAdvertDetail?(advert)
+        navigateToAdvertDetail(advert)
     }
     
     func filterAdverts() {
-        navigateToFilterAdverts?()
+        navigateToFilterAdverts()
     }
     
     func profileDetail(advert: Advert) {
-        navigateToProfileDetail?(advert.creator.id)
+        navigateToProfileDetail(advert.creator.id)
     }
     
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-        }
+        self.loading = .notLoading
         self.error = error
     }
 }

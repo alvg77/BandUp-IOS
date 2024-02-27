@@ -170,7 +170,11 @@ private extension PostDetailView {
                        liked: false,
                        createdAt: Date.now
                       ),
-            store: PostStore()
+            postStore: PostStore(toAuth: {}),
+            commentStore: CommentStore(toAuth: {}),
+            onDelete: {},
+            navigateToEditPost: { _ in },
+            navigateToProfileDetail: { _ in }
         ))
     }.tint(.purple)
 }

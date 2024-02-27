@@ -39,14 +39,13 @@ struct ProfilePath: Hashable {
 class ProfileRouter: ObservableObject {
     @Published var path = NavigationPath()
     
-    var viewModel: ProfileDetailViewModel
-    var toAuth: () -> Void
+    private var toAuth: () -> Void
+    private lazy var viewModel: ProfileDetailViewModel = {
+        ProfileDetailViewModel(navigateToProfileEdit: navigateToProfileEdit, toAuth: toAuth)
+    }()
     
     init(toAuth: @escaping () -> Void) {
         self.toAuth = toAuth
-        viewModel = ProfileDetailViewModel()
-        viewModel.navigateToProfileEdit = navigateToProfileEdit
-        viewModel.toAuth = toAuth
     }
     
     func initialView() -> AnyView {
@@ -61,13 +60,11 @@ class ProfileRouter: ObservableObject {
         path.removeLast()
     }
     
-    func navigateToProfileEdit(user: User, onComplete: @escaping (User) -> Void) {
-        let viewModel = ProfileEditViewModel(user: user)
-        viewModel.toAuth = toAuth
-        viewModel.onComplete = { [weak self] in
-            onComplete($0)
+    func navigateToProfileEdit(user: User, onSuccess: @escaping (User) -> Void) {
+        let viewModel = ProfileEditViewModel(user: user, onSuccess: { [weak self] in
+            onSuccess($0)
             self?.navigateBackToPrevious()
-        }
+        }, toAuth: toAuth)
         path.append(ProfilePath(route: .profileEdit(viewModel)))
     }
 }

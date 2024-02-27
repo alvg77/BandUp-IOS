@@ -96,6 +96,6 @@ private extension AdvertFilterView {
 
 #Preview {
     NavigationStack {
-        AdvertFilterView(viewModel: AdvertFilterViewModel(store: AdvertStore()))
+        AdvertFilterView(viewModel: AdvertFilterViewModel(store: AdvertStore(toAuth: {}), onSuccess: {}))
     }
 }

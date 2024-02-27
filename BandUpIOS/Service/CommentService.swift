@@ -16,7 +16,6 @@ protocol CommentServiceProtocol {
     func delete(commentId: Int) -> AnyPublisher<Void, APIError>
 }
 
-
 class CommentService {
     static let shared: CommentServiceProtocol = CommentService()
     private static let baseURL = URL(string: "\(Secrets.baseApiURL)/comments")!

@@ -49,7 +49,7 @@ private extension GenreSelectView {
     
     @ViewBuilder private var continueButton: some View {
         Button {
-            viewModel.next?()
+            viewModel.next()
         } label: {
             Text("Continue")
                 .frame(maxWidth: .infinity)
@@ -60,5 +60,5 @@ private extension GenreSelectView {
 }
 
 #Preview {
-    GenreSelectView(viewModel: GenreSelectViewModel())
+    GenreSelectView(viewModel: GenreSelectViewModel(next: {}))
 }

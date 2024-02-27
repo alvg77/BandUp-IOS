@@ -133,6 +133,6 @@ private extension PostCreateEditView {
 
 #Preview {
     NavigationStack {
-        PostCreateEditView(viewModel: PostCreateEditViewModel(store: PostStore()))
+        PostCreateEditView(viewModel: PostCreateEditViewModel(store: PostStore(toAuth: {}), onSuccess: {}))
     }.tint(.purple)
 }

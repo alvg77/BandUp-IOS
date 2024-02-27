@@ -9,24 +9,29 @@ import Foundation
 import Combine
 
 class CommentStore: ObservableObject {
-    typealias OnComplete = () -> Void
     typealias OnSuccess = () -> Void
     typealias HandleError = (APIError?) -> Void
     
     @Published var comments: [Comment] = []
     
+    let toAuth: () -> Void
+    
     private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
     
-    func fetchComments(appending: Bool, postId: Int, pageNo: Int, onComplete: OnComplete? = nil, handleError: @escaping HandleError) {
-        CommentService.shared.getAll(postId: postId, pageNo: pageNo, pageSize: pageSize) 
+    init(toAuth: @escaping () -> Void) {
+        self.toAuth = toAuth
+    }
+    
+    func fetchComments(appending: Bool, postId: Int, pageNo: Int, onSuccess: OnSuccess? = nil, handleError: @escaping HandleError) {
+        CommentService.shared.getAll(postId: postId, pageNo: pageNo, pageSize: pageSize)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete?()
+                    onSuccess?()
                 case .failure(let error):
-                    onComplete?()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] in
@@ -42,11 +47,12 @@ class CommentStore: ObservableObject {
     func createComment(_ new: CreateEditComment, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         CommentService.shared.create(commentCreateRequest: new)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
                     onSuccess()
                 case .failure(let error):
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] in
@@ -58,11 +64,12 @@ class CommentStore: ObservableObject {
     func editComment(_ edit: CreateEditComment, id: Int, handleError: @escaping HandleError) {
         CommentService.shared.edit(commentId: id, commentEditRequest: edit) 
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] comment in
@@ -76,11 +83,12 @@ class CommentStore: ObservableObject {
     func deleteComment(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         CommentService.shared.delete(commentId: id) 
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
                     onSuccess()
                 case .failure(let error):
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] _ in
@@ -89,5 +97,11 @@ class CommentStore: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    private func checkAuth(error: APIError) {
+        if case .unauthorized = error {
+            toAuth()
+        }
     }
 }
