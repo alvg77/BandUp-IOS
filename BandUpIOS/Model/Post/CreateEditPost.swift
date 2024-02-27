@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CreateUpdatePost: Encodable {
+struct CreateEditPost: Encodable {
     var title: String
     var url: String?
     var content: String

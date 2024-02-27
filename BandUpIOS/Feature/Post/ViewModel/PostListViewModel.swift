@@ -14,32 +14,28 @@ class PostListViewModel: ObservableObject {
     @Published var queryString = ""
     @Published var selectedFlair: PostFlair?
     private var queryFlair: PostFlair?
-    
+    @Published var loading: LoadingState = .notLoading
     @Published var error: APIError?
     
-    private var model: PostModel
+    private var store: PostStore
     private var pageNo = 0
-    private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
     
-    var onDelete: (() -> Void)?
     var navigateToPostDetail: ((Post) -> Void)?
     var navigateToCreatePost: (() -> Void)?
+    var navigateToProfileDetail: ((Int) -> Void)?
     var toAuth: (() -> Void)?
     
-    init(model: PostModel) {
-        self.model = model
-        
-        self.model.$posts.sink { [weak self] in
+    var observePostsChanges: AnyCancellable {
+        self.store.$posts.sink { [weak self] in
             self?.posts = $0
-        }.store(in: &cancellables)
-        
-        self.model.$flairs.sink { [weak self] in
+        }
+    }
+    
+    var observeFlairsChanges: AnyCancellable {
+        self.store.$flairs.sink { [weak self] in
             self?.flairs = $0
-        }.store(in: &cancellables)
-        
-        queryStringChange.store(in: &cancellables)
-        selectedFlairChange.store(in: &cancellables)
+        }
     }
     
     var queryStringChange: AnyCancellable {
@@ -60,10 +56,26 @@ class PostListViewModel: ObservableObject {
                 }
             }
     }
+    
+    init(store: PostStore) {
+        self.store = store
+        observePostsChanges.store(in: &cancellables)
+        observeFlairsChanges.store(in: &cancellables)
+        queryStringChange.store(in: &cancellables)
+        selectedFlairChange.store(in: &cancellables)
+    }
 
     func fetchPosts() {
+        loading = .loading
         pageNo = 0
-        model.fetchPosts(append: false, pageNo: pageNo, pageSize: pageSize, queryString: queryString, queryFlair: queryFlair, handleError: handleError)
+        store.fetchPosts(
+            append: false,
+            pageNo: pageNo,
+            queryString: queryString,
+            queryFlair: queryFlair,
+            onComplete: { [weak self] in self?.loading = .notLoading },
+            handleError: handleError
+        )
     }
     
     func fetchNextPage(post: Post) {
@@ -71,7 +83,7 @@ class PostListViewModel: ObservableObject {
             return
         }
         pageNo += 1
-        model.fetchPosts(append: true, pageNo: pageNo, pageSize: pageSize, queryString: queryString, queryFlair: queryFlair, handleError: handleError)
+        store.fetchPosts(append: true, pageNo: pageNo, queryString: queryString, queryFlair: queryFlair, handleError: handleError)
     }
     
     func postDetail(post: Post) {
@@ -80,6 +92,10 @@ class PostListViewModel: ObservableObject {
     
     func createPost() {
         navigateToCreatePost?()
+    }
+    
+    func profileDetail(post: Post) {
+        navigateToProfileDetail?(post.creator.id)
     }
     
     private func handleError(error: APIError?) {

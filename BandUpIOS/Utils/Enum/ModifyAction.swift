@@ -9,5 +9,5 @@ import Foundation
 
 enum ModifyAction {
     case create
-    case update
+    case edit
 }

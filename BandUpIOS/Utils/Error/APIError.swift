@@ -16,6 +16,7 @@ enum APIError: LocalizedError {
     case noInternetError
     case decodingError
     case serverError(reason: String? = nil)
+    case s3UploadError
     case unknownError
         
     var errorDescription: String? {
@@ -35,7 +36,9 @@ enum APIError: LocalizedError {
         case .decodingError:
             return "The server returned data in an unexpected format. Try updating the app."
         case .serverError(let reason):
-            return "\(reason ?? "Oops! Something went wrong.")"
+            return "\(reason ?? "An error has occurred while processing your request.")"
+        case .s3UploadError:
+            return "Cannot upload the requested object."
         case .unknownError:
             return "An unknown error has occured."
         }

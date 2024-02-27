@@ -18,7 +18,7 @@ struct AuthRouterView: View {
         NavigationStack(path: $router.path) {
             router.initialView()
                 .navigationDestination(for: AuthPath.self, destination: destination)
-        }
+        }.tint(.purple)
     }
 }
 

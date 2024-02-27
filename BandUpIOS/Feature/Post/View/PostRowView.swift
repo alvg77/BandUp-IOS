@@ -17,6 +17,8 @@ struct PostRowView: View {
     let creator: UserDetails
     let createdAt: Date
     
+    var profileDetail: () -> Void
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -39,8 +41,13 @@ struct PostRowView: View {
 private extension PostRowView {
     @ViewBuilder var top: some View {
         HStack (alignment: .center, spacing: 4) {
-            UserProfilePicture(diameter: 40)
-            Text(creator.username).bold()
+            Group {
+                UserProfilePicture(imageKey: creator.profilePictureKey, diameter: 40)
+                Text(creator.username).bold()
+            }
+            .onTapGesture {
+                profileDetail()
+            }
             
             Spacer()
             
@@ -70,5 +77,5 @@ private extension PostRowView {
 }
 
 #Preview {
-    PostRowView(title: "Post Title Number 1 Post Title Number One", flair: PostFlair(id: 1, name: "Question"), likeCount: 50, commentCount: 12, creator: UserDetails(id: 0, username: "User 1", email: "user@user.com"), createdAt: Date.now)
+    PostRowView(title: "Post Title Number 1 Post Title Number One", flair: PostFlair(id: 1, name: "Question"), likeCount: 50, commentCount: 12, creator: UserDetails(id: 0, username: "User 1", email: "user@user.com"), createdAt: Date.now) {}
 }

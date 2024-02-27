@@ -14,11 +14,7 @@ enum CredentialAvailability: Equatable {
     case taken
 }
 
-class CredentialsViewModel: ObservableObject, RegisterStepViewModel {    
-    private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
-
-    var next: (() -> Void)?
-    
+class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     @Published var error: APIError?
     
     @Published var username = ""
@@ -32,8 +28,12 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     @Published var emailAvailable: CredentialAvailability = .neutral
     @Published var usernameAvailable: CredentialAvailability = .neutral
     
+    @Published var loading: LoadingState = .notLoading
     
-        
+    private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+    
+    var next: (() -> Void)?
+    
     var validateStep: Bool {
         usernameState == .valid &&
         emailState == .valid &&
@@ -113,38 +113,51 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     }
     
     private func checkEmail() {
-        AuthService.shared.checkEmailAvailability(email: email) { [weak self] completion in
-            DispatchQueue.main.async {
+        loading = .loading
+        AuthService.shared.checkEmailAvailability(email: email)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
                 switch completion {
-                case .success(let availability):
-                    self?.emailAvailable = availability
-                    self?.checkUsername()
+                case .finished:
+                    break
                 case .failure(let error):
+                    self?.loading = .notLoading
                     withAnimation {
                         self?.error = error
                     }
                 }
+            } receiveValue: { [weak self] in
+                withAnimation {
+                    self?.error = nil
+                }
+                self?.checkUsername()
+                self?.emailAvailable = $0
             }
-        }
+            .store(in: &cancellables)
     }
     
     private func checkUsername() {
-        AuthService.shared.checkUsernameAvailability(username: username) { [weak self] completion in
-            DispatchQueue.main.async {
+        AuthService.shared.checkUsernameAvailability(username: username)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
                 switch completion {
-                case .success(let availability):
-                    self?.usernameAvailable = availability
-                    self?.error = nil
-                    
+                case .finished:
+                    self?.loading = .notLoading
                     if self?.emailAvailable == .available && self?.usernameAvailable == .available {
                         self?.next?()
                     }
                 case .failure(let error):
+                    self?.loading = .notLoading
                     withAnimation {
                         self?.error = error
                     }
                 }
+            } receiveValue: { [weak self] in
+                withAnimation {
+                    self?.error = nil
+                }
+                self?.usernameAvailable = $0
             }
-        }
+            .store(in: &cancellables)
     }
 }

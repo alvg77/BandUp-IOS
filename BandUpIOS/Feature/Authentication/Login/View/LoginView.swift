@@ -11,31 +11,33 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
-        ScrollView {
-            Text("Welcome Back")
-                .font(.largeTitle)
-                .fontWeight(.heavy)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            if let error = viewModel.error {
-                ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to process your login request.")
+        LoadingView(loading: viewModel.loading) {
+            ScrollView {
+                Text("Welcome Back")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                if let error = viewModel.error {
+                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to process your login request.")
+                        .padding(.bottom)
+                }
+                
+                emailField
+                    .padding(.bottom, 8)
+                passwordField
                     .padding(.bottom)
-            }
-            
-            emailField
-                .padding(.bottom, 8)
-            passwordField
+                loginButton
+                
+                VStack (alignment: .center) {
+                    Text("Don't have an account?")
+                        .font(.subheadline)
+                        .padding(.top)
+                    createAccountButton
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom)
-            loginButton
-            
-            VStack (alignment: .center) {
-                Text("Don't have an account?")
-                    .font(.subheadline)
-                    .padding(.top)
-                createAccountButton
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.bottom)
         }
         .navigationTitle("Login")
         .navigationBarTitleDisplayMode(.inline)
@@ -82,5 +84,7 @@ private extension LoginView {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel())
+    NavigationStack {
+        LoginView(viewModel: LoginViewModel())
+    }
 }

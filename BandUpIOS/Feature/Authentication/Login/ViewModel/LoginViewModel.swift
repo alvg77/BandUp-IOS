@@ -7,12 +7,15 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
-    
+    @Published var loading: LoadingState = .notLoading
     @Published var error: APIError?
+    
+    private var cancellables = Set<AnyCancellable>()
     
     var navigateToRegister: (() -> Void)?
     var onComplete: (() -> Void)?
@@ -22,19 +25,25 @@ final class LoginViewModel: ObservableObject {
     }
         
     func login() {
-        AuthService.shared.login(loginRequest: LoginRequest(email: email, password: password)) { [weak self] completion in
-            DispatchQueue.main.async {
+        loading = .loading
+        let loginRequest = LoginRequest(email: email, password: password)
+        AuthService.shared.login(loginRequest: loginRequest)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
                 switch completion {
-                case .success(let response):
-                    JWTService.shared.saveToken(token: response.token)
+                case .finished:
+                    self?.loading = .notLoading
                     self?.onComplete?()
                 case .failure(let error):
+                    self?.loading = .notLoading
                     withAnimation {
                         self?.error = error
                     }
                 }
+            } receiveValue: {
+                JWTService.shared.saveToken(token: $0.token)
             }
-        }
+            .store(in: &cancellables)
     }
 }
 

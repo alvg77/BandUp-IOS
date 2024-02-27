@@ -36,7 +36,14 @@ private extension MainView {
                     Label("Adverts", systemImage: "list.bullet.rectangle.portrait")
                 }
                 .tag(TabScreen.adverts)
+            
+            profileTab
+                .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
+                .tag(TabScreen.profile)
         }
+        .tint(.purple)
         .onAppear {
             let tabBarAppearance = UITabBarAppearance()
             tabBarAppearance.configureWithDefaultBackground()
@@ -52,6 +59,10 @@ private extension MainView {
     
     @ViewBuilder var advertsTab: some View {
         AdvertRouterView(toAuth: toAuth)
+    }
+    
+    @ViewBuilder var profileTab: some View {
+        ProfileRouterView(toAuth: toAuth)
     }
 }
 

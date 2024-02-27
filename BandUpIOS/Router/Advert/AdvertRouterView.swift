@@ -18,8 +18,7 @@ struct AdvertRouterView: View {
         NavigationStack(path: $router.path) {
             router.initialView()
                 .navigationDestination(for: AdvertPath.self, destination: destination)
-        }
-        .tint(.primary)
+        }.tint(.purple)
     }
 }
 
@@ -28,10 +27,14 @@ private extension AdvertRouterView {
         switch path.route {
         case .detail(let viewModel):
             return AnyView(AdvertDetailView(viewModel: viewModel))
-        case .createUpdate(let viewModel):
-            return AnyView(AdvertCreateUpdateView(viewModel: viewModel))
+        case .createEdit(let viewModel):
+            return AnyView(AdvertCreateEditView(viewModel: viewModel))
         case .filter(let viewModel):
             return AnyView(AdvertFilterView(viewModel: viewModel))
+        case .profileDetail(let viewModel):
+            return AnyView(ProfileDetailView(viewModel: viewModel))
+        case .profileEdit(let viewModel):
+            return AnyView(ProfileEditView(viewModel: viewModel))
         }
     }
 }
