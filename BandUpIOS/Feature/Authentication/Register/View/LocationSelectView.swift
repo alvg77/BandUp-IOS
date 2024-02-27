@@ -28,7 +28,7 @@ struct LocationSelectView: View {
                 .padding(.vertical)
             
             Button {
-                viewModel.register?()
+                viewModel.register()
             } label: {
                 Text("Register")
                     .frame(maxWidth: .infinity)
@@ -41,5 +41,5 @@ struct LocationSelectView: View {
 }
 
 #Preview {
-    LocationSelectView(viewModel: LocationSelectViewModel())
+    LocationSelectView(viewModel: LocationSelectViewModel(register: {}))
 }

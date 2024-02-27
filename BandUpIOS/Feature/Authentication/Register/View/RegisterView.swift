@@ -25,11 +25,15 @@ struct RegisterView: View {
                 }
             }
         }
-        .alert("Registration Error", isPresented: $viewModel.registerErrorOccured) {
-            Button ("OK", role: .cancel) {}
-        } message: {
-            Text(viewModel.registerError?.errorDescription ?? "An error occured while trying to process your registration request.")
-        }
+        .alert(
+            "Oops! Something went wrong...",
+            isPresented: $viewModel.registerError.isNotNil(),
+            presenting: $viewModel.registerError,
+            actions: { _ in },
+            message: { error in
+                Text(error.wrappedValue!.localizedDescription)
+            }
+        )
     }
 }
 
@@ -67,6 +71,6 @@ private extension RegisterView {
 
 #Preview {
     RegisterView(
-        viewModel: RegisterViewModel()
+        viewModel: RegisterViewModel(onComplete: {})
     )
 }

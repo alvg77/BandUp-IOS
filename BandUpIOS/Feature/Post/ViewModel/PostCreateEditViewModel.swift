@@ -27,8 +27,7 @@ class PostCreateEditViewModel: ObservableObject {
     private var store: PostStore
     private var cancellables = Set<AnyCancellable>()
     
-    var onSuccess: (() -> Void)?
-    var toAuth: (() -> Void)?
+    private let onSuccess: () -> Void
 
     var validate: Bool {
         !title.isEmpty &&
@@ -73,16 +72,26 @@ class PostCreateEditViewModel: ObservableObject {
         }
     }
     
-    init(store: PostStore) {
+    init(
+        store: PostStore,
+        onSuccess: @escaping () -> Void
+    ) {
+        self.store = store
+        self.onSuccess = onSuccess
         self.postId = nil
         self.modifyAction = .create
-        self.store = store
         self.flairs = self.store.flairs
         observeFlairsChanges.store(in: &cancellables)
         checkURLValidity.store(in: &cancellables)
     }
     
-    init(post: Post, store: PostStore) {
+    init(
+        post: Post,
+        store: PostStore,
+        onSuccess: @escaping () -> Void
+    ) {
+        self.store = store
+        self.onSuccess = onSuccess
         self.postId = post.id
         self.modifyAction = .edit
         self.title = post.title
@@ -92,7 +101,6 @@ class PostCreateEditViewModel: ObservableObject {
             self.urlEnabled = true
         }
         self.flair = post.flair
-        self.store = store
         self.flairs = self.store.flairs
         observeFlairsChanges.store(in: &cancellables)
         checkURLValidity.store(in: &cancellables)
@@ -106,7 +114,7 @@ class PostCreateEditViewModel: ObservableObject {
     
     func getFlairs() {
         loading = .loading
-        store.fetchFlairs(onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
+        store.fetchFlairs(onSuccess: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     func modify() {
@@ -120,18 +128,17 @@ class PostCreateEditViewModel: ObservableObject {
     }
 
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-            return
-        }
+        self.loading = .notLoading
         self.error = error
     }
     
     private func createPost() {
         store.createPost(
             CreateEditPost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id), 
-            onComplete: { [weak self] in self?.loading = .notLoading},
-            onSuccess: onSuccess ?? {},
+            onSuccess: { [weak self] in
+                self?.loading = .notLoading
+                self?.onSuccess()
+            },
             handleError: handleError
         )
     }
@@ -140,8 +147,10 @@ class PostCreateEditViewModel: ObservableObject {
         store.editPost(
             CreateEditPost(title: title, url: urlEnabled ? url : nil, content: content, flairId: flair!.id),
             id: postId!,
-            onComplete: { [weak self] in self?.loading = .notLoading },
-            onSuccess: onSuccess ?? {},
+            onSuccess: { [weak self] in
+                self?.loading = .notLoading
+                self?.onSuccess()
+            },
             handleError: handleError
         )
     }

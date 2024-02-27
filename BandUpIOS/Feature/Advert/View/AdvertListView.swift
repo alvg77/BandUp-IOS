@@ -83,6 +83,12 @@ private extension AdvertListView {
 
 #Preview {
     NavigationStack {
-        AdvertListView(viewModel: AdvertListViewModel(store: AdvertStore()))
+        AdvertListView(viewModel: AdvertListViewModel(
+            store: AdvertStore(toAuth: {}),
+            navigateToAdvertDetail: { _ in },
+            navigateToCreateAdvert: {},
+            navigateToFilterAdverts: {},
+            navigateToProfileDetail: { _ in }
+        ))
     }.tint(.purple)
 }

@@ -47,7 +47,7 @@ struct ProfileInfoView: View {
 private extension ProfileInfoView {
     @ViewBuilder private var artistTypePicker: some View {
         HStack {
-            Text("Post Flair")
+            Text("Artist Type")
             Spacer()
             Picker("Artist Type", selection: $viewModel.artistType) {
                 Text("None").tag(Optional<ArtistType>(nil))
@@ -72,7 +72,7 @@ private extension ProfileInfoView {
     
     @ViewBuilder private var continueButton: some View {
         Button {
-            viewModel.next?()
+            viewModel.next()
         } label: {
             Text("Continue")
                 .frame(maxWidth: .infinity)
@@ -83,5 +83,5 @@ private extension ProfileInfoView {
 }
 
 #Preview {
-    ProfileInfoView(viewModel: ProfileInfoViewModel())
+    ProfileInfoView(viewModel: ProfileInfoViewModel(next: {}))
 }

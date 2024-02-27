@@ -24,8 +24,7 @@ class AdvertCreateEditViewModel: ObservableObject {
     private var store: AdvertStore
     private var cancellables = Set<AnyCancellable>()
     
-    var toAuth: (() -> Void)?
-    var onSuccess: (() -> Void)?
+    private let onSuccess: () -> Void
     
     var validate: Bool {
         !title.isEmpty &&
@@ -46,24 +45,33 @@ class AdvertCreateEditViewModel: ObservableObject {
         }
     }
     
-    init(store: AdvertStore) {
+    init(
+        store: AdvertStore,
+        onSuccess: @escaping () -> Void
+    ) {
+        self.store = store
+        self.onSuccess = onSuccess
         self.advertId = nil
         self.modifyAction = .create
-        self.store = store
         self.availableGenres = self.store.genres
         self.availableArtistTypes = self.store.artistTypes
         observeGenresChanges.store(in: &cancellables)
         observeArtistTypesChanges.store(in: &cancellables)
     }
     
-    init(advert: Advert, store: AdvertStore) {
+    init(
+        advert: Advert,
+        store: AdvertStore,
+        onSuccess: @escaping () -> Void
+    ) {
+        self.store = store
+        self.onSuccess = onSuccess
         self.advertId = advert.id
         self.title = advert.title
         self.description = advert.description
         self.genres = advert.genres
         self.searchedArtistTypes = advert.searchedArtistTypes
         self.modifyAction = .edit
-        self.store = store
         self.availableGenres = self.store.genres
         self.availableArtistTypes = self.store.artistTypes
         observeGenresChanges.store(in: &cancellables)
@@ -87,8 +95,10 @@ class AdvertCreateEditViewModel: ObservableObject {
                 genreIds: genres.map { $0.id },
                 searchedArtistTypeIds: searchedArtistTypes.map { $0.id }
             ),
-            onComplete: { [weak self] in self?.loading = .notLoading },
-            onSuccess: onSuccess ?? {},
+            onSuccess: { [weak self] in
+                self?.loading = .notLoading
+                self?.onSuccess()
+            },
             handleError: handleError
         )
     }
@@ -102,21 +112,21 @@ class AdvertCreateEditViewModel: ObservableObject {
                 searchedArtistTypeIds: searchedArtistTypes.map { $0.id }
             ),
             id: advertId!,
-            onComplete: { [weak self] in self?.loading = .notLoading },
-            onSuccess: onSuccess ?? {},
+            onSuccess: { [weak self] in
+                self?.loading = .notLoading
+                self?.onSuccess()
+            },
             handleError: handleError
         )
     }
 
     func fetchGenresAndArtistTypes() {
         loading = .loading
-        store.fetchGenresAndArtistTypes(onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
+        store.fetchGenresAndArtistTypes(onSuccess: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-        }
+        self.loading = .notLoading
         self.error = error
     }
 }

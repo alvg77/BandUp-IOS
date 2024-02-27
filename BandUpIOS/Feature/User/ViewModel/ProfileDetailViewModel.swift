@@ -17,11 +17,17 @@ class ProfileDetailViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    var navigateToProfileEdit: ((User, @escaping (User) -> Void) -> Void)?
-    var toAuth: (() -> Void)?
+    private let navigateToProfileEdit: (User, @escaping (User) -> Void) -> Void
+    private let toAuth: () -> Void
     
-    init(userId: Int? = nil) {
+    init(
+        userId: Int? = nil,
+        navigateToProfileEdit: @escaping (User, @escaping (User) -> Void) -> Void,
+        toAuth: @escaping () -> Void
+    ) {
         self.userId = userId
+        self.navigateToProfileEdit = navigateToProfileEdit
+        self.toAuth = toAuth
     }
     
     func refreshUserDetails() {
@@ -44,7 +50,7 @@ class ProfileDetailViewModel: ObservableObject {
     
     func editProfile() {
         guard let user = user else { return }
-        navigateToProfileEdit?(user) { [weak self] in self?.user = $0 }
+        navigateToProfileEdit(user) { [weak self] in self?.user = $0 }
     }
     
     func deleteProfile() {
@@ -56,7 +62,7 @@ class ProfileDetailViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     self?.loading = .notLoading
-                    self?.toAuth?()
+                    self?.toAuth()
                 case .failure(let error):
                     self?.loading = .notLoading
                     self?.handleError(error: error)
@@ -70,15 +76,15 @@ class ProfileDetailViewModel: ObservableObject {
     func logout() {
         do {
             try JWTService.shared.removeToken()
-            toAuth?()
+            toAuth()
         } catch let error {
             self.error = error
         }
     }
-    
+
     private func handleError(error: APIError?) {
         if case .unauthorized = error {
-            toAuth?()
+            toAuth()
             return
         }
         self.error = error

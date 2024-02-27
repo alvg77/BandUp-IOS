@@ -16,10 +16,9 @@ class AdvertDetailViewModel: ObservableObject {
     private var store: AdvertStore
     private var cancellables = Set<AnyCancellable>()
     
-    var toAuth: (() -> Void)?
-    var onDelete: (() -> Void)?
-    var navigateToEditAdvert: ((Advert) -> Void)?
-    var navigateToProfileDetail: ((Int) -> Void)?
+    private let onDelete: () -> Void
+    private let navigateToEditAdvert: (Advert) -> Void
+    private let navigateToProfileDetail: (Int) -> Void
     
     var observeAdvertUpdates: AnyCancellable {
         self.store.$adverts.sink { [weak self] adverts in
@@ -29,34 +28,44 @@ class AdvertDetailViewModel: ObservableObject {
         }
     }
     
-    init(advert: Advert, store: AdvertStore) {
+    init(
+        advert: Advert,
+        store: AdvertStore,
+        onDelete: @escaping () -> Void,
+        navigateToEditAdvert: @escaping (Advert) -> Void,
+        navigateToProfileDetail: @escaping (Int) -> Void
+    ) {
         self.advert = advert
         self.store = store
+        self.onDelete = onDelete
+        self.navigateToEditAdvert = navigateToEditAdvert
+        self.navigateToProfileDetail = navigateToProfileDetail
         observeAdvertUpdates.store(in: &cancellables)
     }
     
     func editAdvert() {
-        navigateToEditAdvert?(advert)
+        navigateToEditAdvert(advert)
     }
     
     func deleteAdvert() {
         loading = .loading
-        store.deleteAdvert(id: advert.id, onComplete: { [weak self] in self?.loading = .notLoading }, onSuccess: onDelete ?? {}, handleError: handleError)
+        store.deleteAdvert(id: advert.id,onSuccess: { [weak self] in
+            self?.loading = .notLoading
+            self?.onDelete()
+        }, handleError: handleError)
     }
     
     func refreshAdvert() {
         loading = .loading
-        store.fetchAdvert(advertId: advert.id, onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
+        store.fetchAdvert(advertId: advert.id, onSuccess: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     func profileDetail() {
-        navigateToProfileDetail?(advert.creator.id)
+        navigateToProfileDetail(advert.creator.id)
     }
     
     private func handleError(error: APIError?) {
-        if case .unauthorized = error {
-            toAuth?()
-        }
+        self.loading = .notLoading
         self.error = error
     }
 }

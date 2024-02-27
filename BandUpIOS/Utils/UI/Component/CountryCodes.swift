@@ -23,7 +23,6 @@ struct CountryCodes: View {
                     Spacer()
                     Text("+\(value)").foregroundColor(.secondary)
                 }
-                .background(Color.white)
                 .font(.system(size: 20))
                 .onTapGesture {
                     self.countryCode = value

@@ -53,18 +53,21 @@ struct AdvertPath: Hashable {
 class AdvertRouter: ObservableObject {
     @Published var path = NavigationPath()
     
-    var store = AdvertStore()
-    var viewModel: AdvertListViewModel
-    var toAuth: () -> Void
+    private var store: AdvertStore
+    private let toAuth: () -> Void
+    private lazy var viewModel: AdvertListViewModel = {
+        AdvertListViewModel(
+            store: self.store,
+            navigateToAdvertDetail: navigateToAdvertDetail,
+            navigateToCreateAdvert: navigateToCreateAdvert,
+            navigateToFilterAdverts: navigateToFilterAdverts,
+            navigateToProfileDetail: navigateToProfileDetail
+        )
+    }()
     
     init(toAuth: @escaping () -> Void) {
         self.toAuth = toAuth
-        viewModel = AdvertListViewModel(store: store)
-        viewModel.navigateToAdvertDetail = navigateToAdvertDetail
-        viewModel.navigateToCreateAdvert = navigateToCreateAdvert
-        viewModel.navigateToFilterAdverts = navigateToFilterAdverts
-        viewModel.navigateToProfileDetail = navigateToProfileDetail
-        viewModel.toAuth = toAuth
+        self.store = AdvertStore(toAuth: toAuth)
     }
     
     func initialView() -> AnyView {
@@ -80,45 +83,48 @@ class AdvertRouter: ObservableObject {
     }
     
     func navigateToAdvertDetail(advert: Advert) {
-        let viewModel = AdvertDetailViewModel(advert: advert, store: store)
-        viewModel.onDelete = navigateBackToPrevious
-        viewModel.navigateToEditAdvert = navigateToEditAdvert
-        viewModel.navigateToProfileDetail = navigateToProfileDetail
-        viewModel.toAuth = toAuth
+        let viewModel = AdvertDetailViewModel(
+            advert: advert,
+            store: store,
+            onDelete: navigateBackToPrevious,
+            navigateToEditAdvert: navigateToEditAdvert,
+            navigateToProfileDetail: navigateToProfileDetail
+        )
         path.append(AdvertPath(route: .detail(viewModel)))
     }
     
     func navigateToCreateAdvert() {
-        let viewModel = AdvertCreateEditViewModel(store: store)
-        viewModel.onSuccess = navigateBackToPrevious
-        viewModel.toAuth = toAuth
+        let viewModel = AdvertCreateEditViewModel(
+            store: store,
+            onSuccess: navigateBackToPrevious
+        )
         path.append(AdvertPath(route: .createEdit(viewModel)))
     }
     
     func navigateToEditAdvert(advert: Advert) {
-        let viewModel = AdvertCreateEditViewModel(advert: advert, store: store)
-        viewModel.onSuccess = navigateBackToPrevious
-        viewModel.toAuth = toAuth
+        let viewModel = AdvertCreateEditViewModel(
+            advert: advert,
+            store: store,
+            onSuccess: navigateBackToPrevious
+        )
         path.append(AdvertPath(route: .createEdit(viewModel)))
     }
     
     func navigateToFilterAdverts() {
-        let viewModel = AdvertFilterViewModel(store: store)
-        viewModel.onSuccess = navigateBackToPrevious
+        let viewModel = AdvertFilterViewModel(store: store, onSuccess: navigateBackToPrevious)
         path.append(AdvertPath(route: .filter(viewModel)))
     }
     
     func navigateToProfileDetail(userId: Int) {
-        let viewModel = ProfileDetailViewModel(userId: userId)
-        viewModel.navigateToProfileEdit = navigateToProfileEdit
-        viewModel.toAuth = toAuth
+        let viewModel = ProfileDetailViewModel(userId: userId, navigateToProfileEdit: navigateToProfileEdit, toAuth: toAuth)
         path.append(AdvertPath(route: .profileDetail(viewModel)))
     }
     
-    func navigateToProfileEdit(user: User, onComplete: @escaping (User) -> Void) {
-        let viewModel = ProfileEditViewModel(user: user)
-        viewModel.toAuth = toAuth
-        viewModel.onComplete = onComplete
+    func navigateToProfileEdit(user: User, onSuccess: @escaping (User) -> Void) {
+        let viewModel = ProfileEditViewModel(user: user, onSuccess: { [weak self] in
+            onSuccess($0)
+            self?.navigateBackToPrevious()
+        }, toAuth: toAuth)
         path.append(AdvertPath(route: .profileEdit(viewModel)))
     }
 }

@@ -17,13 +17,25 @@ final class LoginViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    var navigateToRegister: (() -> Void)?
-    var onComplete: (() -> Void)?
+    private let navigateToRegister: () -> Void
+    private let onComplete: () -> Void
     
     var verifyInput: Bool {
         !email.isEmpty && !password.isEmpty
     }
-        
+    
+    init(
+        navigateToRegister: @escaping () -> Void,
+        onComplete: @escaping () -> Void
+    ) {
+        self.navigateToRegister = navigateToRegister
+        self.onComplete = onComplete
+    }
+    
+    func register() {
+        navigateToRegister()
+    }
+    
     func login() {
         loading = .loading
         let loginRequest = LoginRequest(email: email, password: password)
@@ -33,7 +45,7 @@ final class LoginViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     self?.loading = .notLoading
-                    self?.onComplete?()
+                    self?.onComplete()
                 case .failure(let error):
                     self?.loading = .notLoading
                     withAnimation {

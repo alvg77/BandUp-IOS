@@ -16,7 +16,6 @@ protocol AdvertServiceProtocol {
     func delete(advertId: Int) -> AnyPublisher<Void, APIError>
 }
 
-
 class AdvertService {
     static let shared: AdvertServiceProtocol = AdvertService()
     

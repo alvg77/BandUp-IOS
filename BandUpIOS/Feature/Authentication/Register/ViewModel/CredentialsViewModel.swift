@@ -32,7 +32,7 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     
     private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
     
-    var next: (() -> Void)?
+    var next: () -> Void
     
     var validateStep: Bool {
         usernameState == .valid &&
@@ -48,7 +48,8 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
     
     var cancellables = Set<AnyCancellable>()
         
-    init() {
+    init(next: @escaping () -> Void) {
+        self.next = next
         validateUsername.store(in: &cancellables)
         validateEmail.store(in: &cancellables)
         validatePassword.store(in: &cancellables)
@@ -144,7 +145,7 @@ class CredentialsViewModel: ObservableObject, RegisterStepViewModel {
                 case .finished:
                     self?.loading = .notLoading
                     if self?.emailAvailable == .available && self?.usernameAvailable == .available {
-                        self?.next?()
+                        self?.next()
                     }
                 case .failure(let error):
                     self?.loading = .notLoading

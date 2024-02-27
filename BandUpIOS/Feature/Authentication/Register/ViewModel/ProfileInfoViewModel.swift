@@ -10,8 +10,6 @@ import Combine
 import SwiftUI
 
 class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
-    var next: (() -> Void)?
-
     @Published var artistTypes: [ArtistType] = []
     @Published var artistType: ArtistType?
     @Published var bio = ""
@@ -20,11 +18,15 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     
     var cancellables = Set<AnyCancellable>()
         
+    var next: () -> Void
+
     var validateStep: Bool {
         !bio.isEmpty && artistType != nil
     }
     
-    init() { }
+    init(next: @escaping () -> Void) {
+        self.next = next
+    }
     
     func getArtistTypes() {
         loading = .loading

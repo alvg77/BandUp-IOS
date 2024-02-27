@@ -9,7 +9,6 @@ import Foundation
 import Combine
 
 class AdvertStore: ObservableObject {
-    typealias OnComplete = () -> Void
     typealias OnSuccess = () -> Void
     typealias HandleError = (APIError?) -> Void
     
@@ -17,21 +16,25 @@ class AdvertStore: ObservableObject {
     @Published var genres: [Genre] = []
     @Published var artistTypes: [ArtistType] = []
     
+    let toAuth: () -> Void
     var advertFilter: AdvertFilter?
     
     private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
     
-    func applyFilter(advertFilter: AdvertFilter?, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    init(toAuth: @escaping () -> Void) {
+        self.toAuth = toAuth
+    }
+    
+    func applyFilter(advertFilter: AdvertFilter?, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         self.advertFilter = advertFilter
-        fetchAdverts(appending: false, pageNo: 0, onComplete: onComplete, onSuccess: onSuccess, handleError: handleError)
+        fetchAdverts(appending: false, pageNo: 0, onSuccess: onSuccess, handleError: handleError)
     }
     
     func fetchAdverts(
         appending: Bool,
         pageNo: Int,
         userId: Int? = nil,
-        onComplete: OnComplete? = nil,
         onSuccess: OnSuccess? = nil,
         handleError: @escaping HandleError
     ) {
@@ -42,13 +45,12 @@ class AdvertStore: ObservableObject {
             userId: userId
         )
         .receive(on: DispatchQueue.main)
-        .sink { completion in
+        .sink { [weak self] completion in
             switch completion {
             case .finished:
-                onComplete?()
                 onSuccess?()
             case .failure(let error):
-                onComplete?()
+                self?.checkAuth(error: error)
                 handleError(error)
             }
         } receiveValue: { [weak self] in
@@ -61,15 +63,15 @@ class AdvertStore: ObservableObject {
         .store(in: &cancellables)
     }
     
-    func fetchAdvert(advertId: Int, onComplete: @escaping OnComplete, handleError: @escaping HandleError) {
+    func fetchAdvert(advertId: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         AdvertService.shared.getById(advertId: advertId)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
+                    onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] advert in
@@ -80,16 +82,15 @@ class AdvertStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func createAdvert(_ new: CreateEditAdvert, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func createAdvert(_ new: CreateEditAdvert, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         AdvertService.shared.create(advertCreateRequest: new)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
                     onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] in
@@ -98,16 +99,15 @@ class AdvertStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func editAdvert(_ edit: CreateEditAdvert, id: Int, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func editAdvert(_ edit: CreateEditAdvert, id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         AdvertService.shared.edit(advertId: id, advertEditRequest: edit)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
                     onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] advert in
@@ -118,16 +118,15 @@ class AdvertStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func deleteAdvert(id: Int, onComplete: @escaping OnComplete, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
+    func deleteAdvert(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         AdvertService.shared.delete(advertId: id)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
                     onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] _ in
@@ -138,16 +137,16 @@ class AdvertStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func fetchGenresAndArtistTypes(onComplete: @escaping OnComplete, handleError: @escaping HandleError) {
+    func fetchGenresAndArtistTypes(onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
         GenreService.shared.getGenres()
             .combineLatest(ArtistTypeService.shared.getArtistTypes())
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    onComplete()
+                    onSuccess()
                 case .failure(let error):
-                    onComplete()
+                    self?.checkAuth(error: error)
                     handleError(error)
                 }
             } receiveValue: { [weak self] (genres, artistTypes) in
@@ -155,5 +154,11 @@ class AdvertStore: ObservableObject {
                 self?.artistTypes = artistTypes
             }
             .store(in: &cancellables)
+    }
+    
+    private func checkAuth(error: APIError) {
+        if case .unauthorized = error {
+            toAuth()
+        }
     }
 }

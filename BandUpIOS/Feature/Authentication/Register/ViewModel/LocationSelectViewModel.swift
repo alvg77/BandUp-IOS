@@ -10,9 +10,13 @@ import Combine
 import CoreLocation
 
 class LocationSelectViewModel: LocationService, RegisterStepViewModel {
-    var register: (() -> Void)?
+    var register: () -> Void
             
     var validateStep: Bool {
         getLocation() != nil
+    }
+    
+    init(register: @escaping () -> Void) {
+        self.register = register
     }
 }
