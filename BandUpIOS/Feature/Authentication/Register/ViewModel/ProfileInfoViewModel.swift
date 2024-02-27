@@ -15,6 +15,7 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     @Published var artistTypes: [ArtistType] = []
     @Published var artistType: ArtistType?
     @Published var bio = ""
+    @Published var loading: LoadingState = .notLoading
     @Published var error: APIError?
     
     var cancellables = Set<AnyCancellable>()
@@ -26,15 +27,21 @@ class ProfileInfoViewModel: ObservableObject, RegisterStepViewModel {
     init() { }
     
     func getArtistTypes() {
-        ArtistTypeService.shared.getArtistTypes { [weak self] completion in
-            DispatchQueue.main.async {
+        loading = .loading
+        ArtistTypeService.shared.getArtistTypes()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
                 switch completion {
-                case .success(let artistTypes):
-                    self?.artistTypes = artistTypes
+                case .finished:
+                    self?.loading = .notLoading
                 case .failure(let error):
+                    self?.loading = .notLoading
                     self?.error = error
                 }
+            } receiveValue: { [weak self] in
+                self?.artistTypes = $0
+                self?.error = nil
             }
-        }
+            .store(in: &cancellables)
     }
 }

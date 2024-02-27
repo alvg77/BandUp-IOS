@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CreateUpdateAdvert: Encodable {
+struct CreateEditAdvert: Encodable {
     var title: String
     var description: String
     var genreIds: [Int]

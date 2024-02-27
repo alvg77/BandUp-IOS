@@ -45,9 +45,7 @@ struct CharacterCountTextEditor: View {
                             .opacity(0.5)
                     }
                 }
-                
             }
-
         }
     }
 }

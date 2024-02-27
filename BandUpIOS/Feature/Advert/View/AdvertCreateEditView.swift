@@ -7,13 +7,15 @@
 
 import SwiftUI
 
-struct AdvertCreateUpdateView: View {
-    @ObservedObject var viewModel: AdvertCreateUpdateViewModel
+struct AdvertCreateEditView: View {
+    @ObservedObject var viewModel: AdvertCreateEditViewModel
     
     var body: some View {
-        Form {
-            displayTextSection
-            displayGenresAndArtistTypesSelectSection
+        LoadingView(loading: viewModel.loading) {
+            Form {
+                displayTextSection
+                displayGenresAndArtistTypesSelectSection
+            }
         }
         .task {
             guard viewModel.availableGenres.isEmpty || viewModel.availableArtistTypes.isEmpty else { return }
@@ -22,7 +24,7 @@ struct AdvertCreateUpdateView: View {
         .refreshable {
             viewModel.fetchGenresAndArtistTypes()
         }
-        .navigationTitle(viewModel.modifyAction == .create ? "Create Advert" : "Update Advert")
+        .navigationTitle(viewModel.modifyAction == .create ? "Create Advert" : "Edit Advert")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 displayDoneButton
@@ -40,7 +42,7 @@ struct AdvertCreateUpdateView: View {
     }
 }
 
-private extension AdvertCreateUpdateView {
+private extension AdvertCreateEditView {
     @ViewBuilder var displayTextSection: some View {
         Section {
             TextField("Title", text: $viewModel.title)
@@ -80,6 +82,6 @@ private extension AdvertCreateUpdateView {
 
 #Preview {
     NavigationStack {
-        AdvertCreateUpdateView(viewModel: AdvertCreateUpdateViewModel(model: AdvertModel()))
+        AdvertCreateEditView(viewModel: AdvertCreateEditViewModel(store: AdvertStore()))
     }
 }

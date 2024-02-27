@@ -6,24 +6,25 @@
 //
 
 import Foundation
+import Combine
 
 protocol AuthServiceProtocol {
-    func login(loginRequest: LoginRequest, completion:  @escaping (Result<AuthResponse, APIError>) -> Void)
-    func checkUsernameAvailability(username: String, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void)
-    func checkEmailAvailability(email: String, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void)
-    func checkAvailability(for credential: String, isUsername: Bool, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void)
-    func register(registerRequest: RegisterRequest, completion: @escaping (Result<AuthResponse, APIError>) -> Void)
+    func login(loginRequest: LoginRequest) -> AnyPublisher<AuthResponse, APIError>
+    func checkUsernameAvailability(username: String) -> AnyPublisher<CredentialAvailability, APIError>
+    func checkEmailAvailability(email: String) -> AnyPublisher<CredentialAvailability, APIError>
+    func checkAvailability(for credential: String, isUsername: Bool) -> AnyPublisher<CredentialAvailability, APIError>
+    func register(registerRequest: RegisterRequest) -> AnyPublisher<AuthResponse, APIError>
 }
 
 class AuthService {
     static let shared: AuthServiceProtocol = AuthService()
-    private static let baseURL = URL(string: "http://localhost:9090/api/v1/auth/")!
+    private static let baseURL = URL(string: "\(Secrets.baseApiURL)/auth/")!
     
     private init() { }
 }
 
 extension AuthService: AuthServiceProtocol {
-    func login(loginRequest: LoginRequest, completion:  @escaping (Result<AuthResponse, APIError>) -> Void) {
+    func login(loginRequest: LoginRequest) -> AnyPublisher<AuthResponse, APIError> {
         let endpoint = AuthService.baseURL.appending(path: "login")
         
         var request = URLRequest(url: endpoint)
@@ -31,66 +32,64 @@ extension AuthService: AuthServiceProtocol {
         request.httpBody = try? JSONEncoder().encode(loginRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: AuthResponse.self, decoder: JSONDecoder())
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try JSONDecoder().decode(AuthResponse.self, from: data)
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func checkUsernameAvailability(username: String, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void) {
-        checkAvailability(for: username, isUsername: true, completion: completion)
+    func checkUsernameAvailability(username: String) -> AnyPublisher<CredentialAvailability, APIError> {
+        return checkAvailability(for: username, isUsername: true)
     }
     
-    func checkEmailAvailability(email: String, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void) {
-        return checkAvailability(for: email, isUsername: false, completion: completion)
+    func checkEmailAvailability(email: String) -> AnyPublisher<CredentialAvailability, APIError> {
+        return checkAvailability(for: email, isUsername: false)
     }
     
-    internal func checkAvailability(for credential: String, isUsername: Bool, completion: @escaping (Result<CredentialAvailability, APIError>) -> Void) {
+    internal func checkAvailability(for credential: String, isUsername: Bool) -> AnyPublisher<CredentialAvailability, APIError> {
         var endpoint = isUsername ? AuthService.baseURL.appendingPathComponent("available/username") : AuthService.baseURL.appendingPathComponent("available/email")
         
         endpoint.append(queryItems: [URLQueryItem(name: isUsername ? "username" : "email", value: credential)])
         
-        URLSession.shared.dataTask(with: endpoint) { data, response, error in
-            if let error = error as? URLError {
-                completion(.failure(error.toAPIError()))
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(.invalidResponseError))
-                return
-            }
-
-            let statusCode = httpResponse.statusCode
-            
-            switch statusCode {
-            case 200:
-                completion(.success(.available))
-            case 409:
-                completion(.success(.taken))
-            default:
-                if let data = data {
-                    completion(.failure(APIErrorMessage.getServerError(data: data)))
-                } else {
-                    completion(.failure(.invalidResponseError))
+        return URLSession.shared.dataTaskPublisher(for: endpoint)
+            .tryMap { output in
+                guard let httpResponse = output.response as? HTTPURLResponse else {
+                    throw APIError.invalidResponseError
+                }
+                
+                switch httpResponse.statusCode {
+                case 200:
+                    return CredentialAvailability.available
+                case 409:
+                    return CredentialAvailability.taken
+                case 400..<600:
+                    throw APIErrorMessage.getServerError(data: output.data)
+                default:
+                    throw APIError.unknownError
                 }
             }
-        }.resume()
+            .mapError { error -> APIError in
+                if let urlError = error as? URLError {
+                    return urlError.toAPIError()
+                } else if let apiError = error as? APIError {
+                    return apiError
+                } else {
+                    return .unknownError
+                }
+            }
+            .eraseToAnyPublisher()
     }
     
-    func register(registerRequest: RegisterRequest, completion: @escaping (Result<AuthResponse, APIError>) -> Void) {
+    func register(registerRequest: RegisterRequest) -> AnyPublisher<AuthResponse, APIError> {
         let endpoint = AuthService.baseURL.appendingPathComponent("register")
         var request: URLRequest
         
@@ -99,22 +98,18 @@ extension AuthService: AuthServiceProtocol {
         request.httpBody = try? JSONEncoder().encode(registerRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: AuthResponse.self, decoder: JSONDecoder())
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try JSONDecoder().decode(AuthResponse.self, from: data)
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
 }

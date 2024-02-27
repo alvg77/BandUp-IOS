@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CreateUpdatePostView: View {
-    @ObservedObject var viewModel: CreateUpdatePostViewModel
+struct PostCreateEditView: View {
+    @ObservedObject var viewModel: PostCreateEditViewModel
     
     @FocusState var focus: ModifyPostViewField?
     
@@ -19,15 +19,17 @@ struct CreateUpdatePostView: View {
     }
     
     var body: some View {
-        Form {
-            Section {
-                title
-                url
-                CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
-                    .focused($focus, equals: .content)
-            }
-            Section {
-                postFlairPicker
+        LoadingView(loading: viewModel.loading) {
+            Form {
+                Section {
+                    title
+                    url
+                    CharacterCountTextEditor("Content", text: $viewModel.content, maxChars: viewModel.maxContentLength)
+                        .focused($focus, equals: .content)
+                }
+                Section {
+                    postFlairPicker
+                }
             }
         }
         .task {
@@ -37,9 +39,7 @@ struct CreateUpdatePostView: View {
         .refreshable {
             viewModel.getFlairs()
         }
-        
         .navigationTitle(viewModel.modifyAction == .create ? "Create Post" : "Edit Post")
-        .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             enableLinkButton
         }
@@ -60,7 +60,7 @@ struct CreateUpdatePostView: View {
     }
 }
 
-private extension CreateUpdatePostView {
+private extension PostCreateEditView {
     @ViewBuilder private var title: some View {
         TextField("Title", text: $viewModel.title)
             .font(.title2)
@@ -132,5 +132,7 @@ private extension CreateUpdatePostView {
 }
 
 #Preview {
-    CreateUpdatePostView(viewModel: CreateUpdatePostViewModel(model: PostModel()))
+    NavigationStack {
+        PostCreateEditView(viewModel: PostCreateEditViewModel(store: PostStore()))
+    }.tint(.purple)
 }

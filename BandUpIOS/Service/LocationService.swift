@@ -42,4 +42,15 @@ class LocationService: ObservableObject {
             mapItem: mapItem
         )
     }
+    
+    static func getMapItem(location: Location) -> MKMapItem {
+        return MKMapItem(
+            placemark: MKPlacemark(
+                coordinate: CLLocationCoordinate2D(
+                    latitude: location.lat,
+                    longitude: location.lon
+                )
+            )
+        )
+    }
 }

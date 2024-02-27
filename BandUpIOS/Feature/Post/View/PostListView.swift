@@ -11,20 +11,20 @@ struct PostListView: View {
     @ObservedObject var viewModel: PostListViewModel
     
     var body: some View {
-        VStack {
-            flairSelector
-                .padding(.horizontal)
-            ZStack {
+        LoadingView(loading: viewModel.loading) {
+            VStack {
+                flairSelector
+                    .padding(.horizontal)
                 posts
                     .scrollIndicators(.hidden)
-                    .refreshable {
-                        viewModel.fetchPosts()
-                    }
-                    .task {
-                        guard viewModel.posts.isEmpty else { return }
-                        viewModel.fetchPosts()
-                    }
             }
+        }
+        .refreshable {
+            viewModel.fetchPosts()
+        }
+        .task {
+            guard viewModel.posts.isEmpty else { return }
+            viewModel.fetchPosts()
         }
         .navigationTitle("Home")
         .navigationBarTitleDisplayMode(.inline)
@@ -33,7 +33,7 @@ struct PostListView: View {
                 createPostButton
             }
         }
-        .searchable(text: $viewModel.queryString, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.queryString, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search posts")
         .alert(
             "Oops! Something went wrong...",
             isPresented: $viewModel.error.isNotNil(),
@@ -65,15 +65,17 @@ private extension PostListView {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.posts) { post in
-                    PostRowView(title: post.title, flair: post.flair, likeCount: post.likeCount, commentCount: post.commentCount, creator: post.creator, createdAt: post.createdAt)
-                        .onTapGesture {
-                            viewModel.postDetail(post: post)
-                        }
-                        .task {
-                            viewModel.fetchNextPage(post: post)
-                        }
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
+                    PostRowView(title: post.title, flair: post.flair, likeCount: post.likeCount, commentCount: post.commentCount, creator: post.creator, createdAt: post.createdAt) {
+                        viewModel.profileDetail(post: post)
+                    }
+                    .onTapGesture {
+                        viewModel.postDetail(post: post)
+                    }
+                    .task {
+                        viewModel.fetchNextPage(post: post)
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 4)
                 }
             }
         }
@@ -90,6 +92,6 @@ private extension PostListView {
 
 #Preview {
     NavigationStack {
-        PostListView(viewModel: PostListViewModel(model: PostModel()))
+        PostListView(viewModel: PostListViewModel(store: PostStore()))
     }
 }

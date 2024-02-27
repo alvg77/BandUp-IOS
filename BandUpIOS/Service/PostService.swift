@@ -6,18 +6,19 @@
 //
 
 import Foundation
+import Combine
 
 protocol PostServiceProtocol {
-    func create(postCreateRequest: CreateUpdatePost, completion: @escaping (Result<Post, APIError>) -> Void)
-    func getById(postId: Int, completion: @escaping (Result<Post, APIError>) -> Void)
-    func getAll(pageNo: Int, pageSize: Int, queryString: String?, flair: PostFlair?, completion: @escaping (Result<[Post], APIError>) -> Void)
-    func update(postId: Int, postUpdateRequest: CreateUpdatePost, completion: @escaping (Result<Post, APIError>) -> Void)
-    func delete(postId: Int, completion: @escaping (Result<Void, APIError>) -> Void)
+    func create(postCreateRequest: CreateEditPost) -> AnyPublisher<Post, APIError>
+    func getById(postId: Int) -> AnyPublisher<Post, APIError>
+    func getAll(pageNo: Int, pageSize: Int, queryString: String?, flair: PostFlair?) -> AnyPublisher<[Post], APIError>
+    func edit(postId: Int, postEditRequest: CreateEditPost) -> AnyPublisher<Post, APIError>
+    func delete(postId: Int) -> AnyPublisher<Void, APIError>
 }
 
 class PostService {
     static let shared: PostServiceProtocol = PostService()
-    private static let baseURL = URL(string: "http://localhost:9090/api/v1/community-posts")!
+    private static let baseURL = URL(string: "\(Secrets.baseApiURL)/community-posts")!
     private let decoder = JSONDecoder()
     private let formatter = DateFormatter()
     
@@ -29,43 +30,34 @@ class PostService {
 }
 
 extension PostService: PostServiceProtocol {
-    func create(postCreateRequest: CreateUpdatePost, completion: @escaping (Result<Post, APIError>) -> Void) {
+    func create(postCreateRequest: CreateEditPost) -> AnyPublisher<Post, APIError> {
         var request = URLRequest(url: PostService.baseURL)
         request.httpMethod = "POST"
         request.httpBody = try? JSONEncoder().encode(postCreateRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: Post.self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode(Post.self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func getById(postId: Int, completion: @escaping (Result<Post, APIError>) -> Void) {
+    func getById(postId: Int) -> AnyPublisher<Post, APIError> {
         let endpoint = PostService.baseURL.appending(path: "/\(postId)")
         
         var request = URLRequest(url: endpoint)
@@ -73,36 +65,27 @@ extension PostService: PostServiceProtocol {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: Post.self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode(Post.self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func getAll(pageNo: Int, pageSize: Int, queryString: String?, flair: PostFlair?, completion: @escaping (Result<[Post], APIError>) -> Void) {
+    func getAll(pageNo: Int, pageSize: Int, queryString: String?, flair: PostFlair?) -> AnyPublisher<[Post], APIError> {
         var queryItems: [URLQueryItem] = []
         queryItems.append(URLQueryItem(name: "pageNo", value: "\(pageNo)"))
         queryItems.append(URLQueryItem(name: "pageSize", value: "\(pageSize)"))
@@ -116,93 +99,69 @@ extension PostService: PostServiceProtocol {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: [Post].self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode([Post].self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func update(postId: Int, postUpdateRequest: CreateUpdatePost, completion: @escaping (Result<Post, APIError>) -> Void) {
+    func edit(postId: Int, postEditRequest: CreateEditPost) -> AnyPublisher<Post, APIError> {
         let endpoint = PostService.baseURL.appending(path: "/\(postId)")
         
         var request = URLRequest(url: endpoint)
         request.httpMethod = "PUT"
-        request.httpBody = try? JSONEncoder().encode(postUpdateRequest)
+        request.httpBody = try? JSONEncoder().encode(postEditRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: Post.self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode(Post.self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
 
-    func delete(postId: Int, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func delete(postId: Int) -> AnyPublisher<Void, APIError> {
         let endpoint = PostService.baseURL.appending(path: "/\(postId)")
-        
+
         var request = URLRequest(url: endpoint)
         request.httpMethod = "DELETE"
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success:
-                completion(.success(Void()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        
+        return RequestHandler.makeRequest(request: request)
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
     }
 }

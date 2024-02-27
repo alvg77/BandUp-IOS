@@ -6,63 +6,52 @@
 //
 
 import Foundation
+import Combine
 
 protocol LikeServiceProtocol {
-    func like(postId: Int, completion: @escaping (Result<Void, APIError>) -> Void)
-    func unlike(postId: Int, completion: @escaping (Result<Void, APIError>) -> Void)
+    func like(postId: Int) -> AnyPublisher<Void, APIError>
+    func unlike(postId: Int) -> AnyPublisher<Void, APIError>
 }
 
 class LikeService {
     static let shared: LikeServiceProtocol = LikeService()
-    private static let baseURL = URL(string: "http://localhost:9090/api/v1/likes")!
+    private static let baseURL = URL(string: "\(Secrets.baseApiURL)/likes")!
 
     private init() { }
 }
 
 extension LikeService: LikeServiceProtocol {
-    func like(postId: Int, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func like(postId: Int) -> AnyPublisher<Void, APIError> {
         let endpoint = LikeService.baseURL.appending(queryItems: [URLQueryItem(name: "postId", value: "\(postId)")])
         
         var request = URLRequest(url: endpoint)
         request.httpMethod = "POST"
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success:
-                completion(.success(Void()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        return RequestHandler.makeRequest(request: request)
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
     }
     
-    func unlike(postId: Int, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func unlike(postId: Int) -> AnyPublisher<Void, APIError> {
         let endpoint = LikeService.baseURL.appending(queryItems: [URLQueryItem(name: "postId", value: "\(postId)")])
         
         var request = URLRequest(url: endpoint)
         request.httpMethod = "DELETE"
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success:
-                completion(.success(Void()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        return RequestHandler.makeRequest(request: request)
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
     }
 }

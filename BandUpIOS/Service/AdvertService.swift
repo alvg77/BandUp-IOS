@@ -6,19 +6,21 @@
 //
 
 import Foundation
+import Combine
 
 protocol AdvertServiceProtocol {
-    func create(advertCreateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void)
-    func getById(advertId: Int, completion: @escaping (Result<Advert, APIError>) -> Void)
-    func getAll(pageNo: Int, pageSize: Int, filter: AdvertFilter?, completion: @escaping (Result<[Advert], APIError>) -> Void)
-    func update(advertId: Int, advertUpdateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void)
-    func delete(advertId: Int, completion: @escaping (Result<Void, APIError>) -> Void)
+    func create(advertCreateRequest: CreateEditAdvert) -> AnyPublisher<Advert, APIError>
+    func getById(advertId: Int) -> AnyPublisher<Advert, APIError>
+    func getAll(pageNo: Int, pageSize: Int, filter: AdvertFilter?, userId: Int?) -> AnyPublisher<[Advert], APIError>
+    func edit(advertId: Int, advertEditRequest: CreateEditAdvert) -> AnyPublisher<Advert, APIError>
+    func delete(advertId: Int) -> AnyPublisher<Void, APIError>
 }
+
 
 class AdvertService {
     static let shared: AdvertServiceProtocol = AdvertService()
     
-    private static let baseURL = URL(string: "http://localhost:9090/api/v1/advertisements")!
+    private static let baseURL = URL(string: "\(Secrets.baseApiURL)/advertisements")!
     private let decoder = JSONDecoder()
     private let formatter = DateFormatter()
     
@@ -30,43 +32,34 @@ class AdvertService {
 }
 
 extension AdvertService: AdvertServiceProtocol {
-    func create(advertCreateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void) {
+    func create(advertCreateRequest: CreateEditAdvert) -> AnyPublisher<Advert, APIError> {
         var request = URLRequest(url: AdvertService.baseURL)
         request.httpMethod = "POST"
         request.httpBody = try? JSONEncoder().encode(advertCreateRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: Advert.self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode(Advert.self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func getById(advertId: Int, completion: @escaping (Result<Advert, APIError>) -> Void) {
+    func getById(advertId: Int) -> AnyPublisher<Advert, APIError> {
         let endpoint = AdvertService.baseURL.appending(path: "/\(advertId)")
         
         var request = URLRequest(url: endpoint)
@@ -74,36 +67,27 @@ extension AdvertService: AdvertServiceProtocol {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: Advert.self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode(Advert.self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func getAll(pageNo: Int, pageSize: Int, filter: AdvertFilter?, completion: @escaping (Result<[Advert], APIError>) -> Void) {
+    func getAll(pageNo: Int, pageSize: Int, filter: AdvertFilter?, userId: Int?) -> AnyPublisher<[Advert], APIError> {
         var queryArtistTypeIds: [URLQueryItem] = []
         var queryGenreIds: [URLQueryItem] = []
 
@@ -125,6 +109,7 @@ extension AdvertService: AdvertServiceProtocol {
         queryItems.append(URLQueryItem(name: "city", value: filter?.location?.city))
         queryItems.append(URLQueryItem(name: "administrativeArea", value: filter?.location?.administrativeArea))
         queryItems.append(URLQueryItem(name: "country", value: filter?.location?.country))
+        queryItems.append(URLQueryItem(name: "userId", value: userId != nil ? "\(userId!)" : nil))
         queryItems.append(contentsOf: queryArtistTypeIds)
         queryItems.append(contentsOf: queryGenreIds)
 
@@ -135,93 +120,69 @@ extension AdvertService: AdvertServiceProtocol {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+  
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: [Advert].self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode([Advert].self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func update(advertId: Int, advertUpdateRequest: CreateUpdateAdvert, completion: @escaping (Result<Advert, APIError>) -> Void) {
+    func edit(advertId: Int, advertEditRequest: CreateEditAdvert) -> AnyPublisher<Advert, APIError> {
         let endpoint = AdvertService.baseURL.appending(path: "/\(advertId)")
         
         var request = URLRequest(url: endpoint)
         request.httpMethod = "PUT"
-        request.httpBody = try? JSONEncoder().encode(advertUpdateRequest)
+        request.httpBody = try? JSONEncoder().encode(advertEditRequest)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        RequestHandler.makeRequest(request: request) { [weak self] requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: request)
+            .decode(type: Advert.self, decoder: decoder)
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try self?.decoder.decode(Advert.self, from: data)
-                    guard let response = response else {
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
     
-    func delete(advertId: Int, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func delete(advertId: Int) -> AnyPublisher<Void, APIError> {
         let endpoint = AdvertService.baseURL.appending(path: "\(advertId)")
         
         var request = URLRequest(url: endpoint)
         request.httpMethod = "DELETE"
         
         guard let token = JWTService.shared.getToken() else {
-            completion(.failure(.unauthorized))
-            return
+            return Fail(error: APIError.unauthorized).eraseToAnyPublisher()
         }
         
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        RequestHandler.makeRequest(request: request) { requestCompletion in
-            switch requestCompletion {
-            case .success:
-                completion(.success(Void()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        return RequestHandler.makeRequest(request: request)
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
     }
 }

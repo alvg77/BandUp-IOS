@@ -11,52 +11,17 @@ import MapKit
 
 class AdvertFilterViewModel: LocationService {
     @Published var filter: AdvertFilter
+    @Published var loading: LoadingState = .notLoading
     @Published var availableGenres: [Genre]
     @Published var availableArtistTypes: [ArtistType]
     @Published var error: APIError?
     
-    private var model: AdvertModel
+    private var store: AdvertStore
     private var cancellables = Set<AnyCancellable>()
     private var filterExists: Bool
     
-    var onComplete: (() -> Void)?
+    var onSuccess: (() -> Void)?
     var toAuth: (() -> Void)?
-    
-    init(model: AdvertModel) {
-        self.model = model
-        self.filter = model.advertFilter ?? AdvertFilter()
-        self.filterExists = model.advertFilter != nil
-        self.availableGenres = model.genres
-        self.availableArtistTypes = model.artistTypes
-        
-        super.init()
-        
-        if let location = self.model.advertFilter?.location {
-            self.mapItems.append(
-                MKMapItem(
-                    placemark: MKPlacemark(
-                        coordinate: CLLocationCoordinate2D(
-                            latitude: location.lat,
-                            longitude: location.lon
-                        )
-                    )
-                )
-            )
-        }
-        
-        self.model.$genres.sink { [weak self] in
-            self?.availableGenres = $0
-        }.store(in: &cancellables)
-        
-        self.model.$artistTypes.sink { [weak self] in
-            self?.availableArtistTypes = $0
-        }.store(in: &cancellables)
-        
-        self.$mapItems.sink { [weak self] in
-            guard let mapItem = $0.first else { return }
-            self?.filter.location = Location(mapItem: mapItem)
-        }.store(in: &cancellables)
-    }
     
     var clearEnabled: Bool {
         filterExists
@@ -68,16 +33,72 @@ class AdvertFilterViewModel: LocationService {
         !filter.searchedArtistTypes.isEmpty
     }
     
+    var observeGenresChanges: AnyCancellable {
+        self.store.$genres.sink { [weak self] in
+            self?.availableGenres = $0
+        }
+    }
+    
+    var observeArtistTypesChanges: AnyCancellable {
+        self.store.$artistTypes.sink { [weak self] in
+            self?.availableArtistTypes = $0
+        }
+    }
+    
+    var observeLocationChanges: AnyCancellable {
+        self.$mapItems.sink { [weak self] in
+            guard let mapItem = $0.first else { return }
+            self?.filter.location = Location(mapItem: mapItem)
+        }
+    }
+    
+    init(store: AdvertStore) {
+        self.store = store
+        self.filter = store.advertFilter ?? AdvertFilter()
+        self.filterExists = store.advertFilter != nil
+        self.availableGenres = store.genres
+        self.availableArtistTypes = store.artistTypes
+        super.init()
+        if let location = self.store.advertFilter?.location {
+            self.mapItems.append(
+                MKMapItem(
+                    placemark: MKPlacemark(
+                        coordinate: CLLocationCoordinate2D(
+                            latitude: location.lat,
+                            longitude: location.lon
+                        )
+                    )
+                )
+            )
+        }
+        observeGenresChanges.store(in: &cancellables)
+        observeArtistTypesChanges.store(in: &cancellables)
+        observeLocationChanges.store(in: &cancellables)
+    }
+    
     func clearFilter() {
-        model.applyFilter(advertFilter: nil, onComplete: onComplete ?? {}, handleError: handleError)
+        loading = .loading
+        store.applyFilter(
+            advertFilter: nil,
+            onComplete: { [weak self] in self?.loading = .notLoading },
+            onSuccess: onSuccess ?? {},
+            handleError: handleError
+        )
     }
     
     func applyFilter() {
-        model.applyFilter(advertFilter: filter, onComplete: onComplete ?? {}, handleError: handleError)
+        loading = .loading
+        store.applyFilter(
+            advertFilter: filter,
+            onComplete: { [weak self] in self?.loading = .notLoading },
+            onSuccess: onSuccess ?? {},
+            handleError: handleError
+        )
     }
     
     func fetchGenresAndArtistTypes() {
-        model.fetchGenresAndArtistTypes(handleError: handleError)
+        loading = .loading
+        store.fetchGenresAndArtistTypes(onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     private func handleError(error: APIError?) {

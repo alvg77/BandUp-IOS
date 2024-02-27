@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommentUpdateView: View {
+struct CommentEditView: View {
     @Environment(\.dismiss) var dismiss
     
     @State var editContent: String
@@ -16,10 +16,10 @@ struct CommentUpdateView: View {
     
     var update: (Int, String) -> Void
     
-    init(commentId: Int, content: String, update: @escaping (Int, String) -> Void) {
+    init(commentId: Int, content: String, edit: @escaping (Int, String) -> Void) {
         self.commentId = commentId
         self._editContent = State(initialValue: content)
-        self.update = update
+        self.update = edit
     }
     
     var body: some View {

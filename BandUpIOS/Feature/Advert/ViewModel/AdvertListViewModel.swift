@@ -10,9 +10,10 @@ import Combine
 
 class AdvertListViewModel: ObservableObject {
     @Published var adverts: [Advert] = []
+    @Published var loading: LoadingState = .notLoading
     @Published var error: APIError?
     
-    private var model: AdvertModel
+    private var store: AdvertStore
     private var cancellables = Set<AnyCancellable>()
     private var pageNo = 0
     
@@ -20,18 +21,23 @@ class AdvertListViewModel: ObservableObject {
     var navigateToAdvertDetail: ((Advert) -> Void)?
     var navigateToCreateAdvert: (() -> Void)?
     var navigateToFilterAdverts: (() -> Void)?
+    var navigateToProfileDetail: ((Int) -> Void)?
     
-    init(model: AdvertModel) {
-        self.model = model
-        
-        self.model.$adverts.sink { [weak self] in
+    var observeAdvertsUpdates: AnyCancellable {
+        self.store.$adverts.sink { [weak self] in
             self?.adverts = $0
-        }.store(in: &cancellables)
+        }
+    }
+    
+    init(store: AdvertStore) {
+        self.store = store
+        observeAdvertsUpdates.store(in: &cancellables)
     }
     
     func fetchAdverts() {
+        loading = .loading
         pageNo = 0
-        model.fetchAdverts(appending: false, pageNo: pageNo, handleError: handleError)
+        store.fetchAdverts(appending: false, pageNo: pageNo, onComplete: { [weak self] in self?.loading = .notLoading }, handleError: handleError)
     }
     
     func fetchNextPage(advert: Advert) {
@@ -39,7 +45,7 @@ class AdvertListViewModel: ObservableObject {
             return
         }
         pageNo += 1
-        model.fetchAdverts(appending: true, pageNo: pageNo, handleError: handleError)
+        store.fetchAdverts(appending: true, pageNo: pageNo, handleError: handleError)
     }
     
     func createAdvert() {
@@ -52,6 +58,10 @@ class AdvertListViewModel: ObservableObject {
     
     func filterAdverts() {
         navigateToFilterAdverts?()
+    }
+    
+    func profileDetail(advert: Advert) {
+        navigateToProfileDetail?(advert.creator.id)
     }
     
     private func handleError(error: APIError?) {

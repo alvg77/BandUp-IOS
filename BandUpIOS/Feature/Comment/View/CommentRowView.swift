@@ -16,7 +16,7 @@ struct CommentRowView: View {
     var createdAt: Date
     var creator: UserDetails
     
-    var update: (Int, String) -> Void
+    var edit: (Int, String) -> Void
     var delete: (Int) -> Void
     
     init(
@@ -24,14 +24,14 @@ struct CommentRowView: View {
         content: String,
         createdAt: Date,
         creator: UserDetails,
-        update: @escaping (Int, String) -> Void,
+        edit: @escaping (Int, String) -> Void,
         delete: @escaping (Int) -> Void
     ) {
         self.commentId = commentId
         self.content = content
         self.createdAt = createdAt
         self.creator = creator
-        self.update = update
+        self.edit = edit
         self.delete = delete
     }
     
@@ -43,7 +43,7 @@ struct CommentRowView: View {
         }
         .cardBackground()
         .sheet(isPresented: $editing) {
-            CommentUpdateView(commentId: commentId, content: content, update: update)
+            CommentEditView(commentId: commentId, content: content, edit: edit)
         }
     }
 }
@@ -93,5 +93,5 @@ private extension CommentRowView {
 }
 
 #Preview {
-    CommentRowView(commentId: 0, content: "Comment comment comment comment", createdAt: Date.now, creator: UserDetails(id: 0, username: "Username", email: "username@email.com"), update: {_,_ in}, delete: {_ in})
+    CommentRowView(commentId: 0, content: "Comment comment comment comment", createdAt: Date.now, creator: UserDetails(id: 0, username: "Username", email: "username@email.com"), edit: {_,_ in}, delete: {_ in})
 }

@@ -14,8 +14,10 @@ struct AdvertRowView: View {
     var location: Location
     var genres: [Genre]
     var searchedArtistTypes: [ArtistType]
-    var createor: UserDetails
+    var creator: UserDetails
     var createdAt: Date
+    
+    var profileDetail: () -> Void
     
     var body: some View {
         HStack {
@@ -38,9 +40,9 @@ struct AdvertRowView: View {
 private extension AdvertRowView {
     @ViewBuilder var displayCreator: some View {
         HStack {
-            UserProfilePicture(diameter: 40)
+            UserProfilePicture(imageKey: creator.profilePictureKey, diameter: 40)
             VStack (alignment: .leading) {
-                Text(createor.username)
+                Text(creator.username)
                 HStack (spacing: 0) {
                     Image(systemName: "mappin")
                     Text(getLocationString())
@@ -48,8 +50,10 @@ private extension AdvertRowView {
                 .bold()
                 .foregroundStyle(.purple)
                 .font(.footnote)
-                
             }
+        }
+        .onTapGesture {
+            profileDetail()
         }
     }
     
@@ -122,7 +126,7 @@ private extension AdvertRowView {
         location: Location(country: "Bulgaria", city: "Sofia", administrativeArea: "Sofia-city", lat: 0, lon: 0),
         genres: [Genre(id: 0, name: "Metal"), Genre(id: 1, name: "Rock")],
         searchedArtistTypes: [ArtistType(id: 0, name: "Guitarist"), ArtistType(id: 1, name: "Bassist")],
-        createor: UserDetails(id: 0, username: "username", email: "username@email.com"),
+        creator: UserDetails(id: 0, username: "username", email: "username@email.com"),
         createdAt: Date.now
-    )
+    ) {}
 }

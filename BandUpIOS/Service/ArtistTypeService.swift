@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Combine
 
 protocol ArtistTypeServiceProtocol {
-    func getArtistTypes(completion: @escaping (Result<[ArtistType], APIError>) -> Void)
+    func getArtistTypes() -> AnyPublisher<[ArtistType], APIError>
 }
 
 class ArtistTypeService {
@@ -17,30 +18,25 @@ class ArtistTypeService {
 }
 
 extension ArtistTypeService: ArtistTypeServiceProtocol {
-    func getArtistTypes(completion: @escaping (Result<[ArtistType], APIError>) -> Void) {
-        let endpoint = URL(string: "http://localhost:9090/api/v1/artist-types")
+    func getArtistTypes() -> AnyPublisher<[ArtistType], APIError> {
+        let endpoint = URL(string: "\(Secrets.baseApiURL)/artist-types")
         
         guard let endpoint = endpoint else {
-            completion(.failure(.invalidURLError))
-            return
+            return Fail(error: APIError.invalidURLError).eraseToAnyPublisher()
         }
         
-        RequestHandler.makeRequest(request: URLRequest(url: endpoint)) { requestCompletion in
-            switch requestCompletion {
-            case .success(let data):
-                guard let data = data else {
-                    completion(.failure(.invalidResponseError))
-                    return
+        return RequestHandler.makeRequest(request: URLRequest(url: endpoint))
+            .decode(type: [ArtistType].self, decoder: JSONDecoder())
+            .mapError { error -> APIError in
+                switch error {
+                case is DecodingError:
+                    return .decodingError
+                case is APIError:
+                    return error as! APIError
+                default:
+                    return .unknownError
                 }
-                do {
-                    let response = try JSONDecoder().decode([ArtistType].self, from: data)
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            case .failure(let error):
-                completion(.failure(error))
             }
-        }
+            .eraseToAnyPublisher()
     }
 }

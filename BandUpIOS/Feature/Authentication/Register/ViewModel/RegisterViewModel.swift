@@ -24,7 +24,7 @@ protocol RegisterStepViewModel {
 class RegisterViewModel: ObservableObject {
     @Published var registerError: APIError?
     @Published var registerErrorOccured = false
-    
+    @Published var loading: LoadingState = .notLoading
     @Published var step = RegisterStep.credentials
     @Published var steps: [RegisterStep] = [.credentials]
     
@@ -33,6 +33,8 @@ class RegisterViewModel: ObservableObject {
     var profileInfo = ProfileInfoViewModel()
     var genreSelect = GenreSelectViewModel()
     var locationSelect = LocationSelectViewModel()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     var onComplete: (() -> Void)?
     
@@ -59,6 +61,7 @@ class RegisterViewModel: ObservableObject {
     }
     
     func register() {
+        loading = .loading
         let registerRequest = RegisterRequest(
             username: self.credentials.username,
             email: self.credentials.email,
@@ -68,23 +71,27 @@ class RegisterViewModel: ObservableObject {
             bio: self.profileInfo.bio, 
             location: self.locationSelect.getLocation()!,
             contacts: Contacts(
-                phoneNumer: self.contacts.phoneNumber.isEmpty ? nil : self.contacts.phoneNumber,
+                phoneNumber: self.contacts.phoneNumber.isEmpty ? nil : self.contacts.phoneNumberCountryCode + " " + self.contacts.phoneNumber,
                 contactEmail: self.contacts.contactEmail.isEmpty ? nil : self.contacts.contactEmail,
                 website: self.contacts.website.isEmpty ? nil : self.contacts.website
             )
         )
-                
-        AuthService.shared.register(registerRequest: registerRequest) { [weak self] completion in
-            DispatchQueue.main.async {
+        
+        AuthService.shared.register(registerRequest: registerRequest)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
                 switch completion {
-                case .success(let response):
-                    JWTService.shared.saveToken(token: response.token)
+                case .finished:
+                    self?.loading = .notLoading
                     self?.onComplete?()
                 case .failure(let error):
+                    self?.loading = .notLoading
                     self?.registerError = error
                     self?.registerErrorOccured = true
                 }
+            } receiveValue: { 
+                JWTService.shared.saveToken(token: $0.token)
             }
-        }
+            .store(in: &cancellables)
     }
 }

@@ -23,6 +23,5 @@ struct FlowList<Data: CustomStringConvertible & Identifiable>: View {
                     .clipShape(Capsule())
             }
         }
-        
     }
 }

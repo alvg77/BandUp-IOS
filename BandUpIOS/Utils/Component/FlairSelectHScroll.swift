@@ -11,7 +11,6 @@ struct FlairSelectHScroll: View {
     let flairs: [PostFlair]
     @Binding var selected: PostFlair?
     
-    
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
