@@ -14,7 +14,7 @@ struct AdvertDetailView: View {
     @ObservedObject var viewModel: AdvertDetailViewModel
 
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             ScrollView {
                 displayCreator
                 displayAdvertDetails
@@ -31,7 +31,13 @@ struct AdvertDetailView: View {
                 Divider()
                 
                 displayLocation
-                
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
             }
         }
         .padding(.horizontal)

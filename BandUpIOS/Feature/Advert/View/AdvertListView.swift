@@ -11,8 +11,15 @@ struct AdvertListView: View {
     @ObservedObject var viewModel: AdvertListViewModel
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             displayAdverts
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .task {
             guard viewModel.adverts.isEmpty else { return }

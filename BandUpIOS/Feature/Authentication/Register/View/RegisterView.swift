@@ -11,9 +11,18 @@ struct RegisterView: View {
     @ObservedObject var viewModel: RegisterViewModel
     
     var body: some View {
-        VStack {
-            multistepIndicator
-            step
+        ZStack {
+            VStack {
+                multistepIndicator
+                step
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .navigationTitle("Create Account")
         .navigationBarTitleDisplayMode(.inline)

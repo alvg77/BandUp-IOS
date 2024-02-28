@@ -11,10 +11,17 @@ struct AdvertFilterView: View {
     @ObservedObject var viewModel: AdvertFilterViewModel
 
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             Form {
                 displayLocationSection
                 displayGenresAndArtistTypesSection
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
             }
         }
         .task {
