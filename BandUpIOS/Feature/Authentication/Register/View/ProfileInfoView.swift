@@ -11,25 +11,34 @@ struct ProfileInfoView: View {
     @ObservedObject var viewModel: ProfileInfoViewModel
     
     var body: some View {
-        ScrollView {
-            Text("Profile Info")
-                .bold()
-                .font(.largeTitle)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.all, 4)
-
-            Text("Tell us a little about yourself.")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
-            
-            if let error = viewModel.error {
-                ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available artist types.")
+        ZStack {
+            ScrollView {
+                Text("Profile Info")
+                    .bold()
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 4)
+                
+                Text("Tell us a little about yourself.")
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom)
+                
+                if let error = viewModel.error {
+                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available artist types.")
+                        .padding(.bottom)
+                }
+                
+                artistTypePicker
+                bio
+                continueButton
             }
-                        
-            artistTypePicker
-            bio
-            continueButton
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .padding(.vertical)
         .padding(.horizontal, 8)

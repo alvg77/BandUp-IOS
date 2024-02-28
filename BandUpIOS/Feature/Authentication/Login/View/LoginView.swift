@@ -11,7 +11,7 @@ struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             ScrollView {
                 Text("Welcome Back")
                     .font(.largeTitle)
@@ -37,6 +37,13 @@ struct LoginView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom)
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
             }
         }
         .navigationTitle("Login")

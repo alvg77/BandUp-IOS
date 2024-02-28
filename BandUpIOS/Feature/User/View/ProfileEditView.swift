@@ -12,7 +12,7 @@ struct ProfileEditView: View {
     @ObservedObject var viewModel: ProfileEditViewModel
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             Form {
                 profilePicture.padding(.top)
                     .frame(maxWidth: .infinity)
@@ -34,6 +34,13 @@ struct ProfileEditView: View {
                 }
             }
             .scrollIndicators(.hidden)
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .navigationTitle("Edit Profile")
         .navigationBarTitleDisplayMode(.inline)

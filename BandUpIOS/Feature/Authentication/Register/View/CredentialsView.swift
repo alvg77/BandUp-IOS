@@ -13,29 +13,38 @@ struct CredentialsView: View {
     private let fieldBottomPadding: CGFloat = 8
     
     var body: some View {
-        ScrollView {
-            VStack {
-                Text("Credentials")
-                    .bold()
-                    .font(.largeTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.all, 4)
-                
-                Text("You will need these to later log into your account.")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom)
-                
-                if let error = viewModel.error {
-                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to verify your username and email availability.")
+        ZStack {
+            ScrollView {
+                VStack {
+                    Text("Credentials")
+                        .bold()
+                        .font(.largeTitle)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.all, 4)
+                    
+                    Text("You will need these to later log into your account.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom)
+                    
+                    if let error = viewModel.error {
+                        ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to verify your username and email availability.")
+                    }
+                    
+                    usernameField
+                    emailField
+                    passwordField
                 }
+                .padding(.bottom)
                 
-                usernameField
-                emailField
-                passwordField
+                continueButton
             }
-            .padding(.bottom)
-        
-            continueButton
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .padding(.vertical)
         .padding(.horizontal, 8)

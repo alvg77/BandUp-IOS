@@ -16,7 +16,7 @@ struct PostDetailView: View {
     var body: some View {
         VStack {
             ScrollView {
-                LoadingView(loading: viewModel.postLoading) {
+                ZStack {
                     VStack (alignment: .leading) {
                         top
                         
@@ -41,14 +41,28 @@ struct PostDetailView: View {
                         .bold()
                     }
                     .padding(.horizontal)
+                    
+                    if viewModel.postLoading == .loading {
+                        Color(.systemBackground)
+                            .ignoresSafeArea()
+                        ProgressView()
+                            .scaleEffect(2)
+                    }
                 }
                 
                 Divider()
                     .frame(maxWidth: .infinity).background(Color(.systemGray))
                     .padding(.bottom, 4)
                 
-                LoadingView(loading: viewModel.commentsLoading) {
+                ZStack {
                     CommentListView(comments: viewModel.comments, editComment: viewModel.editComment, deleteComment: viewModel.deleteComment)
+                    
+                    if viewModel.commentsLoading == .loading {
+                        Color(.systemBackground)
+                            .ignoresSafeArea()
+                        ProgressView()
+                            .scaleEffect(2)
+                    }
                 }
             }
             .scrollIndicators(.hidden)
