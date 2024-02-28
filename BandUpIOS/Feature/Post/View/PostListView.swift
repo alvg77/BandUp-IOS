@@ -11,12 +11,19 @@ struct PostListView: View {
     @ObservedObject var viewModel: PostListViewModel
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             VStack {
                 flairSelector
                     .padding(.horizontal)
                 posts
                     .scrollIndicators(.hidden)
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
             }
         }
         .refreshable {

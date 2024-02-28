@@ -19,7 +19,7 @@ struct PostCreateEditView: View {
     }
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             Form {
                 Section {
                     title
@@ -30,6 +30,13 @@ struct PostCreateEditView: View {
                 Section {
                     postFlairPicker
                 }
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
             }
         }
         .task {

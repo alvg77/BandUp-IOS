@@ -11,24 +11,33 @@ struct GenreSelectView: View {
     @ObservedObject var viewModel: GenreSelectViewModel
     
     var body: some View {
-        ScrollView {
-            Text("Genres")
-                .bold()
-                .font(.largeTitle)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.all, 4)
-
-            Text("In what genres do you perform?")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom)
-            
-            if let error = viewModel.error {
-                ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available genres.")
+        ZStack {
+            ScrollView {
+                Text("Genres")
+                    .bold()
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 4)
+                
+                Text("In what genres do you perform?")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom)
+                
+                if let error = viewModel.error {
+                    ErrorMessage(errorMessage: error.errorDescription ?? "An error occured while trying to fetch the available genres.")
+                }
+                
+                genreSelector
+                    .padding(.bottom)
+                continueButton
             }
             
-            genreSelector
-                .padding(.bottom)
-            continueButton
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .padding(.all)
         .task {

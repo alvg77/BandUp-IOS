@@ -11,10 +11,17 @@ struct AdvertCreateEditView: View {
     @ObservedObject var viewModel: AdvertCreateEditViewModel
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             Form {
                 displayTextSection
                 displayGenresAndArtistTypesSelectSection
+            }
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
             }
         }
         .task {

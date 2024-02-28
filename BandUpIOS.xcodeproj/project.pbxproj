@@ -54,7 +54,6 @@
 		4B555E412B6ED5DA00AC72C1 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E402B6ED5DA00AC72C1 /* LocationService.swift */; };
 		4B555E432B6EEB1F00AC72C1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E422B6EEB1F00AC72C1 /* MapView.swift */; };
 		4B555E452B6EED4000AC72C1 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E442B6EED4000AC72C1 /* SearchBar.swift */; };
-		4B55C3D72B76334800139B02 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B55C3D62B76334800139B02 /* LoadingView.swift */; };
 		4B6515362B2CD976004166D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6515352B2CD976004166D4 /* APIError.swift */; };
 		4B651C662B3F873B00738CF8 /* JWTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B651C652B3F873B00738CF8 /* JWTService.swift */; };
 		4B65218D2B24F915001D429E /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B65218C2B24F915001D429E /* RoundButton.swift */; };
@@ -194,7 +193,6 @@
 		4B555E422B6EEB1F00AC72C1 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		4B555E442B6EED4000AC72C1 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		4B55C3D32B761A3A00139B02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		4B55C3D62B76334800139B02 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		4B6515352B2CD976004166D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		4B651C652B3F873B00738CF8 /* JWTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTService.swift; sourceTree = "<group>"; };
 		4B65218C2B24F915001D429E /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
@@ -624,7 +622,6 @@
 				4BF1CEC32B67CC650074E9A0 /* UserProfilePicture.swift */,
 				4BC0B6712B7502CF00B2ADAB /* LocationText.swift */,
 				4BC0B6732B75041800B2ADAB /* ContactsList.swift */,
-				4B55C3D62B76334800139B02 /* LoadingView.swift */,
 				4BF527E62B77D2D70042F0D2 /* CountryCodes.swift */,
 				4BF527EA2B77DBEE0042F0D2 /* PhoneNumberTextField.swift */,
 			);
@@ -932,7 +929,6 @@
 				4B4279102B30BB45000A5631 /* ProfileInfoView.swift in Sources */,
 				4BF1CECD2B67E3F30074E9A0 /* CommentService.swift in Sources */,
 				4B73BC862B741CD800643DFC /* ProfileRouterView.swift in Sources */,
-				4B55C3D72B76334800139B02 /* LoadingView.swift in Sources */,
 				4B373BA62B6AA9F400FC295A /* AdvertStore.swift in Sources */,
 				4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */,
 				4BC922812B37258C00D49E2F /* FieldError.swift in Sources */,

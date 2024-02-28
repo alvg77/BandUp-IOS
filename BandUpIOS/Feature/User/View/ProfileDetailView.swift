@@ -12,7 +12,7 @@ struct ProfileDetailView: View {
     @State var deletionAlert = false
     
     var body: some View {
-        LoadingView(loading: viewModel.loading) {
+        ZStack {
             ScrollView {
                 userTop
                 bio.padding(.top)
@@ -27,6 +27,13 @@ struct ProfileDetailView: View {
                 location
             }
             .scrollIndicators(.hidden)
+            
+            if viewModel.loading == .loading {
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .scaleEffect(2)
+            }
         }
         .padding(.all)
         .navigationTitle("Profile")
