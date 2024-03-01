@@ -1,13 +1,13 @@
 # BandUp-IOS
 ## Installation
 - Open project with Xcode
-- Add a Secrets.swift file with the following content:
+- Add a Secrets.swift file with the following enum:
 ```swift
 import Foundation
 
 enum Secrets {
-    static let baseApiURL = "http://localhost:9090/api/v1"
-    static let s3BucketURL = "example aws"
+    static let baseApiURL = "example url"
+    static let s3BucketURL = "example aws bucket url"
 }
 ```
 - Pick a device/simulator on which to run the app
