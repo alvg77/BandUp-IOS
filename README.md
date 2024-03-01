@@ -7,7 +7,7 @@ import Foundation
 
 enum Secrets {
     static let baseApiURL = "http://localhost:9090/api/v1"
-    static let s3BucketURL = "https://bandup.s3.eu-central-1.amazonaws.com/"
+    static let s3BucketURL = "example aws"
 }
 ```
 - Pick a device/simulator on which to run the app
