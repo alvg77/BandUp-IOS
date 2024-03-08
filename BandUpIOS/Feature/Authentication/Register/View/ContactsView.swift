@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import iPhoneNumberField
 
 struct ContactsView: View {
     @ObservedObject var viewModel: ContactsViewModel
