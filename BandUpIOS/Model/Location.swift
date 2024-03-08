@@ -18,7 +18,7 @@ struct Location: Codable {
     }
     
     init(mapItem: MKMapItem) {
-        self.city = mapItem.placemark.postalAddress?.city
+        self.city = mapItem.placemark.locality
         self.administrativeArea = mapItem.placemark.administrativeArea
         self.country = mapItem.placemark.country
         self.lat = mapItem.placemark.coordinate.latitude
