@@ -19,7 +19,7 @@ struct PhoneNumberTextField : View {
     
     var body: some View {
         HStack (spacing: 0) {
-            Text(countryCode.isEmpty ? "🇧🇬 +359" : "\(countryFlag) +\(countryCode)")
+            Text(countryCode.isEmpty ? "🇧🇬 +359" : "\(countryFlag) + \(countryCode)")
                 .padding(.vertical)
                 .padding(.horizontal, 8)
                 .background(Color(.systemGray2))

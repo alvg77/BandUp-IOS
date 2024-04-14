@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct UserProfilePicture: View {
-    let imageURL: URL?
+    @State var id = UUID()
+    var imageURL: URL?
     let diameter: CGFloat
     
     init(imageKey: String?, diameter: CGFloat) {
@@ -33,10 +34,14 @@ struct UserProfilePicture: View {
                     Image(systemName: "person.crop.circle.badge.exclamationmark.fill")
                         .resizable()
                         .frame(width: diameter, height: diameter - 0.1 * diameter)
+                        .onAppear {
+                            self.id = UUID()
+                        }
                 @unknown default:
                     EmptyView()
                 }
             }
+            .id(id)
         } else {
             Image(systemName: "person.circle.fill")
                 .resizable()

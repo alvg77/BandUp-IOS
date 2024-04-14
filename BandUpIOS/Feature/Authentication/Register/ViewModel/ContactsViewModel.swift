@@ -12,7 +12,7 @@ import SwiftUI
 class ContactsViewModel: ObservableObject {
     private let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
     
-    @Published var phoneNumberCountryCode = ""
+    @Published var phoneNumberCountryCode = "+359"
     @Published var phoneNumber = ""
     @Published var contactEmail = ""
     @Published var website = ""
@@ -28,7 +28,6 @@ class ContactsViewModel: ObservableObject {
         let isAtLeastOneContactFieldNotEmpty = !contactEmail.isEmpty || !website.isEmpty || (!phoneNumber.isEmpty && !phoneNumberCountryCode.isEmpty)
         
         let isPhoneNumberValid = (phoneNumber.isEmpty && phoneNumberCountryCode.isEmpty) || (!phoneNumber.isEmpty && !phoneNumberCountryCode.isEmpty)
-    
         return isAtLeastOneContactFieldNotEmpty && isPhoneNumberValid
     }
     

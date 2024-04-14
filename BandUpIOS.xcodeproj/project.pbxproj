@@ -85,7 +85,6 @@
 		4B8E3DF72B2676810090A60C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF62B2676810090A60C /* AuthService.swift */; };
 		4B95B9C82B273E8F00F17432 /* ArtistType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C72B273E8F00F17432 /* ArtistType.swift */; };
 		4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C92B273ED400F17432 /* Genre.swift */; };
-		4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9CB2B27430D00F17432 /* PasswordField.swift */; };
 		4B99B7532B692F32009D8A87 /* CommentEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B99B7522B692F32009D8A87 /* CommentEditView.swift */; };
 		4B9AEF172B60896000804B46 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9AEF162B60896000804B46 /* Location.swift */; };
 		4BA9F11C2B4D6471007849C6 /* PostFlairService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9F11B2B4D6471007849C6 /* PostFlairService.swift */; };
@@ -226,7 +225,6 @@
 		4B8E3DF62B2676810090A60C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		4B95B9C72B273E8F00F17432 /* ArtistType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistType.swift; sourceTree = "<group>"; };
 		4B95B9C92B273ED400F17432 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
-		4B95B9CB2B27430D00F17432 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 		4B99B7522B692F32009D8A87 /* CommentEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditView.swift; sourceTree = "<group>"; };
 		4B9AEF162B60896000804B46 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		4BA9F11B2B4D6471007849C6 /* PostFlairService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFlairService.swift; sourceTree = "<group>"; };
@@ -605,7 +603,6 @@
 		4BBAD0BD2B59B62600FB8635 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				4B95B9CB2B27430D00F17432 /* PasswordField.swift */,
 				4BADA6592B27B8F40059E9EC /* ErrorMessage.swift */,
 				4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */,
 				4BC922802B37258C00D49E2F /* FieldError.swift */,
@@ -933,7 +930,6 @@
 				4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */,
 				4BC922812B37258C00D49E2F /* FieldError.swift in Sources */,
 				4B373BB12B6AC70E00FC295A /* AdvertCreateEditView.swift in Sources */,
-				4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */,
 				4BC0B6742B75041800B2ADAB /* ContactsList.swift in Sources */,
 				4BE7F0C82B743C1A000D4CE8 /* ProfileService.swift in Sources */,
 				4B373BA02B6A8FF200FC295A /* Advert.swift in Sources */,

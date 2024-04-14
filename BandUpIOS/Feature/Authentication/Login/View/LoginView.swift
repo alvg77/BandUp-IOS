@@ -58,11 +58,13 @@ private extension LoginView {
     @ViewBuilder private var emailField: some View {
         TextField("Email", text: $viewModel.email)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "at"))
+            .autocorrectionDisabled()
     }
     
     @ViewBuilder private var passwordField: some View {
         SecureField("Password", text: $viewModel.password)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "lock"))
+            .autocorrectionDisabled()
     }
     
     
