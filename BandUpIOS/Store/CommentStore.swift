@@ -16,15 +16,18 @@ class CommentStore: ObservableObject {
     
     let toAuth: () -> Void
     
+    private let commentService: any CommentServiceProtocol
+
     private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
     
-    init(toAuth: @escaping () -> Void) {
+    init(toAuth: @escaping () -> Void, commentService: any CommentServiceProtocol = CommentService.shared) {
         self.toAuth = toAuth
+        self.commentService = commentService
     }
     
     func fetchComments(appending: Bool, postId: Int, pageNo: Int, onSuccess: OnSuccess? = nil, handleError: @escaping HandleError) {
-        CommentService.shared.getAll(postId: postId, pageNo: pageNo, pageSize: pageSize)
+        commentService.getAll(postId: postId, pageNo: pageNo, pageSize: pageSize)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -45,7 +48,7 @@ class CommentStore: ObservableObject {
     }
     
     func createComment(_ new: CreateEditComment, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        CommentService.shared.create(commentCreateRequest: new)
+        commentService.create(commentCreateRequest: new)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -61,13 +64,13 @@ class CommentStore: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func editComment(_ edit: CreateEditComment, id: Int, handleError: @escaping HandleError) {
-        CommentService.shared.edit(commentId: id, commentEditRequest: edit) 
+    func editComment(_ edit: CreateEditComment, id: Int, onSuccess: OnSuccess? = nil, handleError: @escaping HandleError) {
+        commentService.edit(commentId: id, commentEditRequest: edit)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    break
+                    onSuccess?()
                 case .failure(let error):
                     self?.checkAuth(error: error)
                     handleError(error)
@@ -81,7 +84,7 @@ class CommentStore: ObservableObject {
     }
     
     func deleteComment(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        CommentService.shared.delete(commentId: id) 
+        commentService.delete(commentId: id)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum APIError: LocalizedError {
+public enum APIError: LocalizedError {
     case unauthorized
     case invalidURLError
     case invalidResponseError
@@ -19,7 +19,7 @@ enum APIError: LocalizedError {
     case s3UploadError
     case unknownError
         
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .unauthorized:
             return "You need to login or register to be able to access this."

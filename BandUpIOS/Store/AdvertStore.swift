@@ -19,11 +19,20 @@ class AdvertStore: ObservableObject {
     let toAuth: () -> Void
     var advertFilter: AdvertFilter?
     
+    private let advertService: any AdvertServiceProtocol
+    private let genreService: any GenreServiceProtocol
+    
     private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
     
-    init(toAuth: @escaping () -> Void) {
+    init(
+        toAuth: @escaping () -> Void,
+        advertService: any AdvertServiceProtocol = AdvertService.shared,
+        genreService: any GenreServiceProtocol = GenreService.shared
+    ) {
         self.toAuth = toAuth
+        self.advertService = advertService
+        self.genreService = genreService
     }
     
     func applyFilter(advertFilter: AdvertFilter?, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
@@ -38,7 +47,7 @@ class AdvertStore: ObservableObject {
         onSuccess: OnSuccess? = nil,
         handleError: @escaping HandleError
     ) {
-        AdvertService.shared.getAll(
+        advertService.getAll(
             pageNo: pageNo,
             pageSize: pageSize,
             filter: advertFilter,
@@ -64,7 +73,7 @@ class AdvertStore: ObservableObject {
     }
     
     func fetchAdvert(advertId: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        AdvertService.shared.getById(advertId: advertId)
+        advertService.getById(advertId: advertId)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -83,7 +92,7 @@ class AdvertStore: ObservableObject {
     }
     
     func createAdvert(_ new: CreateEditAdvert, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        AdvertService.shared.create(advertCreateRequest: new)
+        advertService.create(advertCreateRequest: new)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -100,7 +109,7 @@ class AdvertStore: ObservableObject {
     }
     
     func editAdvert(_ edit: CreateEditAdvert, id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        AdvertService.shared.edit(advertId: id, advertEditRequest: edit)
+        advertService.edit(advertId: id, advertEditRequest: edit)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -119,7 +128,7 @@ class AdvertStore: ObservableObject {
     }
     
     func deleteAdvert(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        AdvertService.shared.delete(advertId: id)
+        advertService.delete(advertId: id)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -138,7 +147,7 @@ class AdvertStore: ObservableObject {
     }
     
     func fetchGenresAndArtistTypes(onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        GenreService.shared.getGenres()
+        genreService.getGenres()
             .combineLatest(ArtistTypeService.shared.getArtistTypes())
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in

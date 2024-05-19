@@ -12,7 +12,7 @@ struct PhoneNumberTextField : View {
     @Binding var countryCode: String
     @Binding var phoneNumber: String
     
-    @State var countryFlag = ""
+    @State var countryFlag = "🇧🇬"
     @State var countryCodeSheet = false
     
     @FocusState var focus: Bool
