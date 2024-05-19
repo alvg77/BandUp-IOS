@@ -66,14 +66,7 @@ private extension CommentRowView {
     }
     
     @ViewBuilder var userDetails: some View {
-        Image(systemName: "person.fill")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 20, height: 20)
-            .foregroundStyle(.white)
-            .padding(.all, 4)
-            .background(.purple)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+        UserProfilePicture(imageKey: creator.profilePictureKey, diameter: 35)
         VStack (alignment: .leading) {
             Text(creator.username).font(.caption).bold()
             Text(createdAt.formatted())

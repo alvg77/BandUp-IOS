@@ -111,7 +111,7 @@ private extension ProfileEditView {
     
     @ViewBuilder var contacts: some View {
         Group {
-            PhoneNumberTextField(countryCode: $viewModel.phoneNumberCountryCode, phoneNumber: $viewModel.phoneNumber)
+            PhoneNumberTextField(countryCode: $viewModel.phoneNumberCountryCode, countryFlag: $viewModel.phoneNumberCountryFlag, phoneNumber: $viewModel.phoneNumber)
             
             HStack {
                 Image(systemName: "envelope")
