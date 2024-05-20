@@ -52,6 +52,7 @@
 		4B4285812B4848DE005AF4E7 /* PostFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285802B4848DE005AF4E7 /* PostFlair.swift */; };
 		4B4285852B48492A005AF4E7 /* CharacterCountTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285842B48492A005AF4E7 /* CharacterCountTextEditor.swift */; };
 		4B42858B2B484B73005AF4E7 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42858A2B484B73005AF4E7 /* UserDetails.swift */; };
+		4B4AC1FB2BFB888200F93AE1 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4B4AC1FA2BFB888200F93AE1 /* CachedAsyncImage */; };
 		4B5451572B572504009589FA /* LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5451562B572504009589FA /* LinkPreview.swift */; };
 		4B555E412B6ED5DA00AC72C1 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E402B6ED5DA00AC72C1 /* LocationService.swift */; };
 		4B555E432B6EEB1F00AC72C1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E422B6EEB1F00AC72C1 /* MapView.swift */; };
@@ -278,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
+				4B4AC1FB2BFB888200F93AE1 /* CachedAsyncImage in Frameworks */,
 				4B373BBE2B6AD8F900FC295A /* Flow in Frameworks */,
 				4B373BC02B6AD8F900FC295A /* Renderer in Frameworks */,
 			);
@@ -817,6 +819,7 @@
 				4B6E78072B386FA300721D49 /* KeychainAccess */,
 				4B373BBD2B6AD8F900FC295A /* Flow */,
 				4B373BBF2B6AD8F900FC295A /* Renderer */,
+				4B4AC1FA2BFB888200F93AE1 /* CachedAsyncImage */,
 			);
 			productName = BandUpIOS;
 			productReference = 4B7B5D372B23FE3B008943A8 /* BandUpIOS.app */;
@@ -893,6 +896,7 @@
 			packageReferences = (
 				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
+				4B4AC1F92BFB888200F93AE1 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
 			projectDirPath = "";
@@ -1222,6 +1226,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1253,6 +1258,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1275,7 +1281,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1295,7 +1301,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1314,6 +1320,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1332,6 +1339,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1392,6 +1400,14 @@
 				minimumVersion = 1.2.0;
 			};
 		};
+		4B4AC1F92BFB888200F93AE1 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
 		4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -1412,6 +1428,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
 			productName = Renderer;
+		};
+		4B4AC1FA2BFB888200F93AE1 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B4AC1F92BFB888200F93AE1 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 		4B6E78072B386FA300721D49 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

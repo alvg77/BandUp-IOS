@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct UserProfilePicture: View {
     @State var id = UUID()
@@ -19,7 +20,7 @@ struct UserProfilePicture: View {
     
     var body: some View {
         if let imageURL = imageURL {
-            AsyncImage(url: imageURL) { phase in
+            CachedAsyncImage(url: imageURL, urlCache: .imageCache) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
@@ -30,13 +31,16 @@ struct UserProfilePicture: View {
                         .scaledToFill()
                         .frame(width: diameter, height: diameter)
                         .clipShape(Circle())
-                case .failure(_):
+                case .failure(let error):
                     Image(systemName: "person.crop.circle.badge.exclamationmark.fill")
                         .resizable()
                         .frame(width: diameter, height: diameter - 0.1 * diameter)
-                        .onAppear {
-                            self.id = UUID()
-                        }
+//                        .onAppear {
+//                            print(error.localizedDescription)
+//                            if error.localizedDescription == "cancelled" {
+//                                self.id = UUID()
+//                            }
+//                        }
                 @unknown default:
                     EmptyView()
                 }
