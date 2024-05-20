@@ -35,12 +35,9 @@ struct UserProfilePicture: View {
                     Image(systemName: "person.crop.circle.badge.exclamationmark.fill")
                         .resizable()
                         .frame(width: diameter, height: diameter - 0.1 * diameter)
-//                        .onAppear {
-//                            print(error.localizedDescription)
-//                            if error.localizedDescription == "cancelled" {
-//                                self.id = UUID()
-//                            }
-//                        }
+                        .onAppear {
+                            self.id = UUID()
+                        }
                 @unknown default:
                     EmptyView()
                 }
