@@ -36,7 +36,14 @@ struct UserProfilePicture: View {
                         .resizable()
                         .frame(width: diameter, height: diameter - 0.1 * diameter)
                         .onAppear {
-                            self.id = UUID()
+                            if let error = error as? URLError, error.code == .cancelled {
+                                id = UUID()
+                            } else {
+                                print(error.localizedDescription)
+                            }
+                        }
+                        .onTapGesture {
+                            id = UUID()
                         }
                 @unknown default:
                     EmptyView()
