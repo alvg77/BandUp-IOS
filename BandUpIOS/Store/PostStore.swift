@@ -24,11 +24,23 @@ class PostStore: ObservableObject {
     
     let toAuth: () -> Void
     
+    private let postService: any PostServiceProtocol
+    private let postFlairService: any PostFlairServiceProtocol
+    private let likeService: any LikeServiceProtocol
+    
     private let pageSize = 10
     private var cancellables = Set<AnyCancellable>()
     
-    init(toAuth: @escaping () -> Void) {
+    init(
+        toAuth: @escaping () -> Void,
+        postService: any PostServiceProtocol = PostService.shared,
+        likeService: any LikeServiceProtocol = LikeService.shared,
+        postFlairService: any PostFlairServiceProtocol = PostFlairService.shared
+    ) {
         self.toAuth = toAuth
+        self.postService = postService
+        self.likeService = likeService
+        self.postFlairService = postFlairService
     }
     
     func fetchPosts(
@@ -39,7 +51,7 @@ class PostStore: ObservableObject {
         onSuccess: OnSuccess? = nil,
         handleError: @escaping HandleError
     ) {
-        PostService.shared.getAll(
+        postService.getAll(
             pageNo: pageNo,
             pageSize: pageSize,
             queryString: queryString,
@@ -70,7 +82,7 @@ class PostStore: ObservableObject {
         onSuccess: @escaping OnSuccess,
         handleError: @escaping HandleError
     ) {
-        PostService.shared.create(
+        postService.create(
             postCreateRequest: new
         ) 
         .receive(on: DispatchQueue.main)
@@ -89,7 +101,7 @@ class PostStore: ObservableObject {
     }
     
     func fetchPost(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        PostService.shared.getById(postId: id)
+        postService.getById(postId: id)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -108,7 +120,7 @@ class PostStore: ObservableObject {
     }
     
     func editPost(_ edit: CreateEditPost, id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        PostService.shared.edit(
+        postService.edit(
             postId: id,
             postEditRequest: edit
         )
@@ -136,7 +148,7 @@ class PostStore: ObservableObject {
         if posts[index].liked {
             posts[index].liked = false
             posts[index].likeCount -= 1
-            LikeService.shared.unlike(postId: id) 
+            likeService.unlike(postId: id)
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] completion in
                     switch completion {
@@ -152,7 +164,7 @@ class PostStore: ObservableObject {
         } else {
             posts[index].liked = true
             posts[index].likeCount += 1
-            LikeService.shared.like(postId: id)
+            likeService.like(postId: id)
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] completion in
                     switch completion {
@@ -169,7 +181,7 @@ class PostStore: ObservableObject {
     }
     
     func deletePost(id: Int, onSuccess: @escaping OnSuccess, handleError: @escaping HandleError) {
-        PostService.shared.delete(postId: id)
+        postService.delete(postId: id)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {
@@ -188,7 +200,7 @@ class PostStore: ObservableObject {
     }
     
     func fetchFlairs(onSuccess: OnSuccess? = nil, handleError: @escaping HandleError) {
-        PostFlairService.shared.getPostFlairs()
+        postFlairService.getPostFlairs()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 switch completion {

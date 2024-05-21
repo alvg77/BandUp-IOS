@@ -17,6 +17,9 @@ struct PostListView: View {
                     .padding(.horizontal)
                 posts
                     .scrollIndicators(.hidden)
+                    .refreshable {
+                        viewModel.fetchPosts()
+                    }
             }
             
             if viewModel.loading == .loading {
@@ -25,9 +28,6 @@ struct PostListView: View {
                 ProgressView()
                     .scaleEffect(2)
             }
-        }
-        .refreshable {
-            viewModel.fetchPosts()
         }
         .task {
             guard viewModel.posts.isEmpty else { return }

@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct CreateEditComment: Encodable {
-    var content: String
-    var postId: Int? = nil
+public struct CreateEditComment: Encodable {
+    public var content: String
+    public var postId: Int? = nil
+    
+    public init(content: String, postId: Int? = nil) {
+        self.content = content
+        self.postId = postId
+    }
 }

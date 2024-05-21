@@ -62,8 +62,8 @@ class RegisterViewModel: ObservableObject {
             email: self.credentials.email,
             password: self.credentials.password,
             artistTypeId: self.profileInfo.artistType!.id,
-            genreIds: self.genreSelect.genres.map { $0.id },
-            bio: self.profileInfo.bio, 
+            genreIds: self.genreSelect.selected.map { $0.id },
+            bio: self.profileInfo.bio,
             location: self.locationSelect.getLocation()!,
             contacts: Contacts(
                 phoneNumber: self.contacts.phoneNumber.isEmpty ? nil : self.contacts.phoneNumberCountryCode + " " + self.contacts.phoneNumber,

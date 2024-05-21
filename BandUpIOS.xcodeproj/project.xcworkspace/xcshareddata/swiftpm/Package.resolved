@@ -1,4 +1,5 @@
 {
+  "originHash" : "1e194905e482f060bdcd822e1ed00f1f108eb5c64c373e24046dcc75ab07e812",
   "pins" : [
     {
       "identity" : "keychainaccess",
@@ -19,6 +20,15 @@
       }
     },
     {
+      "identity" : "swiftui-cached-async-image",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git",
+      "state" : {
+        "revision" : "467a3d17479887943ab917a379e62bbaff60ac8a",
+        "version" : "2.1.1"
+      }
+    },
+    {
       "identity" : "swiftui-flow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tevelee/SwiftUI-Flow.git",
@@ -28,5 +38,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

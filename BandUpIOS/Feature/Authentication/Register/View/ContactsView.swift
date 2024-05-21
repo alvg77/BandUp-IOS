@@ -9,9 +9,15 @@ import SwiftUI
 
 struct ContactsView: View {
     @ObservedObject var viewModel: ContactsViewModel
-    @FocusState var phoneNumberFocus: Bool
+    @FocusState var focus: ContactsFocus?
     
     private let fieldBottomPadding: CGFloat = 8
+    
+    enum ContactsFocus {
+        case phone
+        case email
+        case website
+    }
     
     var body: some View {
         ScrollView {
@@ -56,12 +62,16 @@ extension ContactsView {
     }
     
     @ViewBuilder private var phoneNumberField: some View {
-        PhoneNumberTextField(countryCode: $viewModel.phoneNumberCountryCode, phoneNumber: $viewModel.phoneNumber)
+        PhoneNumberTextField(countryCode: $viewModel.phoneNumberCountryCode, countryFlag: $viewModel.phoneNumberCountryFlag, phoneNumber: $viewModel.phoneNumber)
             .background(Color(.systemGray6))
-            .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: phoneNumberFocus ? 4 : 2).foregroundStyle(.purple))
+            .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: focus == .phone ? 4 : 2).foregroundStyle(.purple))
             .clipShape(RoundedRectangle(cornerRadius: 15))
-            .focused($phoneNumberFocus)
-
+            .focused($focus, equals: .phone)
+        
+        if case .invalid(let errorMessage) = viewModel.phoneNumberState, focus == .phone {
+            FieldError(errorMessage: errorMessage)
+                .transition(.slide)
+        }
     }
     
     @ViewBuilder private var contactEmailField: some View {
@@ -70,9 +80,13 @@ extension ContactsView {
                 .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "at"))
                 .padding(.top, fieldBottomPadding)
                 .keyboardType(.emailAddress)
+                .focused($focus, equals: .email)
+                .autocorrectionDisabled()
+                
             
-            if case .invalid(let errorMessage) = viewModel.contactEmailState {
+            if case .invalid(let errorMessage) = viewModel.contactEmailState, focus == .email {
                 FieldError(errorMessage: errorMessage)
+                    .transition(.slide)
             }
         }
         .padding(.bottom, 8)
@@ -83,9 +97,12 @@ extension ContactsView {
         VStack {
             TextField("Websiste", text: $viewModel.website)
                 .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "globe"))
-
-            if case .invalid(let errorMessage) = viewModel.contactsWebsiteState {
+                .focused($focus, equals: .website)
+                .autocorrectionDisabled()
+            
+            if case .invalid(let errorMessage) = viewModel.contactsWebsiteState, focus == .website {
                 FieldError(errorMessage: errorMessage)
+                    .transition(.slide)
             }
         }
         .padding(.bottom, 8)

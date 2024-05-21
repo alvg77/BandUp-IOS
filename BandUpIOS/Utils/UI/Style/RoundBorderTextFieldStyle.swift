@@ -20,7 +20,6 @@ struct RoundBorderTextFieldStyle: TextFieldStyle {
     }
     
     func _body(configuration: TextField<Self._Label>) -> some View {
-        
         HStack {
             if let sfSymbol = sfSymbol {
                 Image(systemName: sfSymbol)

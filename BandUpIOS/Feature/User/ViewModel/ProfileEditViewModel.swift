@@ -18,6 +18,7 @@ class ProfileEditViewModel: ObservableObject {
     @Published var genres: [Genre]
     @Published var artistType: ArtistType
     @Published var phoneNumberCountryCode: String
+    @Published var phoneNumberCountryFlag: String
     @Published var phoneNumber: String
     @Published var contactEmail: String
     @Published var website: String
@@ -68,7 +69,8 @@ class ProfileEditViewModel: ObservableObject {
         self.contactEmail = user.contacts.contactEmail ?? ""
         self.website = user.contacts.website ?? ""
         self.phoneNumber = ""
-        self.phoneNumberCountryCode = "" 
+        self.phoneNumberCountryFlag = ""
+        self.phoneNumberCountryCode = ""
         
         if let phoneNumber = user.contacts.phoneNumber {
             let phoneNumberParts = phoneNumber.split(separator: " ")

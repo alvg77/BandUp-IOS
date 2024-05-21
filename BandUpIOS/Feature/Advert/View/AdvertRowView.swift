@@ -73,6 +73,7 @@ private extension AdvertRowView {
                             .padding(.all, 6)
                             .background(.purple)
                             .clipShape(Circle())
+
                     }
                 }
             }
@@ -88,7 +89,7 @@ private extension AdvertRowView {
                         .background(.purple)
                         .clipShape(Capsule())
                     if searchedArtistTypes.count > 1 {
-                        Text("+\(genres.count - 1)")
+                        Text("+\(searchedArtistTypes.count - 1)")
                             .foregroundStyle(.white)
                             .padding(.all, 6)
                             .background(.purple)

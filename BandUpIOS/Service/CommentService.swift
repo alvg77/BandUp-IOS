@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol CommentServiceProtocol {
+public protocol CommentServiceProtocol {
     func create(commentCreateRequest: CreateEditComment) -> AnyPublisher<Comment, APIError>
     func getById(commentId: Int) -> AnyPublisher<Comment, APIError>
     func getAll(postId: Int, pageNo: Int, pageSize: Int) -> AnyPublisher<[Comment], APIError>

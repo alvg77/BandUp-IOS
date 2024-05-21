@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4B08ED4A2B758D2E0055485D /* AWSS3Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B08ED492B758D2E0055485D /* AWSS3Service.swift */; };
 		4B0EF1DB2B67089F00A269C8 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0EF1DA2B67089F00A269C8 /* RequestHandler.swift */; };
+		4B2361FD2BDAD40C006C91DF /* CommentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2361FC2BDAD40C006C91DF /* CommentStoreTests.swift */; };
+		4B2362002BDADA02006C91DF /* MockCommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2361FF2BDADA02006C91DF /* MockCommentService.swift */; };
 		4B251ADD2B6D87EC004B63A5 /* CardBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B251ADC2B6D87EC004B63A5 /* CardBackground.swift */; };
 		4B253F702B46EC3000962CC1 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B253F6F2B46EC3000962CC1 /* LoadingState.swift */; };
 		4B355F192B55EF950044B5FD /* LikeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B355F182B55EF950044B5FD /* LikeService.swift */; };
@@ -50,6 +52,7 @@
 		4B4285812B4848DE005AF4E7 /* PostFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285802B4848DE005AF4E7 /* PostFlair.swift */; };
 		4B4285852B48492A005AF4E7 /* CharacterCountTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4285842B48492A005AF4E7 /* CharacterCountTextEditor.swift */; };
 		4B42858B2B484B73005AF4E7 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B42858A2B484B73005AF4E7 /* UserDetails.swift */; };
+		4B4AC1FB2BFB888200F93AE1 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4B4AC1FA2BFB888200F93AE1 /* CachedAsyncImage */; };
 		4B5451572B572504009589FA /* LinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5451562B572504009589FA /* LinkPreview.swift */; };
 		4B555E412B6ED5DA00AC72C1 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E402B6ED5DA00AC72C1 /* LocationService.swift */; };
 		4B555E432B6EEB1F00AC72C1 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B555E422B6EEB1F00AC72C1 /* MapView.swift */; };
@@ -85,7 +88,6 @@
 		4B8E3DF72B2676810090A60C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E3DF62B2676810090A60C /* AuthService.swift */; };
 		4B95B9C82B273E8F00F17432 /* ArtistType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C72B273E8F00F17432 /* ArtistType.swift */; };
 		4B95B9CA2B273ED400F17432 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9C92B273ED400F17432 /* Genre.swift */; };
-		4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95B9CB2B27430D00F17432 /* PasswordField.swift */; };
 		4B99B7532B692F32009D8A87 /* CommentEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B99B7522B692F32009D8A87 /* CommentEditView.swift */; };
 		4B9AEF172B60896000804B46 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9AEF162B60896000804B46 /* Location.swift */; };
 		4BA9F11C2B4D6471007849C6 /* PostFlairService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9F11B2B4D6471007849C6 /* PostFlairService.swift */; };
@@ -149,6 +151,8 @@
 /* Begin PBXFileReference section */
 		4B08ED492B758D2E0055485D /* AWSS3Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSS3Service.swift; sourceTree = "<group>"; };
 		4B0EF1DA2B67089F00A269C8 /* RequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
+		4B2361FC2BDAD40C006C91DF /* CommentStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStoreTests.swift; sourceTree = "<group>"; };
+		4B2361FF2BDADA02006C91DF /* MockCommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCommentService.swift; sourceTree = "<group>"; };
 		4B251ADC2B6D87EC004B63A5 /* CardBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBackground.swift; sourceTree = "<group>"; };
 		4B253F6F2B46EC3000962CC1 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		4B355F182B55EF950044B5FD /* LikeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeService.swift; sourceTree = "<group>"; };
@@ -226,7 +230,6 @@
 		4B8E3DF62B2676810090A60C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		4B95B9C72B273E8F00F17432 /* ArtistType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistType.swift; sourceTree = "<group>"; };
 		4B95B9C92B273ED400F17432 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
-		4B95B9CB2B27430D00F17432 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 		4B99B7522B692F32009D8A87 /* CommentEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditView.swift; sourceTree = "<group>"; };
 		4B9AEF162B60896000804B46 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		4BA9F11B2B4D6471007849C6 /* PostFlairService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFlairService.swift; sourceTree = "<group>"; };
@@ -276,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B6E78082B386FA300721D49 /* KeychainAccess in Frameworks */,
+				4B4AC1FB2BFB888200F93AE1 /* CachedAsyncImage in Frameworks */,
 				4B373BBE2B6AD8F900FC295A /* Flow in Frameworks */,
 				4B373BC02B6AD8F900FC295A /* Renderer in Frameworks */,
 			);
@@ -304,6 +308,14 @@
 				4B0EF1DA2B67089F00A269C8 /* RequestHandler.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		4B2361FE2BDAD9CA006C91DF /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				4B2361FF2BDADA02006C91DF /* MockCommentService.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		4B253F6E2B46EC1C00962CC1 /* Enum */ = {
@@ -541,7 +553,9 @@
 		4B7B5D4A2B23FE3D008943A8 /* BandUpIOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				4B2361FE2BDAD9CA006C91DF /* Mocks */,
 				4B7B5D4B2B23FE3D008943A8 /* BandUpIOSTests.swift */,
+				4B2361FC2BDAD40C006C91DF /* CommentStoreTests.swift */,
 			);
 			path = BandUpIOSTests;
 			sourceTree = "<group>";
@@ -605,7 +619,6 @@
 		4BBAD0BD2B59B62600FB8635 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				4B95B9CB2B27430D00F17432 /* PasswordField.swift */,
 				4BADA6592B27B8F40059E9EC /* ErrorMessage.swift */,
 				4B4279302B3105CF000A5631 /* MultiStepIndicatorView.swift */,
 				4BC922802B37258C00D49E2F /* FieldError.swift */,
@@ -806,6 +819,7 @@
 				4B6E78072B386FA300721D49 /* KeychainAccess */,
 				4B373BBD2B6AD8F900FC295A /* Flow */,
 				4B373BBF2B6AD8F900FC295A /* Renderer */,
+				4B4AC1FA2BFB888200F93AE1 /* CachedAsyncImage */,
 			);
 			productName = BandUpIOS;
 			productReference = 4B7B5D372B23FE3B008943A8 /* BandUpIOS.app */;
@@ -882,6 +896,7 @@
 			packageReferences = (
 				4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
+				4B4AC1F92BFB888200F93AE1 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 4B7B5D382B23FE3B008943A8 /* Products */;
 			projectDirPath = "";
@@ -933,7 +948,6 @@
 				4B4279312B3105CF000A5631 /* MultiStepIndicatorView.swift in Sources */,
 				4BC922812B37258C00D49E2F /* FieldError.swift in Sources */,
 				4B373BB12B6AC70E00FC295A /* AdvertCreateEditView.swift in Sources */,
-				4B95B9CC2B27430D00F17432 /* PasswordField.swift in Sources */,
 				4BC0B6742B75041800B2ADAB /* ContactsList.swift in Sources */,
 				4BE7F0C82B743C1A000D4CE8 /* ProfileService.swift in Sources */,
 				4B373BA02B6A8FF200FC295A /* Advert.swift in Sources */,
@@ -1045,6 +1059,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B7B5D4C2B23FE3D008943A8 /* BandUpIOSTests.swift in Sources */,
+				4B2362002BDADA02006C91DF /* MockCommentService.swift in Sources */,
+				4B2361FD2BDAD40C006C91DF /* CommentStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1210,6 +1226,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1241,6 +1258,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1263,7 +1281,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1283,7 +1301,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1302,6 +1320,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1320,6 +1339,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FRNMQFR539;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alvg.BandUpIOSUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1380,6 +1400,14 @@
 				minimumVersion = 1.2.0;
 			};
 		};
+		4B4AC1F92BFB888200F93AE1 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
 		4B6E78062B386FA300721D49 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -1400,6 +1428,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B373BBC2B6AD8F800FC295A /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
 			productName = Renderer;
+		};
+		4B4AC1FA2BFB888200F93AE1 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B4AC1F92BFB888200F93AE1 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 		4B6E78072B386FA300721D49 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

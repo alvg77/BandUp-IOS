@@ -10,16 +10,14 @@ import SwiftUI
 struct PhoneNumberTextField : View {
     private let cornerRadius: CGFloat = 15
     @Binding var countryCode: String
+    @Binding var countryFlag: String
     @Binding var phoneNumber: String
-    
-    @State var countryFlag = ""
     @State var countryCodeSheet = false
-    
     @FocusState var focus: Bool
     
     var body: some View {
         HStack (spacing: 0) {
-            Text(countryCode.isEmpty ? "🇧🇬 +359" : "\(countryFlag) +\(countryCode)")
+            Text("\(countryFlag) +\(countryCode)")
                 .padding(.vertical)
                 .padding(.horizontal, 8)
                 .background(Color(.systemGray2))

@@ -9,9 +9,16 @@ import SwiftUI
 
 struct CredentialsView: View {
     @ObservedObject var viewModel: CredentialsViewModel
+    @FocusState var focus: CredentialsFocus?
+
+    enum CredentialsFocus {
+        case username
+        case email
+        case password
+    }
     
     private let fieldBottomPadding: CGFloat = 8
-    
+        
     var body: some View {
         ZStack {
             ScrollView {
@@ -66,10 +73,12 @@ private extension CredentialsView {
     
     @ViewBuilder private var usernameField: some View {
         TextField("Username", text: $viewModel.username)
+            .focused($focus, equals: .username)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "person"))
             .padding(.top, fieldBottomPadding)
+            .autocorrectionDisabled()
         
-        if case .invalid(let errorMessage) = viewModel.usernameState {
+        if case .invalid(let errorMessage) = viewModel.usernameState, focus == .username {
             FieldError(errorMessage: errorMessage)
         }
         
@@ -80,11 +89,13 @@ private extension CredentialsView {
     
     @ViewBuilder private var emailField: some View {
         TextField("Email", text: $viewModel.email)
+            .focused($focus, equals: .email)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "at"))
             .padding(.top, fieldBottomPadding)
             .keyboardType(.emailAddress)
+            .autocorrectionDisabled()
         
-        if case .invalid(let errorMessage) = viewModel.emailState {
+        if case .invalid(let errorMessage) = viewModel.emailState, focus == .email {
             FieldError(errorMessage: errorMessage)
         }
         
@@ -95,10 +106,12 @@ private extension CredentialsView {
     
     @ViewBuilder private var passwordField: some View {
         SecureField("Password", text: $viewModel.password)
+            .focused($focus, equals: .password)
             .textFieldStyle(RoundBorderTextFieldStyle(sfSymbol: "lock"))
             .padding(.top, fieldBottomPadding)
+            .autocorrectionDisabled()
         
-        if case .invalid(let errorMessage) = viewModel.passwordState {
+        if case .invalid(let errorMessage) = viewModel.passwordState, focus == .password {
             FieldError(errorMessage: errorMessage)
         }
     }
